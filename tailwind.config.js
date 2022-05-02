@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {},
     backgroundImage: {
-      logo: "url('../public/asset/image/logo.png')",
+      logo: "url('../public/asset/image/top_drimsys_logo.png')",
     },
   },
   plugins: [],

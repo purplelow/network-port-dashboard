@@ -11,59 +11,9 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-const dashboardIco = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-    />
-  </svg>
-);
-const settingIco = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-    />
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-    />
-  </svg>
-);
-const managementIco = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-    />
-  </svg>
-);
+const dashboardIco = <i className="fa-solid fa-house"></i>;
+const settingIco = <i className="fa-solid fa-gear"></i>;
+const managementIco = <i className="fa-solid fa-desktop"></i>;
 
 export default function Layout({
   title,
@@ -130,8 +80,8 @@ export default function Layout({
   }
 
   return (
-    <>
-      <nav className="fixed top-0 h-full w-52 border-r bg-white shadow-sm">
+    <div className="flex w-screen">
+      <nav className="fixed top-0 left-0 z-50 h-screen w-52 border-r bg-white shadow-sm">
         <div className="m-auto h-20 w-3/4 bg-logo bg-contain bg-center bg-no-repeat"></div>
         <Link href="/">
           <a
@@ -150,7 +100,7 @@ export default function Layout({
         <div>
           <div className={cls("flex w-full items-center p-3", setHightlight())}>
             {settingIco}
-            <span className="h-full w-full pl-3">Settings</span>
+            <span className="h-full w-full cursor-default pl-3">Settings</span>
           </div>
 
           <Link href="/settings/deviceSetting">
@@ -203,7 +153,9 @@ export default function Layout({
             className={cls("flex w-full items-center p-3", manageHightlight())}
           >
             {managementIco}
-            <span className="h-full w-full pl-3">Management</span>
+            <span className="h-full w-full cursor-default pl-3">
+              Management
+            </span>
           </div>
 
           <Link href="/management/history">
@@ -252,13 +204,13 @@ export default function Layout({
           </Link>
         </div>
       </nav>
-      <div className="h-full ">
-        <div className="flex h-14 items-center justify-between pl-56 pr-4">
-          <div className="flex ">
+      <div className="h-screen w-screen pl-52">
+        <div className="flex h-14 items-center justify-between px-4">
+          <div className="">
             {title ? (
               <div className="flex items-center justify-center space-x-1">
                 {subTitleIco()}
-                <span className="text-2xl font-semibold">{title}</span>
+                <span className="text-xl font-semibold">{title}</span>
               </div>
             ) : null}
           </div>
@@ -272,8 +224,8 @@ export default function Layout({
           </div>
         </div>
 
-        <div className="h-full pl-56 pr-4 pb-4">{children}</div>
+        <div className="h-[calc(100%-56px)] w-full px-4 pb-4">{children}</div>
       </div>
-    </>
+    </div>
   );
 }
