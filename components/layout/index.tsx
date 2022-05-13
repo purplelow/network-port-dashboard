@@ -22,92 +22,93 @@ export default function Layout({
   children,
 }: LayoutProps) {
   const router = useRouter();
-  console.log(router);
-  // const onClick = () => {
-  //   router.back();
-  // };
 
-  function setHightlight() {
+  const setHightlight = () => {
     let result;
     switch (router.pathname) {
-      case "/settings/deviceSetting":
+      case "/settings/devicesetting":
         result = "bg-blue-800 text-white";
         break;
-      case "/settings/portSetting":
+      case "/settings/portsetting":
         result = "bg-blue-800 text-white";
         break;
       default:
         result = "transition-colors hover:text-blue-800";
     }
     return result;
-  }
-  function manageHightlight() {
+  };
+  const manageHightlight = () => {
     let result;
     switch (router.pathname) {
       case "/management/history":
         result = "bg-blue-800 text-white";
         break;
-      case "/management/systemManage":
+      case "/management/systemmanage":
         result = "bg-blue-800 text-white";
         break;
       default:
         result = "transition-colors hover:text-blue-800";
     }
     return result;
-  }
-  function subTitleIco() {
+  };
+  const subTitleIco = () => {
     let result;
     switch (router.pathname) {
       case "/":
         result = dashboardIco;
         break;
-      case "/settings/deviceSetting":
+      case "/settings/devicesetting":
         result = settingIco;
         break;
-      case "/settings/portSetting":
+      case "/settings/portsetting":
         result = settingIco;
         break;
       case "/management/history":
         result = managementIco;
         break;
-      case "/management/systemManage":
+      case "/management/systemmanage":
         result = managementIco;
         break;
       default:
         result = "";
     }
     return result;
-  }
+  };
 
   return (
     <div className="flex w-screen">
-      <nav className="fixed top-0 left-0 z-50 h-screen w-52 border-r bg-white shadow-sm">
-        <div className="m-auto h-20 w-3/4 bg-logo bg-contain bg-center bg-no-repeat"></div>
+      <nav className="fixed top-0 left-0 z-50 h-screen w-[200px] bg-white shadow-sm">
+        <div className="m-auto h-20 w-[140px] bg-logo bg-contain bg-center bg-no-repeat"></div>
         <Link href="/">
           <a
             className={cls(
-              "flex w-full items-center p-3",
+              "flex w-full items-center py-3 px-6 text-sm",
               router.pathname === "/"
                 ? "bg-blue-800 text-white"
-                : "transition-colors hover:text-gray-500"
+                : "transition-colors hover:text-blue-600"
             )}
           >
             {dashboardIco}
-            <span className="h-full w-full pl-3">Dashboard</span>
+            <span className="h-full w-full pl-3">대시보드</span>
           </a>
         </Link>
 
         <div>
-          <div className={cls("flex w-full items-center p-3", setHightlight())}>
+          <div
+            className={cls(
+              "flex w-full items-center py-3 px-6 text-sm",
+              setHightlight()
+            )}
+          >
             {settingIco}
-            <span className="h-full w-full cursor-default pl-3">Settings</span>
+            <span className="h-full w-full cursor-default pl-3">설정</span>
           </div>
 
-          <Link href="/settings/deviceSetting">
+          <Link href="/settings/devicesetting">
             <a
               className={cls(
                 "flex w-full p-1.5",
-                router.pathname === "/settings/deviceSetting"
+                router.pathname === "/settings/devicesetting"
                   ? "font-semibold text-blue-600"
                   : "transition-colors hover:text-blue-600"
               )}
@@ -116,7 +117,7 @@ export default function Layout({
                 <span
                   className={cls(
                     "mr-2 flex h-4 w-1.5 bg-blue-800 opacity-0 transition",
-                    router.pathname === "/settings/deviceSetting"
+                    router.pathname === "/settings/devicesetting"
                       ? "opacity-100"
                       : ""
                   )}
@@ -125,11 +126,11 @@ export default function Layout({
               </span>
             </a>
           </Link>
-          <Link href="/settings/portSetting">
+          <Link href="/settings/portsetting">
             <a
               className={cls(
                 "mb-2 flex w-full p-1.5",
-                router.pathname === "/settings/portSetting"
+                router.pathname === "/settings/portsetting"
                   ? "text-blue-600"
                   : "transition-colors hover:text-blue-600"
               )}
@@ -138,7 +139,7 @@ export default function Layout({
                 <span
                   className={cls(
                     "mr-2 flex h-4 w-1.5 bg-blue-800 opacity-0 transition",
-                    router.pathname === "/settings/portSetting"
+                    router.pathname === "/settings/portsetting"
                       ? "opacity-100"
                       : ""
                   )}
@@ -150,12 +151,13 @@ export default function Layout({
         </div>
         <div>
           <div
-            className={cls("flex w-full items-center p-3", manageHightlight())}
+            className={cls(
+              "flex w-full items-center py-3 px-6 text-sm",
+              manageHightlight()
+            )}
           >
             {managementIco}
-            <span className="h-full w-full cursor-default pl-3">
-              Management
-            </span>
+            <span className="h-full w-full cursor-default pl-3">관리</span>
           </div>
 
           <Link href="/management/history">
@@ -176,15 +178,15 @@ export default function Layout({
                       : ""
                   )}
                 ></span>
-                History
+                히스토리
               </span>
             </a>
           </Link>
-          <Link href="/management/systemManage">
+          <Link href="/management/systemmanage">
             <a
               className={cls(
                 "mb-2 flex w-full p-1.5",
-                router.pathname === "/management/systemManage"
+                router.pathname === "/management/systemmanage"
                   ? "text-blue-600"
                   : "transition-colors hover:text-blue-600"
               )}
@@ -193,7 +195,7 @@ export default function Layout({
                 <span
                   className={cls(
                     "mr-2 flex h-4 w-1.5 bg-blue-800 opacity-0 transition",
-                    router.pathname === "/management/systemManage"
+                    router.pathname === "/management/systemmanage"
                       ? "opacity-100"
                       : ""
                   )}
@@ -204,7 +206,7 @@ export default function Layout({
           </Link>
         </div>
       </nav>
-      <div className="h-screen w-screen pl-52">
+      <div className="h-screen w-screen pl-48">
         <div className="flex h-14 items-center justify-between px-4">
           <div className="">
             {title ? (
@@ -218,13 +220,10 @@ export default function Layout({
             <button>
               <i className="fa-solid fa-language text-3xl"></i>
             </button>
-            <button>
-              <i className="fa-solid fa-power-off text-3xl"></i>
-            </button>
           </div>
         </div>
 
-        <div className="h-[calc(100%-56px)] w-full px-4 pb-4">{children}</div>
+        <div className="h-[calc(100%-56px)] w-full px-4 pb-4 ">{children}</div>
       </div>
     </div>
   );

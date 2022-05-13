@@ -1,0 +1,149 @@
+import { useState } from "react";
+
+import Layout from "../../components/layout";
+import BoardTitle from "../../components/common/BoardTitle";
+import SystemChart from "./fragment/Chart/CpuChart";
+import HDDChart from "./fragment/Chart/HDDChart";
+import MemoryChart from "./fragment/Chart/MemoryChart";
+import StorageChart from "./fragment/Chart/StorageChart";
+import { cls } from "../../lib/utils";
+import NetworkTabCont from "./fragment/NetworkTabCont";
+import SystemTabCont from "./fragment/SystemTabCont";
+import UpCom from "./fragment/UpCom";
+import LowCom from "./fragment/LowCom copy";
+import SystemInfo from "./fragment/SystemInfo";
+import StatusInfo from "../../components/common/StatusInfo";
+import axios from "axios";
+
+const Dashboard = () => {
+  const [tabIndex, setTabIndex] = useState(0);
+  const [sysTabIndex, setSysTabIndex] = useState(0);
+  return (
+    <Layout title="대시보드">
+      <div className="grid h-full grid-cols-7 gap-x-2">
+        <div className="col-span-3 grid w-full grid-flow-row grid-rows-4 gap-2">
+          <div className="row-span-2 h-full rounded-md bg-white p-2 shadow-md">
+            <BoardTitle subTitle="네트워크 정보" />
+            <div className="h-[calc(100%-20px)] w-full pt-3">
+              <ul className="hidden divide-x divide-gray-200 text-center text-sm font-medium text-gray-500 dark:divide-gray-700 dark:text-gray-400 sm:flex">
+                <li className="">
+                  <button
+                    onClick={() => {
+                      setTabIndex(0);
+                    }}
+                    className={cls(
+                      "inline-block w-full rounded-t-md py-2 px-10 outline-none focus:outline-none",
+                      tabIndex === 0
+                        ? "bg-blue-800 text-white hover:bg-blue-600"
+                        : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+                    )}
+                    aria-current="page"
+                  >
+                    LAN 1
+                  </button>
+                </li>
+                <li className="">
+                  <button
+                    onClick={() => {
+                      setTabIndex(1);
+                    }}
+                    className={cls(
+                      "inline-block w-full rounded-t-md py-2 px-10 outline-none focus:outline-none",
+                      tabIndex === 1
+                        ? "bg-blue-800 text-white hover:bg-blue-600"
+                        : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+                    )}
+                  >
+                    LAN 2
+                  </button>
+                </li>
+              </ul>
+              <NetworkTabCont tabIndex={tabIndex} />
+            </div>
+          </div>
+
+          <div className="relative h-full rounded-md bg-white p-2 shadow-md">
+            <BoardTitle subTitle="상위 통신" />
+            <span className="block pl-2 text-sm text-gray-400">
+              TCP/IP 통신
+            </span>
+            <StatusInfo />
+            <UpCom />
+          </div>
+
+          <div className="h-full rounded-md bg-white p-2 shadow-md">
+            <BoardTitle subTitle="하위 통신" />
+            <span className="block pl-2 text-sm text-gray-400">
+              시리얼 통신
+            </span>
+            <LowCom />
+          </div>
+        </div>
+
+        <div className="col-span-4 grid w-full grid-flow-row grid-rows-3 gap-2">
+          <div className="row-span-2 h-full w-full rounded-md bg-white p-2 shadow-md">
+            <BoardTitle subTitle="시스템" />
+            <div className="flex h-1/3">
+              <div className="w-1/4">
+                <SystemChart />
+              </div>
+              <div className="w-1/4">
+                <MemoryChart />
+              </div>
+              <div className="w-1/4">
+                <StorageChart />
+              </div>
+              <div className="w-1/4">
+                <HDDChart />
+              </div>
+            </div>
+
+            <div className="">
+              <ul className="hidden divide-x divide-gray-200 text-center text-sm font-medium text-gray-500 dark:divide-gray-700 dark:text-gray-400 sm:flex">
+                <li className="">
+                  <button
+                    onClick={() => {
+                      setSysTabIndex(0);
+                    }}
+                    className={cls(
+                      "inline-block w-full rounded-t-md py-2 px-10 outline-none focus:outline-none",
+                      sysTabIndex === 0
+                        ? "bg-blue-800 text-white hover:bg-blue-600"
+                        : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+                    )}
+                    aria-current="page"
+                  >
+                    메모리
+                  </button>
+                </li>
+                <li className="">
+                  <button
+                    onClick={() => {
+                      setSysTabIndex(1);
+                    }}
+                    className={cls(
+                      "inline-block w-full rounded-t-md py-2 px-10 outline-none focus:outline-none",
+                      sysTabIndex === 1
+                        ? "bg-blue-800 text-white hover:bg-blue-600"
+                        : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+                    )}
+                  >
+                    저장공간
+                  </button>
+                </li>
+              </ul>
+              <SystemTabCont sysTabIndex={sysTabIndex} />
+            </div>
+          </div>
+
+          <div className="h-full w-full rounded-md bg-white p-2 shadow-md">
+            <BoardTitle subTitle="시스템 정보" />
+            <SystemInfo />
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
+};
+
+export default Dashboard;

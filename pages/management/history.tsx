@@ -1,12 +1,8 @@
 import type { NextPage } from "next";
-import Layout from "../../components/layout/layout";
+import HistoryContainer from "../../containers/management/HistoryContainer";
 
-const Home: NextPage = () => {
-  return (
-    <Layout title="History">
-      <div>History</div>
-    </Layout>
-  );
+const History: NextPage = () => {
+  return <HistoryContainer />;
 };
 
-export default Home;
+export default History;

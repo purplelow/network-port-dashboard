@@ -1,12 +1,8 @@
 import type { NextPage } from "next";
-import Layout from "../../components/layout/layout";
+import DeviceSettingContainer from "../../containers/settings/DeviceSettingContainer";
 
-const Home: NextPage = () => {
-  return (
-    <Layout title="장비 기본설정">
-      <div>장비 기본설정</div>
-    </Layout>
-  );
+const DeviceSetting: NextPage = () => {
+  return <DeviceSettingContainer />;
 };
 
-export default Home;
+export default DeviceSetting;

@@ -1,12 +1,8 @@
 import type { NextPage } from "next";
-import Layout from "../../components/layout/layout";
+import SystemManageContainer from "../../containers/management/SystemManageContainer";
 
-const Home: NextPage = () => {
-  return (
-    <Layout title="시스템 관리">
-      <div>시스템 관리</div>
-    </Layout>
-  );
+const SystemManage: NextPage = () => {
+  return <SystemManageContainer />;
 };
 
-export default Home;
+export default SystemManage;

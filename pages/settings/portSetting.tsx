@@ -1,12 +1,8 @@
 import type { NextPage } from "next";
-import Layout from "../../components/layout/layout";
+import PortSettingContainer from "../../containers/settings/PortSettingContainer";
 
-const Home: NextPage = () => {
-  return (
-    <Layout title="포트 설정">
-      <div>포트 설정</div>
-    </Layout>
-  );
+const Portsetting: NextPage = () => {
+  return <PortSettingContainer />;
 };
 
-export default Home;
+export default Portsetting;
