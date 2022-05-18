@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import PortSettingContainer from "../../containers/settings/PortSettingContainer";
+import PortSettingContainer from "../../containers/settings/portsetting";
 
 const Portsetting: NextPage = () => {
   return <PortSettingContainer />;

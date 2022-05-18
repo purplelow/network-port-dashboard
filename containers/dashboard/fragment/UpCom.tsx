@@ -1,4 +1,6 @@
+import { ContextMenu, ContextMenuTrigger, MenuItem } from "react-contextmenu";
 import { cls } from "../../../lib/utils";
+import { FaEllipsisV, FaList } from "react-icons/fa";
 // UNUSED(미설정)", "DOWN(정지)", "READY(준비)", "RUN(정상)", "ERROR(에러)
 interface UpComProps {
   app_service: {
@@ -97,7 +99,7 @@ upComData = [
 export default function UpCom() {
   return (
     <>
-      <ul className="my-auto mt-4 flex h-3/5 space-x-1">
+      <ul className="my-auto mt-4 flex h-3/5 w-full space-x-1">
         {upComData.map((com, i) => {
           const upComCondBox = () => {
             let result;
@@ -123,27 +125,42 @@ export default function UpCom() {
             return result;
           };
           return (
-            <li
-              className={cls(
-                "relative h-full w-[12%] border-[1px] bg-[center_top_1rem] bg-no-repeat text-sm",
-                upComCondBox()
-              )}
-              key={i}
-            >
-              <span className="absolute bottom-9 w-full text-center">
-                {(com.app_service.status === "READY" && "준비") ||
-                  (com.app_service.status === "ERROR" && "에러") ||
-                  (com.app_service.status === "RUN" && "정상") ||
-                  (com.app_service.status === "DOWN" && "정지") ||
-                  (com.app_service.status === "UNUSED" && "미설정")}
-              </span>
-              <span className="absolute bottom-2 w-full text-center">
-                {com.app_service.name}
-              </span>
-            </li>
+            <>
+              <li
+                className={cls(
+                  "relative h-full w-full border-[1px] bg-[center_top_1rem] bg-no-repeat text-sm",
+                  upComCondBox()
+                )}
+                key={i}
+              >
+                <ContextMenuTrigger id="contextmenu">
+                  <span className="absolute bottom-9 w-full text-center">
+                    {(com.app_service.status === "READY" && "준비") ||
+                      (com.app_service.status === "ERROR" && "에러") ||
+                      (com.app_service.status === "RUN" && "정상") ||
+                      (com.app_service.status === "DOWN" && "정지") ||
+                      (com.app_service.status === "UNUSED" && "미설정")}
+                  </span>
+                  <span className="absolute bottom-2 w-full text-center">
+                    {com.app_service.name}
+                  </span>
+                </ContextMenuTrigger>
+              </li>
+            </>
           );
         })}
       </ul>
+
+      <ContextMenu id="contextmenu">
+        <MenuItem>
+          <FaEllipsisV />
+          <span>포트 설정</span>
+        </MenuItem>
+        <MenuItem>
+          <FaList />
+          <span>포트 리셋</span>
+        </MenuItem>
+      </ContextMenu>
     </>
   );
 }

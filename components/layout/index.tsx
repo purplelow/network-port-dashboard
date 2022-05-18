@@ -206,7 +206,7 @@ export default function Layout({
           </Link>
         </div>
       </nav>
-      <div className="h-screen w-screen pl-48">
+      <div className="h-screen w-screen pl-[200px]">
         <div className="flex h-14 items-center justify-between px-4">
           <div className="">
             {title ? (

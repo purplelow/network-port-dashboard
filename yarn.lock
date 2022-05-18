@@ -4164,6 +4164,11 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
+classnames@^2.2.5:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
+  integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
+
 clean-css@^4.2.3:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/clean-css/-/clean-css-4.2.4.tgz#733bf46eba4e607c6891ea57c24a989356831178"
@@ -8138,7 +8143,7 @@ num2fraction@^1.2.2:
   resolved "https://registry.yarnpkg.com/num2fraction/-/num2fraction-1.2.2.tgz#6f682b6a027a4e9ddfa4564cd2589d1d4e669ede"
   integrity sha1-b2gragJ6Tp3fpFZM0lidHU5mnt4=
 
-object-assign@^4.1.1:
+object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz"
   integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
@@ -9094,6 +9099,14 @@ react-colorful@^5.1.2:
   resolved "https://registry.yarnpkg.com/react-colorful/-/react-colorful-5.5.1.tgz#29d9c4e496f2ca784dd2bb5053a3a4340cfaf784"
   integrity sha512-M1TJH2X3RXEt12sWkpa6hLc/bbYS0H6F4rIqjQZ+RxNBstpY67d9TrFXtqdZwhpmBXcCwEi7stKqFue3ZRkiOg==
 
+react-contextmenu@^2.14.0:
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/react-contextmenu/-/react-contextmenu-2.14.0.tgz#d8966f30614b9b780b928be4c8d92bd740d55cdd"
+  integrity sha512-ktqMOuad6sCFNJs/ltEwppN8F0YeXmqoZfwycgtZR/MxOXMYx1xgYC44SzWH259HdGyshk1/7sXGuIRwj9hzbw==
+  dependencies:
+    classnames "^2.2.5"
+    object-assign "^4.1.0"
+
 react-docgen-typescript-loader@^3.7.2:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/react-docgen-typescript-loader/-/react-docgen-typescript-loader-3.7.2.tgz#45cb2305652c0602767242a8700ad1ebd66bbbbd"
@@ -9178,6 +9191,11 @@ react-i18next@^11.16.7:
     "@babel/runtime" "^7.14.5"
     html-escaper "^2.0.2"
     html-parse-stringify "^3.0.1"
+
+react-icons@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.3.1.tgz#2fa92aebbbc71f43d2db2ed1aed07361124e91ca"
+  integrity sha512-cB10MXLTs3gVuXimblAdI71jrJx8njrJZmNMEMC+sQu5B/BIOmlsAjskdqpn81y8UBVEGuHODd7/ci5DvoSzTQ==
 
 react-inspector@^5.1.0:
   version "5.1.1"

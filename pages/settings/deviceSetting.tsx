@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import DeviceSettingContainer from "../../containers/settings/DeviceSettingContainer";
+import DeviceSettingContainer from "../../containers/settings/devicesetting";
 
 const DeviceSetting: NextPage = () => {
   return <DeviceSettingContainer />;

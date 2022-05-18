@@ -10,10 +10,9 @@ import { cls } from "../../lib/utils";
 import NetworkTabCont from "./fragment/NetworkTabCont";
 import SystemTabCont from "./fragment/SystemTabCont";
 import UpCom from "./fragment/UpCom";
-import LowCom from "./fragment/LowCom copy";
+import LowCom from "./fragment/LowCom";
 import SystemInfo from "./fragment/SystemInfo";
 import StatusInfo from "../../components/common/StatusInfo";
-import axios from "axios";
 
 const Dashboard = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -25,7 +24,7 @@ const Dashboard = () => {
           <div className="row-span-2 h-full rounded-md bg-white p-2 shadow-md">
             <BoardTitle subTitle="네트워크 정보" />
             <div className="h-[calc(100%-20px)] w-full pt-3">
-              <ul className="hidden divide-x divide-gray-200 text-center text-sm font-medium text-gray-500 dark:divide-gray-700 dark:text-gray-400 sm:flex">
+              <ul className="flex divide-x divide-gray-200 text-center text-sm font-medium text-gray-500">
                 <li className="">
                   <button
                     onClick={() => {
@@ -98,8 +97,8 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="">
-              <ul className="hidden divide-x divide-gray-200 text-center text-sm font-medium text-gray-500 dark:divide-gray-700 dark:text-gray-400 sm:flex">
+            <div className="h-2/3">
+              <ul className="flex divide-x divide-gray-200 text-center text-sm font-medium text-gray-500">
                 <li className="">
                   <button
                     onClick={() => {
