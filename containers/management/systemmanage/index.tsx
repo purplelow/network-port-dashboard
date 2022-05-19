@@ -65,9 +65,7 @@ const SystemManage = () => {
         </div>
 
         <div className="flex items-center justify-between rounded-md bg-white p-8 shadow-md">
-          <span className="text-xl font-bold text-gray-700">
-            펌웨어 업데이트
-          </span>
+          <span className="text-xl font-bold text-gray-700">복원</span>
           <div className="flex w-[80%] items-center justify-end space-x-4">
             <label
               htmlFor="vFileUp"

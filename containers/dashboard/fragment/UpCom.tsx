@@ -1,6 +1,9 @@
 import { ContextMenu, ContextMenuTrigger, MenuItem } from "react-contextmenu";
 import { cls } from "../../../lib/utils";
-import { FaEllipsisV, FaList } from "react-icons/fa";
+import { AiOutlineSetting } from "react-icons/ai";
+import { VscDebugRestart } from "react-icons/vsc";
+import Link from "next/link";
+import ReactTooltip from "react-tooltip";
 // UNUSED(미설정)", "DOWN(정지)", "READY(준비)", "RUN(정상)", "ERROR(에러)
 interface UpComProps {
   app_service: {
@@ -153,11 +156,13 @@ export default function UpCom() {
 
       <ContextMenu id="contextmenu">
         <MenuItem>
-          <FaEllipsisV />
-          <span>포트 설정</span>
+          <AiOutlineSetting />
+          <Link href="/settings/portsetting">
+            <a className="px-2.5">포트 설정</a>
+          </Link>
         </MenuItem>
         <MenuItem>
-          <FaList />
+          <VscDebugRestart />
           <span>포트 리셋</span>
         </MenuItem>
       </ContextMenu>

@@ -69,3 +69,9 @@ nav.react-contextmenu {
 .react-contextmenu-item .watchlist {
   color: rebeccapurple;
 }
+
+/* LowPortSetting input style */
+.input-w-s input[type="text"] {
+  width: 65px;
+  padding: 4px;
+}

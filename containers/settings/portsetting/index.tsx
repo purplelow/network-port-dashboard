@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import BoardTitle from "../../../components/common/BoardTitle";
 import StatusInfo from "../../../components/common/StatusInfo";
 import Layout from "../../../components/layout";
+import LowPortSetting from "./fragment/LowPortSetting";
 import UpPortSetting from "./fragment/UpPortSetting";
 
 const PortSetting = () => {
@@ -27,7 +28,7 @@ const PortSetting = () => {
           <button className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none">
             포트 리셋
           </button>
-          <UpPortSetting />
+          <LowPortSetting />
         </div>
       </div>
     </Layout>
