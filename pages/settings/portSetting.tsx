@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
 import PortSettingContainer from "../../containers/settings/portsetting";
 
-const Portsetting: NextPage = () => {
+const PortSetting: NextPage = () => {
   return <PortSettingContainer />;
 };
 
-export default Portsetting;
+export default PortSetting;

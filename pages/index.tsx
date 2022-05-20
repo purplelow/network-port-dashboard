@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
-import Dashboard from "../containers/dashboard";
+import DashboardContainer from "../containers/dashboard";
 
 const Home: NextPage = () => {
-  return <Dashboard />;
+  return <DashboardContainer />;
 };
 
 export default Home;

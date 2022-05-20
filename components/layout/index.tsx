@@ -26,10 +26,10 @@ export default function Layout({
   const setHightlight = () => {
     let result;
     switch (router.pathname) {
-      case "/settings/devicesetting":
+      case "/settings/deviceSetting":
         result = "bg-blue-800 text-white";
         break;
-      case "/settings/portsetting":
+      case "/settings/portSetting":
         result = "bg-blue-800 text-white";
         break;
       default:
@@ -43,7 +43,7 @@ export default function Layout({
       case "/management/history":
         result = "bg-blue-800 text-white";
         break;
-      case "/management/systemmanage":
+      case "/management/systemManage":
         result = "bg-blue-800 text-white";
         break;
       default:
@@ -57,16 +57,16 @@ export default function Layout({
       case "/":
         result = dashboardIco;
         break;
-      case "/settings/devicesetting":
+      case "/settings/deviceSetting":
         result = settingIco;
         break;
-      case "/settings/portsetting":
+      case "/settings/portSetting":
         result = settingIco;
         break;
       case "/management/history":
         result = managementIco;
         break;
-      case "/management/systemmanage":
+      case "/management/systemManage":
         result = managementIco;
         break;
       default:
@@ -104,11 +104,11 @@ export default function Layout({
             <span className="h-full w-full cursor-default pl-3">설정</span>
           </div>
 
-          <Link href="/settings/devicesetting">
+          <Link href="/settings/deviceSetting">
             <a
               className={cls(
                 "flex w-full p-1.5",
-                router.pathname === "/settings/devicesetting"
+                router.pathname === "/settings/deviceSetting"
                   ? "font-semibold text-blue-600"
                   : "transition-colors hover:text-blue-600"
               )}
@@ -117,7 +117,7 @@ export default function Layout({
                 <span
                   className={cls(
                     "mr-2 flex h-4 w-1.5 bg-blue-800 opacity-0 transition",
-                    router.pathname === "/settings/devicesetting"
+                    router.pathname === "/settings/deviceSetting"
                       ? "opacity-100"
                       : ""
                   )}
@@ -126,11 +126,11 @@ export default function Layout({
               </span>
             </a>
           </Link>
-          <Link href="/settings/portsetting">
+          <Link href="/settings/portSetting">
             <a
               className={cls(
                 "mb-2 flex w-full p-1.5",
-                router.pathname === "/settings/portsetting"
+                router.pathname === "/settings/portSetting"
                   ? "text-blue-600"
                   : "transition-colors hover:text-blue-600"
               )}
@@ -139,7 +139,7 @@ export default function Layout({
                 <span
                   className={cls(
                     "mr-2 flex h-4 w-1.5 bg-blue-800 opacity-0 transition",
-                    router.pathname === "/settings/portsetting"
+                    router.pathname === "/settings/portSetting"
                       ? "opacity-100"
                       : ""
                   )}
@@ -182,11 +182,11 @@ export default function Layout({
               </span>
             </a>
           </Link>
-          <Link href="/management/systemmanage">
+          <Link href="/management/systemManage">
             <a
               className={cls(
                 "mb-2 flex w-full p-1.5",
-                router.pathname === "/management/systemmanage"
+                router.pathname === "/management/systemManage"
                   ? "text-blue-600"
                   : "transition-colors hover:text-blue-600"
               )}
@@ -195,7 +195,7 @@ export default function Layout({
                 <span
                   className={cls(
                     "mr-2 flex h-4 w-1.5 bg-blue-800 opacity-0 transition",
-                    router.pathname === "/management/systemmanage"
+                    router.pathname === "/management/systemManage"
                       ? "opacity-100"
                       : ""
                   )}
