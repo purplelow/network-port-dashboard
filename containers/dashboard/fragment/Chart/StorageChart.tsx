@@ -1,12 +1,15 @@
 import dynamic from "next/dynamic";
+import useStorageUtilization from "../../../../pages/api/storageUtilization";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-const StorageChart = () => {
+export default function StorageChart() {
+  const { storageUtilization, isLoading, isError } = useStorageUtilization();
+  const storageSeries = storageUtilization?.summary.percent;
   const chartState: any = {
-    series: [80],
+    series: [storageSeries],
     options: {
       chart: {
         height: "100%",
@@ -90,10 +93,8 @@ const StorageChart = () => {
         options={chartState.options}
         series={chartState.series}
         type="radialBar"
-        height="95%"
+        height="100%"
       />
     </>
   );
-};
-
-export default StorageChart;
+}

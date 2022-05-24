@@ -1,12 +1,17 @@
+import useMemoryUtilization from "../../../pages/api/memoryUtilization";
+import useStorageUtilization from "../../../pages/api/storageUtilization";
+
 interface SysTabProp {
   sysTabIndex: number;
 }
 
 export default function SystemTabCont({ sysTabIndex }: SysTabProp) {
+  const { memoryUtilization } = useMemoryUtilization();
+  const { storageUtilization }: any = useStorageUtilization();
   return (
-    <div className="relative h-2/3 shadow-md">
+    <div className="relative h-[calc(100%-40px)] overflow-auto rounded-b-lg shadow-md">
       {sysTabIndex === 0 ? (
-        <table className="w-full overflow-x-auto text-right text-sm text-gray-500">
+        <table className="absolute w-full overflow-auto text-right text-sm text-gray-500">
           <thead className="bg-gray-50 text-xs uppercase text-gray-700">
             <tr>
               <th className="py-3 pr-2"></th>
@@ -23,17 +28,17 @@ export default function SystemTabCont({ sysTabIndex }: SysTabProp) {
               <th className="py-4 pr-2 text-center font-medium text-gray-900">
                 Mem
               </th>
-              <td className="py-4 pr-2">1.7G</td>
-              <td className="py-4 pr-2">221M</td>
-              <td className="py-4 pr-2">1.3G</td>
-              <td className="py-4 pr-2">30M</td>
-              <td className="py-4 pr-2">219M</td>
-              <td className="py-4 pr-4">1.3G</td>
+              <td className="py-4 pr-2">{memoryUtilization?.details.total}</td>
+              <td className="py-4 pr-2">?</td>
+              <td className="py-4 pr-2">{memoryUtilization?.details.free}</td>
+              <td className="py-4 pr-2">{memoryUtilization?.details.shared}</td>
+              <td className="py-4 pr-2">{memoryUtilization?.details.buffer}</td>
+              <td className="py-4 pr-4">{memoryUtilization?.details.cached}</td>
             </tr>
           </tbody>
         </table>
       ) : (
-        <table className="w-full overflow-x-auto text-right text-sm text-gray-500">
+        <table className="absolute w-full table-fixed overflow-auto text-right text-sm text-gray-500">
           <thead className="bg-gray-50 text-xs uppercase text-gray-700">
             <tr>
               <th className="py-3 pr-2"></th>
@@ -45,86 +50,18 @@ export default function SystemTabCont({ sysTabIndex }: SysTabProp) {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b bg-white">
-              <td className="py-2 pr-2 text-center font-medium text-gray-900">
-                Mem
-              </td>
-              <td className="h-2 py-2 pr-2">12</td>
-              <td className="h-2 py-2 pr-2">34</td>
-              <td className="h-2 py-2 pr-2">156</td>
-              <td className="h-2 py-2 pr-2">67</td>
-              <td className="h-2 py-2 pr-4">89</td>
-            </tr>
-            <tr className="border-b bg-white">
-              <td className="py-2 pr-2 text-center font-medium text-gray-900">
-                Mem
-              </td>
-              <td className="h-2 py-2 pr-2">12</td>
-              <td className="h-2 py-2 pr-2">34</td>
-              <td className="h-2 py-2 pr-2">156</td>
-              <td className="h-2 py-2 pr-2">67</td>
-              <td className="h-2 py-2 pr-4">89</td>
-            </tr>
-            <tr className="border-b bg-white">
-              <td className="py-2 pr-2 text-center font-medium text-gray-900">
-                Mem
-              </td>
-              <td className="h-2 py-2 pr-2">12</td>
-              <td className="h-2 py-2 pr-2">34</td>
-              <td className="h-2 py-2 pr-2">156</td>
-              <td className="h-2 py-2 pr-2">67</td>
-              <td className="h-2 py-2 pr-4">89</td>
-            </tr>
-            <tr className="border-b bg-white">
-              <td className="py-2 pr-2 text-center font-medium text-gray-900">
-                Mem
-              </td>
-              <td className="h-2 py-2 pr-2">12</td>
-              <td className="h-2 py-2 pr-2">34</td>
-              <td className="h-2 py-2 pr-2">156</td>
-              <td className="h-2 py-2 pr-2">67</td>
-              <td className="h-2 py-2 pr-4">89</td>
-            </tr>
-            <tr className="border-b bg-white">
-              <td className="py-2 pr-2 text-center font-medium text-gray-900">
-                Mem
-              </td>
-              <td className="h-2 py-2 pr-2">12</td>
-              <td className="h-2 py-2 pr-2">34</td>
-              <td className="h-2 py-2 pr-2">156</td>
-              <td className="h-2 py-2 pr-2">67</td>
-              <td className="h-2 py-2 pr-4">89</td>
-            </tr>
-            <tr className="border-b bg-white">
-              <td className="py-2 pr-2 text-center font-medium text-gray-900">
-                Mem
-              </td>
-              <td className="h-2 py-2 pr-2">12</td>
-              <td className="h-2 py-2 pr-2">34</td>
-              <td className="h-2 py-2 pr-2">156</td>
-              <td className="h-2 py-2 pr-2">67</td>
-              <td className="h-2 py-2 pr-4">89</td>
-            </tr>
-            <tr className="border-b bg-white">
-              <td className="py-2 pr-2 text-center font-medium text-gray-900">
-                Mem
-              </td>
-              <td className="h-2 py-2 pr-2">12</td>
-              <td className="h-2 py-2 pr-2">34</td>
-              <td className="h-2 py-2 pr-2">156</td>
-              <td className="h-2 py-2 pr-2">67</td>
-              <td className="h-2 py-2 pr-4">89</td>
-            </tr>
-            <tr className="border-b bg-white">
-              <td className="py-2 pr-2 text-center font-medium text-gray-900">
-                Mem
-              </td>
-              <td className="h-2 py-2 pr-2">12</td>
-              <td className="h-2 py-2 pr-2">34</td>
-              <td className="h-2 py-2 pr-2">156</td>
-              <td className="h-2 py-2 pr-2">67</td>
-              <td className="h-2 py-2 pr-4">89</td>
-            </tr>
+            {storageUtilization?.details.map((data: any, i: string) => (
+              <tr className="border-b bg-white" key={i}>
+                <td className="py-2 pr-2 text-center font-medium text-gray-900">
+                  Mem
+                </td>
+                <td className="h-2 py-2 pr-2">{data.total}</td>
+                <td className="h-2 py-2 pr-2">{data.used}</td>
+                <td className="h-2 py-2 pr-2">{data.path}</td>
+                <td className="h-2 py-2 pr-2">{data.device}</td>
+                <td className="h-2 py-2 pr-4">{data.percent}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       )}

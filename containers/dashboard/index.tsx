@@ -6,7 +6,7 @@ import SystemChart from "./fragment/Chart/CpuChart";
 import HDDChart from "./fragment/Chart/HDDChart";
 import MemoryChart from "./fragment/Chart/MemoryChart";
 import StorageChart from "./fragment/Chart/StorageChart";
-import { cls } from "../../lib/utils";
+import { cls } from "../../libs/utils";
 import NetworkTabCont from "./fragment/NetworkTabCont";
 import SystemTabCont from "./fragment/SystemTabCont";
 import UpCom from "./fragment/UpCom";
@@ -81,57 +81,63 @@ const Dashboard = () => {
 
         <div className="col-span-4 grid w-full grid-flow-row grid-rows-3 gap-2">
           <div className="row-span-2 h-full w-full rounded-md bg-white p-2 shadow-md">
-            <BoardTitle subTitle="시스템" />
-            <div className="flex h-1/3">
-              <div className="w-1/4">
-                <SystemChart />
+            <div className="relative grid h-full grid-flow-row grid-rows-3">
+              <div className="absolute top-0 left-0">
+                <BoardTitle subTitle="시스템" />
               </div>
-              <div className="w-1/4">
-                <MemoryChart />
+              <div className=" row-span-1">
+                <div className="flex h-full ">
+                  <div className="flex h-full w-1/4 items-end">
+                    <SystemChart />
+                  </div>
+                  <div className="flex h-full w-1/4 items-end">
+                    <MemoryChart />
+                  </div>
+                  <div className="flex h-full w-1/4 items-end">
+                    <StorageChart />
+                  </div>
+                  <div className="flex h-full w-1/4 items-end">
+                    <HDDChart />
+                  </div>
+                </div>
               </div>
-              <div className="w-1/4">
-                <StorageChart />
-              </div>
-              <div className="w-1/4">
-                <HDDChart />
-              </div>
-            </div>
 
-            <div className="h-2/3">
-              <ul className="flex divide-x divide-gray-200 text-center text-sm font-medium text-gray-500">
-                <li className="">
-                  <button
-                    onClick={() => {
-                      setSysTabIndex(0);
-                    }}
-                    className={cls(
-                      "inline-block w-full rounded-t-md py-2 px-10 outline-none focus:outline-none",
-                      sysTabIndex === 0
-                        ? "bg-blue-800 text-white hover:bg-blue-600"
-                        : "bg-gray-200 text-gray-600 hover:bg-gray-300"
-                    )}
-                    aria-current="page"
-                  >
-                    메모리
-                  </button>
-                </li>
-                <li className="">
-                  <button
-                    onClick={() => {
-                      setSysTabIndex(1);
-                    }}
-                    className={cls(
-                      "inline-block w-full rounded-t-md py-2 px-10 outline-none focus:outline-none",
-                      sysTabIndex === 1
-                        ? "bg-blue-800 text-white hover:bg-blue-600"
-                        : "bg-gray-200 text-gray-600 hover:bg-gray-300"
-                    )}
-                  >
-                    저장공간
-                  </button>
-                </li>
-              </ul>
-              <SystemTabCont sysTabIndex={sysTabIndex} />
+              <div className="row-span-2 overflow-hidden">
+                <ul className="flex divide-x divide-gray-200 text-center text-sm font-medium text-gray-500">
+                  <li className="">
+                    <button
+                      onClick={() => {
+                        setSysTabIndex(0);
+                      }}
+                      className={cls(
+                        "inline-block w-full rounded-t-md py-2 px-10 outline-none focus:outline-none",
+                        sysTabIndex === 0
+                          ? "bg-blue-800 text-white hover:bg-blue-600"
+                          : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+                      )}
+                      aria-current="page"
+                    >
+                      메모리
+                    </button>
+                  </li>
+                  <li className="">
+                    <button
+                      onClick={() => {
+                        setSysTabIndex(1);
+                      }}
+                      className={cls(
+                        "inline-block w-full rounded-t-md py-2 px-10 outline-none focus:outline-none",
+                        sysTabIndex === 1
+                          ? "bg-blue-800 text-white hover:bg-blue-600"
+                          : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+                      )}
+                    >
+                      저장공간
+                    </button>
+                  </li>
+                </ul>
+                <SystemTabCont sysTabIndex={sysTabIndex} />
+              </div>
             </div>
           </div>
 

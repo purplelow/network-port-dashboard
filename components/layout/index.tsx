@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { cls } from "../../lib/utils";
+import { cls } from "../../libs/utils";
 
 interface LayoutProps {
   title?: string;
@@ -77,7 +77,7 @@ export default function Layout({
 
   return (
     <div className="flex w-screen">
-      <nav className="fixed top-0 left-0 z-50 h-screen w-[200px] bg-white shadow-sm">
+      <nav className="fixed top-0 left-0 z-50 h-screen w-[200px] bg-white shadow-md">
         <div className="m-auto h-20 w-[140px] bg-logo bg-contain bg-center bg-no-repeat"></div>
         <Link href="/">
           <a

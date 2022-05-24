@@ -1,12 +1,15 @@
 import dynamic from "next/dynamic";
+import useCpuUtilization from "../../../../pages/api/cpuUtilization";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-const CpuChart = () => {
+export default function CpuChart() {
+  const { cpuUtilization, isLoading, isError } = useCpuUtilization();
+  const cpuSeries = cpuUtilization?.summary.load;
   const chartState: any = {
-    series: [35],
+    series: [cpuSeries],
     options: {
       chart: {
         height: "100%",
@@ -91,10 +94,8 @@ const CpuChart = () => {
         options={chartState.options}
         series={chartState.series}
         type="radialBar"
-        height="95%"
+        height="100%"
       />
     </>
   );
-};
-
-export default CpuChart;
+}

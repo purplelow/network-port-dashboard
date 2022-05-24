@@ -1,8 +1,7 @@
 import axios from "axios";
 import useSWR from "swr";
-import { HeapCodeStatistics } from "v8";
 
-interface networkInfo {
+interface NetworkInfoProps {
   interfaces: Interfaces[];
 }
 
@@ -15,7 +14,7 @@ interface Interfaces {
   name: string;
   oper_status: number;
   speed: number;
-  statistics: HeapCodeStatistics;
+  statistics: Statistics;
   type: string;
 }
 
@@ -39,7 +38,7 @@ interface Statistics {
 }
 
 const fetcher = (url: string) =>
-  axios.get<Statistics>(url).then((res) => res.data);
+  axios.get<NetworkInfoProps>(url).then((res) => res.data);
 
 export default function useNetworkInfo() {
   const { data, error } = useSWR(

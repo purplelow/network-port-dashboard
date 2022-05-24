@@ -1,29 +1,33 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
+import useStorageUtilization from "../../../../pages/api/storageUtilization";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-const HDDChart = () => {
-  const [chartSeries, setChartSeries] = useState(100);
-  const onIncrease = () => {
-    if (chartSeries >= 100) {
-      return 100;
-    } else {
-      setChartSeries(chartSeries + 10);
-    }
-  };
-  const onDecrease = () => {
-    if (chartSeries <= 0) {
-      return 0;
-    } else {
-      setChartSeries(chartSeries - 10);
-    }
-  };
+export default function HDDChart() {
+  const { storageUtilization, isLoading, isError } = useStorageUtilization();
+  const hddSeries = storageUtilization?.summary.life;
+
+  // const [chartSeries, setChartSeries] = useState(100);
+  // const onIncrease = () => {
+  //   if (chartSeries >= 100) {
+  //     return 100;
+  //   } else {
+  //     setChartSeries(chartSeries + 10);
+  //   }
+  // };
+  // const onDecrease = () => {
+  //   if (chartSeries <= 0) {
+  //     return 0;
+  //   } else {
+  //     setChartSeries(chartSeries - 10);
+  //   }
+  // };
 
   const chartState: any = {
-    series: [chartSeries],
+    series: [hddSeries],
     options: {
       chart: {
         height: "100%",
@@ -97,12 +101,8 @@ const HDDChart = () => {
         options={chartState.options}
         series={chartState.series}
         type="radialBar"
-        height="99%"
+        height="100%"
       />
-      <button onClick={onIncrease}>+10</button>
-      <button onClick={onDecrease}>-10</button>
     </>
   );
-};
-
-export default HDDChart;
+}

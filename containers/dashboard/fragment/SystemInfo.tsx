@@ -1,13 +1,38 @@
 import axios from "axios";
+import { useEffect, useState } from "react";
 import BoardTitle from "../../../components/common/BoardTitle";
+import useGetNote from "../../../pages/api/getNote";
 import useSystemInfo from "../../../pages/api/systemInfo";
 
 export default function SystemInfo() {
   const { systemInfo, isLoading, isError } = useSystemInfo();
+  const { getNoteData }: any = useGetNote();
+  const [userNote, setUserNote] = useState(getNoteData?.deviceNote);
+  // console.log("getNoteData :: ", getNoteData);
+  let userNoteValue = getNoteData?.deviceNote;
+  // console.log("userNoteValue :: ", userNoteValue);
+
+  useEffect(() => {
+    setUserNote(userNoteValue);
+    // console.log("userNote :: ", userNote);
+  }, [userNoteValue]);
+  const userNoteForm = JSON.parse(`{"deviceNote": "${userNote}"}`);
+
+  const submit = (e: any) => {
+    e.preventDefault();
+    axios
+      .put(`http://192.168.123.190:8080/dashBoard/modifyNote`, userNoteForm)
+      .then((res) => {
+        console.log(res.data);
+        alert("수정되었습니다.");
+      });
+    return;
+  };
+
   return (
     <>
       <div className="relative h-1/2 overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-auto text-left text-sm text-gray-500 dark:text-gray-400">
+        <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
           <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="w-1/5 px-3 py-3">
@@ -42,20 +67,24 @@ export default function SystemInfo() {
       </div>
       <div className="h-1/3 pt-2">
         <BoardTitle subTitle="메모" />
-        <div className="flex">
-          <textarea
-            id="message"
-            // rows="4"
-            className="block w-[85%] resize-none rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-            placeholder="메모를 작성하세요."
-          ></textarea>
-          <button
-            type="submit"
-            className="w-[15%] items-center rounded-lg bg-blue-800 px-2 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-600"
-          >
-            저장
-          </button>
-        </div>
+        <form onSubmit={submit}>
+          <div className="flex">
+            <textarea
+              value={userNote}
+              onChange={(e) => setUserNote(e.target.value)}
+              id="message"
+              // rows="4"
+              className="block w-[85%] resize-none rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+              placeholder="메모를 작성하세요."
+            ></textarea>
+            <button
+              type="submit"
+              className="w-[15%] items-center rounded-lg bg-blue-800 px-2 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-600"
+            >
+              저장
+            </button>
+          </div>
+        </form>
       </div>
     </>
   );

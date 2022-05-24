@@ -2,8 +2,8 @@ import type { NextPage } from "next";
 import { useState } from "react";
 import BoardTitle from "../../../components/common/BoardTitle";
 import Layout from "../../../components/layout";
-import { cls } from "../../../lib/utils";
-import { GmtList } from "../../../lib/gmt";
+import { cls } from "../../../libs/utils";
+import { GmtList } from "../../../libs/gmt";
 import StatusInfo from "../../../components/common/StatusInfo";
 
 const DeviceSetting = () => {
@@ -105,7 +105,7 @@ const DeviceSetting = () => {
                         </span>
                         <select
                           id="countries"
-                          className="w-4/5 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-none focus:border-2 focus:border-gray-700"
+                          className="w-4/5 rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 outline-none focus:border-2 focus:border-gray-700"
                         >
                           {/* <option value="Asia/Shanghai" selected>
                             (UTC+08:00) 베이징, 충칭, 홍콩 특별 행정구, 우루무치

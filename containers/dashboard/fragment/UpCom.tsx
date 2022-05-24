@@ -1,109 +1,23 @@
 import { ContextMenu, ContextMenuTrigger, MenuItem } from "react-contextmenu";
-import { cls } from "../../../lib/utils";
+import { cls } from "../../../libs/utils";
 import { AiOutlineSetting } from "react-icons/ai";
 import { VscDebugRestart } from "react-icons/vsc";
 import Link from "next/link";
 import ReactTooltip from "react-tooltip";
+import useUpPortData from "../../../pages/api/upPort";
 // UNUSED(미설정)", "DOWN(정지)", "READY(준비)", "RUN(정상)", "ERROR(에러)
-interface UpComProps {
-  app_service: {
-    name: string;
-    port: string;
-    status: string;
-    protocol: string;
-    interface: string;
-    id: string;
-  };
-}
-let upComData: UpComProps[];
-upComData = [
-  {
-    app_service: {
-      name: "COM1",
-      port: "6001",
-      status: "UNUSED",
-      protocol: "HSMS",
-      interface: "TCP/IP",
-      id: "1",
-    },
-  },
-  {
-    app_service: {
-      name: "COM2",
-      port: "6001",
-      status: "DOWN",
-      protocol: "HSMS",
-      interface: "TCP/IP",
-      id: "2",
-    },
-  },
-  {
-    app_service: {
-      name: "COM3",
-      port: "6001",
-      status: "ERROR",
-      protocol: "HSMS",
-      interface: "TCP/IP",
-      id: "3",
-    },
-  },
-  {
-    app_service: {
-      name: "COM4",
-      port: "6001",
-      status: "RUN",
-      protocol: "HSMS",
-      interface: "TCP/IP",
-      id: "4",
-    },
-  },
-  {
-    app_service: {
-      name: "COM5",
-      port: "6001",
-      status: "ERROR",
-      protocol: "HSMS",
-      interface: "TCP/IP",
-      id: "5",
-    },
-  },
-  {
-    app_service: {
-      name: "COM6",
-      port: "6001",
-      status: "RUN",
-      protocol: "HSMS",
-      interface: "TCP/IP",
-      id: "6",
-    },
-  },
-  {
-    app_service: {
-      name: "COM7",
-      port: "6001",
-      status: "READY",
-      protocol: "HSMS",
-      interface: "TCP/IP",
-      id: "7",
-    },
-  },
-  {
-    app_service: {
-      name: "COM8",
-      port: "6001",
-      status: "READY",
-      protocol: "HSMS",
-      interface: "TCP/IP",
-      id: "8",
-    },
-  },
-];
 
 export default function UpCom() {
+  const { upPortInfo, isLoading, isError }: any = useUpPortData();
+  // console.log("upPort :::: ", upPortInfo);
+
+  // let upComData = [];
+  // upComData[] = upPortInfo;
+
   return (
     <>
       <ul className="my-auto mt-4 flex h-3/5 w-full space-x-1">
-        {upComData.map((com, i) => {
+        {upPortInfo?.map((com: any, i: string) => {
           const upComCondBox = () => {
             let result;
             switch (com.app_service.status) {
@@ -128,28 +42,26 @@ export default function UpCom() {
             return result;
           };
           return (
-            <>
-              <li
-                className={cls(
-                  "relative h-full w-full border-[1px] bg-[center_top_1rem] bg-no-repeat text-sm",
-                  upComCondBox()
-                )}
-                key={i}
-              >
-                <ContextMenuTrigger id="contextmenu">
-                  <span className="absolute bottom-9 w-full text-center">
-                    {(com.app_service.status === "READY" && "준비") ||
-                      (com.app_service.status === "ERROR" && "에러") ||
-                      (com.app_service.status === "RUN" && "정상") ||
-                      (com.app_service.status === "DOWN" && "정지") ||
-                      (com.app_service.status === "UNUSED" && "미설정")}
-                  </span>
-                  <span className="absolute bottom-2 w-full text-center">
-                    {com.app_service.name}
-                  </span>
-                </ContextMenuTrigger>
-              </li>
-            </>
+            <li
+              className={cls(
+                "relative h-full w-[12%] border-[1px] bg-[center_top_1rem] bg-no-repeat text-sm",
+                upComCondBox()
+              )}
+              key={i}
+            >
+              <ContextMenuTrigger id="contextmenu">
+                <span className="absolute bottom-9 w-full text-center">
+                  {(com.app_service.status === "READY" && "준비") ||
+                    (com.app_service.status === "ERROR" && "에러") ||
+                    (com.app_service.status === "RUN" && "정상") ||
+                    (com.app_service.status === "DOWN" && "정지") ||
+                    (com.app_service.status === "UNUSED" && "미설정")}
+                </span>
+                <span className="absolute bottom-2 w-full text-center">
+                  {com.app_service.name}
+                </span>
+              </ContextMenuTrigger>
+            </li>
           );
         })}
       </ul>

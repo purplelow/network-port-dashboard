@@ -1,12 +1,15 @@
 import dynamic from "next/dynamic";
+import useMemoryUtilization from "../../../../pages/api/memoryUtilization";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-const MemoryChart = () => {
+export default function MemoryChart() {
+  const { memoryUtilization, isLoading, isError } = useMemoryUtilization();
+  const memorySeries = memoryUtilization?.summary.percent;
   const chartState: any = {
-    series: [20],
+    series: [memorySeries],
     options: {
       chart: {
         height: "100%",
@@ -91,10 +94,8 @@ const MemoryChart = () => {
         options={chartState.options}
         series={chartState.series}
         type="radialBar"
-        height="95%"
+        height="100%"
       />
     </>
   );
-};
-
-export default MemoryChart;
+}
