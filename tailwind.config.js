@@ -25,4 +25,8 @@ module.exports = {
     },
   },
   plugins: [],
+  purge: {
+    enable: true,
+    content: ['./out/*.html']
+  }
 };
