@@ -19,7 +19,7 @@ const fetcher = (url: string) =>
 
 export default function useCpuUtilization() {
   const { data, error } = useSWR(
-    `http://192.168.123.190:8080/dashBoard/cpuUsage`,
+    `http://192.168.123.190:8080/api/dashBoard/cpuUsage`,
     fetcher
   );
   return {

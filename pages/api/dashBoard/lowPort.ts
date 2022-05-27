@@ -20,7 +20,7 @@ const fetcher = (url: string) =>
 
 export default function useLowPortData() {
   const { data, error } = useSWR(
-    `http://192.168.123.190:8080/dashBoard/getDownPortStatus`,
+    `http://192.168.123.190:8080/api/dashBoard/getDownPortStatus`,
     fetcher
   );
   return {

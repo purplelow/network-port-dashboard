@@ -16,7 +16,7 @@ const fetcher = (url: string) =>
 
 export default function useSystemInfo() {
   const { data, error } = useSWR(
-    `http://192.168.123.190:8080/dashBoard/systemInfo`,
+    `http://192.168.123.190:8080/api/dashBoard/systemInfo`,
     fetcher
   );
   return {

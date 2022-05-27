@@ -11,7 +11,7 @@ const fetcher = (url: string) =>
 
 export default function useModelInfo() {
   const { data, error } = useSWR(
-    `http://192.168.123.190:8080/deviceSetting/getModelInfo`,
+    `http://192.168.123.190:8080/api/deviceSetting/getModelInfo`,
     fetcher
   );
   return {

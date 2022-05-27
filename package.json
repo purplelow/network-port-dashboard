@@ -12,7 +12,6 @@
     "deploy-gh-pages": "rm -rf node_modules/.cache && next build && next export && tailwindcss styles/globals.css -o out/globals.css && touch out/.nojekyll && git add -f out/ && git checkout -b temp-for-deploy-gh-pages && git commit -m \"Deploy Next.js to gh-pages\" && git subtree split --prefix out -b gh-pages && git push -f origin gh-pages:gh-pages && git branch -D gh-pages && git checkout main && git branch -D temp-for-deploy-gh-pages"
   },
   "dependencies": {
-    "@fortawesome/react-fontawesome": "^0.1.18",
     "apexcharts": "^3.35.0",
     "axios": "^0.27.2",
     "chart.js": "^3.7.1",

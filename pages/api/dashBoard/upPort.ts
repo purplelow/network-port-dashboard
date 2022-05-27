@@ -18,7 +18,7 @@ const fetcher = (url: string) =>
 
 export default function useUpPortData() {
   const { data, error } = useSWR(
-    `http://192.168.123.190:8080/dashBoard/getUpPortStatus`,
+    `http://192.168.123.190:8080/api/dashBoard/getUpPortStatus`,
     fetcher
   );
   return {

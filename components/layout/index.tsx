@@ -1,8 +1,9 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { cls } from "@libs/utils";
+import { BsHouseDoor } from "react-icons/bs";
+import { FiSettings, FiMonitor } from "react-icons/fi";
 
 interface LayoutProps {
   title?: string;
@@ -11,9 +12,9 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-const dashboardIco = <i className="fa-solid fa-house"></i>;
-const settingIco = <i className="fa-solid fa-gear"></i>;
-const managementIco = <i className="fa-solid fa-desktop"></i>;
+// const dashboardIco = <i className="fa-solid fa-house"></i>;
+// const settingIco = <i className="fa-solid fa-gear"></i>;
+// const managementIco = <i className="fa-solid fa-desktop"></i>;
 
 export default function Layout({
   title,
@@ -55,19 +56,19 @@ export default function Layout({
     let result;
     switch (router.pathname) {
       case "/":
-        result = dashboardIco;
+        result = <BsHouseDoor className="mr-1 text-xl" />;
         break;
       case "/settings/deviceSetting":
-        result = settingIco;
+        result = <FiSettings className="mr-1 text-lg" />;
         break;
       case "/settings/portSetting":
-        result = settingIco;
+        result = <FiSettings className="btext-lg mr-1" />;
         break;
       case "/management/history":
-        result = managementIco;
+        result = <FiMonitor className="mr-1 text-lg" />;
         break;
       case "/management/systemManage":
-        result = managementIco;
+        result = <FiMonitor className="mr-1 text-lg" />;
         break;
       default:
         result = "";
@@ -88,7 +89,7 @@ export default function Layout({
                 : "transition-colors hover:text-blue-600"
             )}
           >
-            {dashboardIco}
+            <BsHouseDoor className="text-2xl" />
             <span className="h-full w-full pl-3">대시보드</span>
           </a>
         </Link>
@@ -100,7 +101,7 @@ export default function Layout({
               setHightlight()
             )}
           >
-            {settingIco}
+            <FiSettings className="text-2xl" />
             <span className="h-full w-full cursor-default pl-3">설정</span>
           </div>
 
@@ -156,7 +157,7 @@ export default function Layout({
               manageHightlight()
             )}
           >
-            {managementIco}
+            <FiMonitor className="text-2xl" />
             <span className="h-full w-full cursor-default pl-3">관리</span>
           </div>
 

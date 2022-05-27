@@ -23,7 +23,7 @@ const fetcher = (url: string) =>
 
 export default function useMemoryUtilization() {
   const { data, error } = useSWR(
-    `http://192.168.123.190:8080/dashBoard/memoryUsage`,
+    `http://192.168.123.190:8080/api/dashBoard/memoryUsage`,
     fetcher
   );
   return {

@@ -9,7 +9,7 @@ const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 export default function useTimeInfo() {
   const { data, error } = useSWR(
-    `http://192.168.123.190:8080/deviceSetting/getTimeInfo`,
+    `http://192.168.123.190:8080/api/deviceSetting/getTimeInfo`,
     fetcher
   );
   return {

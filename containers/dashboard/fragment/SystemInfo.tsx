@@ -21,7 +21,7 @@ export default function SystemInfo() {
   const submit = (e: any) => {
     e.preventDefault();
     axios
-      .put(`http://192.168.123.190:8080/dashBoard/modifyNote`, userNoteJson)
+      .put(`http://192.168.123.190:8080/api/dashBoard/modifyNote`, userNoteJson)
       .then((res) => {
         console.log(res.data);
         alert("수정되었습니다.");
