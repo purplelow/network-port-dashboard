@@ -10,14 +10,20 @@ import { GmtList, UtcList } from "@libs/timeZoneList";
 
 import Layout from "@components/layout";
 import BoardTitle from "@components/common/BoardTitle";
+import useNetworkInfo from "@api/dashBoard/networkInfo";
+import modifySerialNumber from "@api/setting/modifySerialNumber";
+import updateNetwork from "@api/setting/updateNetwork";
+import { FieldErrors, useForm } from "react-hook-form";
 
 const DeviceSetting = () => {
-  const { timeInfo } = useTimeInfo();
+  const { register, handleSubmit } = useForm<ModelForm>();
+  const { sysTimeInfo } = useTimeInfo();
   const { modelInfo } = useModelInfo();
   let modelNameGetValue = modelInfo?.modelName;
   let modelSerialGetValue = modelInfo?.modelSerial;
   const [modelName, setModelName] = useState(modelNameGetValue);
   const [modelSerial, setModelSerial] = useState(modelSerialGetValue);
+  const { networkInfo }: any = useNetworkInfo();
   const [timeTabIndex, setTimeTabIndex] = useState(0);
   const [datetime, setDatetime] = useState(moment());
 
@@ -34,51 +40,91 @@ const DeviceSetting = () => {
     setModelName(modelNameGetValue);
     setModelSerial(modelSerialGetValue);
   }, [modelNameGetValue, modelSerialGetValue]);
-  let modelInfoJson = JSON.parse(
-    `{
-      "modelName": "${modelName ?? modelNameGetValue}",
-      "modelSerial": "${modelSerial ?? modelSerialGetValue}"
-    }`
-  );
-
+  // let modelInfoJson = JSON.parse(
+  //   `{
+  //     "modelName": "${modelName ?? modelNameGetValue}",
+  //     "modelSerial": "${modelSerial ?? modelSerialGetValue}"
+  //   }`
+  // );
+  let modelInfoJson = {
+    modelName: modelName ?? modelNameGetValue,
+    modelSerial: modelSerial ?? modelSerialGetValue,
+  };
   const submitModelInfo = (e: any) => {
     e.preventDefault();
-    axios
-      .put(
-        `http://192.168.123.190:8080/deviceSetting/modifySerialNumber`,
-        modelInfoJson
-      )
-      .then((res) => {
-        console.log("modifySerialNumber response :::", res.data);
-        alert("수정되었습니다.");
-      });
+    modifySerialNumber(modelInfoJson);
+    // axios
+    //   .put(`http://192.168.123.190:8080/api/deviceSetting/modifySerialNumber`, {
+    //     modelName: modelName ?? modelNameGetValue,
+    //     modelSerial: modelSerial ?? modelSerialGetValue,
+    //   })
+    //   .then((res) => {
+    //     console.log("modifySerialNumber response :::", res.data);
+    //     alert("수정되었습니다.");
+    //   });
+  };
+
+  let neworkInfoJson = {
+    // networkInfos: [
+    //   {
+    //     gateway: ,
+    //     ipaddress: ,
+    //     name: ,
+    //     netmask: ,
+    //   },
+    // ],
+  };
+  const submitUpdateNetwork = (e: any) => {
+    e.preventDefault();
+    updateNetwork(neworkInfoJson);
+  };
+
+  interface ModelForm {
+    modelname?: string;
+    serialnumber: string;
+  }
+  const onValid = (data: ModelForm) => {
+    console.log("im valid bby");
+  };
+
+  const onInvalid = (errors: FieldErrors) => {
+    console.log(errors);
   };
 
   return (
     <Layout title="장비 기본설정">
       <div className="grid h-full grid-rows-6 gap-y-2">
         <div className="w-full rounded-md bg-white shadow-md">
-          <form onSubmit={submitModelInfo} className="h-full">
+          <form onSubmit={handleSubmit(onValid)} className="h-full">
             <div className="flex h-full items-center justify-between px-10">
               <div className="flex w-2/5 items-center">
-                <span className="px-4 text-sm font-medium text-gray-900">
+                <span className="pr-2 text-sm font-medium text-gray-900">
                   모델명
                 </span>
                 <input
-                  value={modelName ?? ""}
+                  // value={modelName ?? ""}
+                  // onChange={(e) => e.target.value}
+                  {...register("modelname")}
+                  defaultValue={modelName ?? ""}
                   type="text"
                   className="w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900 outline-none focus:border-[1px] focus:border-gray-700"
                   placeholder="모델명"
                   disabled
+                  readOnly
                 />
               </div>
               <div className="flex w-2/5 items-center">
-                <span className="px-4 text-sm font-medium text-gray-900">
+                <span className="pr-2 text-sm font-medium text-gray-900">
                   시리얼 넘버
                 </span>
                 <input
-                  value={modelSerial ?? ""}
-                  onChange={(e) => setModelSerial(e.target.value)}
+                  // value={modelSerial ?? ""}
+                  // onChange={(e) => setModelSerial(e.target.value)}
+                  {...register("serialnumber", {
+                    required: "시리얼 넘버를 입력하세요.",
+                  })}
+                  defaultValue={modelSerial ?? ""}
+                  readOnly
                   type="text"
                   className="w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
                   placeholder="시리얼 넘버"
@@ -140,11 +186,12 @@ const DeviceSetting = () => {
                     <form className="h-full">
                       <div className="flex h-full items-end justify-between">
                         <div className="flex w-2/5 items-center">
-                          <span className="px-4 text-sm font-medium text-gray-900">
+                          <span className="pr-2 text-sm font-medium text-gray-900">
                             날짜 및 시간
                           </span>
                           <input
-                            value={timeInfo?.timeInfo ?? 0}
+                            // value={sysTimeInfo?.timeInfo ?? 0}
+                            // onChange={(e) => e.target.value}
                             type="text"
                             className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
                             placeholder="날짜 및 시간"
@@ -152,7 +199,7 @@ const DeviceSetting = () => {
                           />
                         </div>
                         <div className="flex w-2/5 items-center">
-                          <span className="px-4 text-sm font-medium text-gray-900">
+                          <span className="pr-2 text-sm font-medium text-gray-900">
                             표준 시간대
                           </span>
                           {/* <select
@@ -167,9 +214,9 @@ const DeviceSetting = () => {
                           ))}
                         </select> */}
 
-                          {/* <div className="">
+                          <div className="w-4/5">
                             <TimezoneSelect value={tz} onChange={setTz} />
-                          </div> */}
+                          </div>
 
                           {/* <div className="fixed top-0 left-0 z-50 h-1/3 w-1/3 border-2 bg-slate-100">
                           <div>
@@ -207,9 +254,9 @@ const DeviceSetting = () => {
           </div>
         </div>
 
-        <div className="relative row-span-3 w-full bg-white p-2 shadow-md">
+        <div className="relative row-span-3 w-full overflow-hidden bg-white p-2 shadow-md">
           <BoardTitle subTitle="네트워크 설정" />
-          <ul className="absolute top-6 right-5 flex space-x-10">
+          <ul className="absolute top-4 right-5 flex space-x-10">
             <li className="flex items-center space-x-1 text-sm text-[#319500]">
               <div className="h-[41px] w-[49px] bg-lanConnected bg-no-repeat" />
               <span className="h-3 w-3 rounded-full bg-[#319500]"></span>
@@ -227,50 +274,94 @@ const DeviceSetting = () => {
             </li>
           </ul>
 
-          <form className="mt-12">
+          <form className="mt-8 h-[calc(100%-110px)] overflow-auto">
             <ul className="space-y-2">
-              <li className="flex items-center justify-between bg-blue-50 px-10 py-4">
-                <div className="flex w-[20%] items-center space-x-8">
-                  <span className="font-bold">LAN 1</span>
-                  <span className="h-3 w-3 rounded-full bg-[#319500]"></span>
-                  <div className="h-[41px] w-[49px] bg-lanConnected bg-no-repeat" />
-                </div>
-                <div className="flex w-[30%] items-center">
-                  <span className="px-4 text-sm font-medium text-gray-900">
-                    IP 주소
-                  </span>
-                  <input
-                    type="text"
-                    className="w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
-                    placeholder="IP 주소"
-                    required
-                  />
-                </div>
-                <div className="flex w-[25%] items-center">
-                  <span className="px-4 text-sm font-medium text-gray-900">
-                    NETMASK
-                  </span>
-                  <input
-                    type="text"
-                    className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
-                    placeholder="NETMASK"
-                    required
-                  />
-                </div>
-                <div className="flex w-[25%] items-center">
-                  <span className="px-4 text-sm font-medium text-gray-900">
-                    GATEWAY
-                  </span>
-                  <input
-                    type="text"
-                    className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
-                    placeholder="GATEWAY"
-                    required
-                  />
-                </div>
-              </li>
+              {networkInfo?.interfaces.map((networkData: any, i: number) => {
+                const statusImg = () => {
+                  let result;
+                  if (
+                    networkData.admin_status === 1 &&
+                    networkData.oper_status === 1
+                  ) {
+                    result = "bg-lanConnected";
+                  } else if (
+                    networkData.admin_status === 1 &&
+                    networkData.oper_status === 2
+                  ) {
+                    result = "bg-lanDisconnected";
+                  } else {
+                    result = "bg-lanInactive";
+                  }
+                  return result;
+                };
 
-              <li className="flex items-center justify-between bg-blue-50 px-10 py-4">
+                return (
+                  <li
+                    className="flex items-center justify-between bg-blue-50 px-10 py-4"
+                    key={i}
+                  >
+                    <div className="flex w-[20%] items-center space-x-8">
+                      <span className="font-bold">LAN 1</span>
+                      <span
+                        className={cls(
+                          "h-3 w-3 rounded-full bg-[#319500]",
+                          statusImg() === "bg-lanConnected"
+                            ? "bg-[#319500]"
+                            : statusImg() === "bg-lanDisconnected"
+                            ? "bg-[#DE1717]"
+                            : statusImg() === "bg-lanInactive"
+                            ? "bg-[#B5B5B5]"
+                            : ""
+                        )}
+                      ></span>
+                      <div
+                        className={cls(
+                          "h-[41px] w-[49px] bg-lanConnected bg-no-repeat",
+                          statusImg()
+                        )}
+                      />
+                    </div>
+                    <div className="flex w-[30%] items-center">
+                      <span className="pr-2 text-sm font-medium text-gray-900">
+                        IP 주소
+                      </span>
+                      <input
+                        value={networkData.addresses[0].address}
+                        type="text"
+                        className="w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
+                        placeholder="IP 주소"
+                        required
+                      />
+                    </div>
+                    <div className="flex w-[25%] items-center">
+                      <span className="pr-2 text-sm font-medium text-gray-900">
+                        NETMASK
+                      </span>
+                      <input
+                        value={networkData.addresses[0].mask}
+                        type="text"
+                        className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
+                        placeholder="NETMASK"
+                        required
+                      />
+                    </div>
+                    <div className="flex w-[25%] items-center">
+                      <span className="pr-2 text-sm font-medium text-gray-900">
+                        GATEWAY
+                      </span>
+                      <input
+                        value={networkData.addresses[0].gateway}
+                        type="text"
+                        className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
+                        placeholder="GATEWAY"
+                        required
+                      />
+                    </div>
+                  </li>
+                );
+              })}
+
+              {/* <li className="flex items-center justify-between bg-blue-50 px-10 py-4">
                 <div className="flex w-[20%] items-center space-x-8">
                   <span className="font-bold">LAN 2</span>
                   <span className="h-3 w-3 rounded-full bg-[#DE1717]"></span>
@@ -350,8 +441,17 @@ const DeviceSetting = () => {
                     required
                   />
                 </div>
-              </li>
+              </li> */}
             </ul>
+
+            <div className="absolute left-0 bottom-0 flex w-full justify-center py-2">
+              <button
+                type="submit"
+                className="rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-10 text-sm font-medium text-white hover:bg-blue-800 "
+              >
+                설정 적용
+              </button>
+            </div>
           </form>
         </div>
       </div>

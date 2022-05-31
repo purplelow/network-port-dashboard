@@ -69,7 +69,7 @@ export default function UpCom() {
       <ContextMenu id="contextmenu">
         <MenuItem>
           <AiOutlineSetting />
-          <Link href="/settings/portsetting">
+          <Link href="/settings/portSetting">
             <a className="px-2.5">포트 설정</a>
           </Link>
         </MenuItem>
