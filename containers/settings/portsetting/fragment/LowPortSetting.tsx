@@ -1,5 +1,22 @@
-export default function LowPortSetting() {
-  return (
+import useDownPortList from "@api/setting/downPortList";
+import { chmod } from "fs";
+
+export default function DownPortSetting() {
+  const { downPortList, isLoading, isError }: any = useDownPortList();
+     console.log("downPort: ", downPortList);
+
+    const statusColor = (status: string) => {
+      let result;
+      if(status === "ERROR") result = "inline-block h-3 w-3 rounded-full bg-[#DE1717]";
+      else if(status === "READY") result = "inline-block h-3 w-3 rounded-full bg-[#FFAB4A]";
+      else if(status === "RUN") result = "inline-block h-3 w-3 rounded-full bg-[#319500]";
+      else if(status === "DOWN") result = "inline-block h-3 w-3 rounded-full bg-[#1694D5]";
+      else if(status === "UNUSED") result = "inline-block h-3 w-3 rounded-full bg-[#B5B5B5]";
+      else result = "";
+      return result;
+    }
+  
+    return (
     <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-md border-[1px] border-gray-300 shadow-md">
       <table className="h-full w-full text-left text-sm text-gray-500">
         <thead className="bg-blue-100 text-xs uppercase text-gray-700">
@@ -61,8 +78,8 @@ export default function LowPortSetting() {
           </tr>
         </thead>
         <tbody className="input-w-s h-full overflow-auto">
-          {[...Array(10)].map(() => (
-            <tr className="border-b bg-white hover:bg-gray-50">
+          {downPortList?.map((com: any, i: string) => (
+            <tr className="border-b bg-white hover:bg-gray-50" key={i}>
               <td className="w-4 px-4">
                 <div className="flex items-center">
                   <input
@@ -76,13 +93,14 @@ export default function LowPortSetting() {
                 </div>
               </td>
               <td className="px-2 py-1.5 text-center">
-                <span className="inline-block h-3 w-3 rounded-full bg-[#319500]"></span>
+                <span className={statusColor(com.status)}></span>
               </td>
-              <td className="px-2 py-1.5 text-right">COM1</td>
+              <td className="px-2 py-1.5 text-right">{com.deviceName}</td>
               <td className="px-2 py-1.5 text-center">
                 <input
                   type="text"
                   className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  value={com.name}
                   placeholder="TextValue"
                 />
               </td>
@@ -90,6 +108,7 @@ export default function LowPortSetting() {
                 <input
                   type="text"
                   className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  value={com.model}
                   placeholder="TextValue"
                 />
               </td>
@@ -97,6 +116,7 @@ export default function LowPortSetting() {
                 <input
                   type="text"
                   className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  value={com.type}
                   placeholder="TextValue"
                 />
               </td>
@@ -104,6 +124,7 @@ export default function LowPortSetting() {
                 <input
                   type="text"
                   className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  value={com.baudrate}
                   placeholder="TextValue"
                 />
               </td>
@@ -111,6 +132,7 @@ export default function LowPortSetting() {
                 <input
                   type="text"
                   className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  value={com.parity}
                   placeholder="TextValue"
                 />
               </td>
@@ -118,6 +140,7 @@ export default function LowPortSetting() {
                 <input
                   type="text"
                   className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  value={com.databits}
                   placeholder="TextValue"
                 />
               </td>
@@ -125,6 +148,7 @@ export default function LowPortSetting() {
                 <input
                   type="text"
                   className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  value={com.stopbits}
                   placeholder="TextValue"
                 />
               </td>
@@ -132,13 +156,14 @@ export default function LowPortSetting() {
                 <input
                   type="text"
                   className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  value={com.id}
                   placeholder="TextValue"
                 />
               </td>
-              <td className="px-2 py-1.5 text-right">45</td>
-              <td className="px-2 py-1.5 text-right">45</td>
-              <td className="px-2 py-1.5 text-right">45</td>
-              <td className="px-2 py-1.5 text-right">45</td>
+              <td className="px-2 py-1.5 text-right">{com.t1}</td>
+              <td className="px-2 py-1.5 text-right">{com.t2}</td>
+              <td className="px-2 py-1.5 text-right">{com.t3}</td>
+              <td className="px-2 py-1.5 text-right">{com.t4}</td>
             </tr>
           ))}
         </tbody>
