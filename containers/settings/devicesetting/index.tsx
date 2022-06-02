@@ -95,7 +95,7 @@ const DeviceSetting = () => {
     <Layout title="장비 기본설정">
       <div className="grid h-full grid-rows-6 gap-y-2">
         <div className="w-full rounded-md bg-white shadow-md">
-          <form onSubmit={handleSubmit(onValid)} className="h-full">
+          <form onSubmit={handleSubmit(onValid, onInvalid)} className="h-full">
             <div className="flex h-full items-center justify-between px-10">
               <div className="flex w-2/5 items-center">
                 <span className="pr-2 text-sm font-medium text-gray-900">
@@ -124,7 +124,6 @@ const DeviceSetting = () => {
                     required: "시리얼 넘버를 입력하세요.",
                   })}
                   defaultValue={modelSerial ?? ""}
-                  readOnly
                   type="text"
                   className="w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
                   placeholder="시리얼 넘버"
@@ -192,6 +191,7 @@ const DeviceSetting = () => {
                           <input
                             // value={sysTimeInfo?.timeInfo ?? 0}
                             // onChange={(e) => e.target.value}
+                            defaultValue={sysTimeInfo?.timeInfo ?? ""}
                             type="text"
                             className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
                             placeholder="날짜 및 시간"
