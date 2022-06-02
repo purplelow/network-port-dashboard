@@ -4,6 +4,7 @@ import React from "react";
 import { cls } from "@libs/utils";
 import { BsHouseDoor } from "react-icons/bs";
 import { FiSettings, FiMonitor } from "react-icons/fi";
+import { FaLanguage } from "react-icons/fa";
 
 interface LayoutProps {
   title?: string;
@@ -77,7 +78,7 @@ export default function Layout({
   };
 
   return (
-    <div className="flex w-screen">
+    <div className="flex h-screen w-screen">
       <nav className="fixed top-0 left-0 z-50 h-screen w-[200px] bg-white shadow-md">
         <div className="m-auto h-20 w-[140px] bg-logo bg-contain bg-center bg-no-repeat"></div>
         <Link href="/">
@@ -207,8 +208,8 @@ export default function Layout({
           </Link>
         </div>
       </nav>
-      <div className="h-screen w-screen pl-[200px]">
-        <div className="flex h-14 items-center justify-between px-4">
+      <div className="h-full w-screen pl-[200px]">
+        <div className="flex max-h-[56px] items-center justify-between px-4">
           <div className="">
             {title ? (
               <div className="flex items-center justify-center space-x-1">
@@ -217,14 +218,12 @@ export default function Layout({
               </div>
             ) : null}
           </div>
-          <div className="space-x-4">
-            <button>
-              <i className="fa-solid fa-language text-3xl"></i>
-            </button>
-          </div>
+          <button className="h-full">
+            <FaLanguage className="text-5xl" />
+          </button>
         </div>
 
-        <div className="h-[calc(100%-56px)] w-full px-4 pb-4 ">{children}</div>
+        <div className="h-[calc(100%-50px)] w-full px-4 pb-4 ">{children}</div>
       </div>
     </div>
   );
