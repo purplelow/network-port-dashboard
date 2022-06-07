@@ -14,12 +14,7 @@ export default function ModelSerial() {
   let modelSerialGetValue = modelInfo?.modelSerial;
   // const [modelName, setModelName] = useState(modelNameGetValue);
   const [modelSerial, setModelSerial] = useState(modelSerialGetValue);
-  const { register, handleSubmit } = useForm<ModelForm>({
-    defaultValues: {
-      modelname: modelNameGetValue,
-      serialnumber: modelSerialGetValue,
-    },
-  });
+  const { register, handleSubmit } = useForm<ModelForm>();
 
   // useEffect(() => {
   //   setModelName(modelNameGetValue);

@@ -2,28 +2,33 @@ import useNetworkInfo from "@api/dashBoard/networkInfo";
 import updateNetwork from "@api/setting/updateNetwork";
 import BoardTitle from "@components/common/BoardTitle";
 import { cls } from "@libs/utils";
+import { useState } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 
 interface NeworkForm {}
 
 export default function NetworkSetting() {
   const { register, handleSubmit } = useForm();
-  const { networkInfo }: any = useNetworkInfo();
+  const { networkInfo } = useNetworkInfo();
+  let networkName = networkInfo?.interfaces[0].name;
+  const [ipAddr, setIpAddr] = useState();
+  const [netMask, setNetMask] = useState();
+  const [gateWay, setGateWay] = useState();
 
   let neworkInfoJson = {
     networkInfos: [
-      // {
-      //   gateway: networkInfo.,
-      //   ipaddress: ,
-      //   name: ,
-      //   netmask: ,
-      // },
+      {
+        gateway: gateWay,
+        ipaddress: ipAddr,
+        name: networkName,
+        netmask: netMask,
+      },
     ],
   };
 
   const onValid = (data: NeworkForm) => {
     updateNetwork(neworkInfoJson);
-    console.log("im valid bby");
+    console.log("im valid");
   };
 
   const onInvalid = (errors: FieldErrors) => {
@@ -108,12 +113,12 @@ export default function NetworkSetting() {
                   <input
                     {...register("ipaddress", {
                       required: "IP 주소를 입력하세요",
+                      onChange: (e) => setIpAddr(e.target.value),
                     })}
-                    value={networkData.addresses[0].address}
+                    defaultValue={networkData.addresses[0].address}
                     type="text"
                     className="w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
                     placeholder="IP 주소"
-                    required
                   />
                 </div>
                 <div className="flex w-[25%] items-center">
@@ -121,11 +126,14 @@ export default function NetworkSetting() {
                     NETMASK
                   </span>
                   <input
-                    value={networkData.addresses[0].mask}
+                    {...register("netmask", {
+                      required: "NETMASK를 입력하세요",
+                      onChange: (e) => setNetMask(e.target.value),
+                    })}
+                    defaultValue={networkData.addresses[0].mask}
                     type="text"
                     className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
                     placeholder="NETMASK"
-                    required
                   />
                 </div>
                 <div className="flex w-[25%] items-center">
@@ -133,11 +141,14 @@ export default function NetworkSetting() {
                     GATEWAY
                   </span>
                   <input
-                    value={networkData.addresses[0].gateway}
+                    {...register("gateway", {
+                      required: "GATEWAY를 입력하세요",
+                      onChange: (e) => setGateWay(e.target.value),
+                    })}
+                    defaultValue={networkData.addresses[0].gateway}
                     type="text"
                     className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
                     placeholder="GATEWAY"
-                    required
                   />
                 </div>
               </li>
@@ -232,7 +243,7 @@ export default function NetworkSetting() {
             type="submit"
             className="rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-10 text-sm font-medium text-white hover:bg-blue-800 "
           >
-            설정 적용
+            네트워크 설정 적용
           </button>
         </div>
       </form>
