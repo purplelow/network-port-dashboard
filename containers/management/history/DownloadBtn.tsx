@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { AiOutlineDownload } from "react-icons/ai";
 
-export default function DonwloadButton(fileName: any) {
+export default function DonwloadButton({ fileName }: any) {
   const handleDownload = () => {
     axios({
       url: `http://192.168.123.190:8080/api/history/downloadLogFile/${fileName}`,

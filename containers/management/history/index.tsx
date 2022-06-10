@@ -9,7 +9,7 @@ import DownloadButton from "./DownloadBtn";
 
 const History = () => {
   const { logFilelist, defaultFileName } = useGetLogFilelist();
-  const [currentFileName, setCurrentFimeName]: any = useState(defaultFileName);
+  const [currentFileName, setCurrentFimeName]: any = useState();
   const { getLogView, isLoading } = useGetLogView(currentFileName);
 
   // const [logtxt, setLogtxt] = useState();
