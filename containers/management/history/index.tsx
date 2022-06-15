@@ -44,12 +44,6 @@ const History = () => {
                 </option>
               ))}
             </select>
-            {/* <button
-              onClick={getLogData}
-              className="rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-10 text-sm font-medium text-white hover:bg-blue-800 "
-            >
-              보기
-            </button> */}
             <DownloadButton fileName={currentFileName} />
           </div>
 

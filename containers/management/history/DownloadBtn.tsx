@@ -5,8 +5,8 @@ import { AiOutlineDownload } from "react-icons/ai";
 export default function DonwloadButton({ fileName }: any) {
   const handleDownload = () => {
     axios({
-      url: `http://192.168.123.190:8080/api/history/downloadLogFile/${fileName}`,
       method: "GET",
+      url: `http://192.168.123.190:8080/api/history/downloadLogFile/${fileName}`,
       responseType: "blob",
     })
       .then((res) => {
@@ -21,6 +21,8 @@ export default function DonwloadButton({ fileName }: any) {
           window.URL.revokeObjectURL(fileObjectUrl);
         }, 50000);
         link.remove();
+
+        console.log(res.data);
       })
       .catch((err) => {
         console.log("err: ", err);

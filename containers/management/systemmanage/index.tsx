@@ -1,12 +1,33 @@
 import Layout from "@components/layout";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { VscDebugRestart } from "react-icons/vsc";
-import { AiOutlineUpload } from "react-icons/ai";
+import { AiOutlineCheckCircle, AiOutlineUpload } from "react-icons/ai";
 import useSystemInfo from "@api/dashBoard/systemInfo";
 import FirmwareForm from "./fragment/FirmwareForm";
+import BackUp from "./fragment/Backup";
+import { useCallback, useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { backUpState } from "recoil/atom";
+import RestoreFrom from "./fragment/RestoreForm";
 
 const SystemManage = () => {
+  const backUpStateProp = useRecoilValue(backUpState);
+  const [backUpProp, setBackUpProp] = useRecoilState(backUpState);
   const { systemInfo } = useSystemInfo();
+
+  useCallback(() => {
+    setBackUpProp(backUpStateProp);
+  }, [backUpStateProp]);
+
+  useEffect(() => {
+    let timer = setTimeout(() => {
+      setBackUpProp(false);
+    }, 2000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [backUpStateProp]);
+
   return (
     <Layout title="시스템 관리">
       <div className="space-y-4">
@@ -37,41 +58,31 @@ const SystemManage = () => {
         <div className="flex items-center justify-between rounded-md bg-white p-8 shadow-md">
           <span className="text-xl font-bold text-gray-700">백업</span>
           <div className="flex w-[80%] items-center justify-end space-x-4">
-            <button
-              type="submit"
-              className="min-w-[280px] rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-10 text-sm font-medium text-white hover:bg-blue-800 "
-            >
-              백업
-            </button>
+            <BackUp />
+            {backUpStateProp && (
+              <div
+                className="absolute top-5 left-[calc(50%-160px)] w-80 rounded-b border-t-4 border-teal-500 bg-teal-100 px-4 py-3 text-teal-900 shadow-2xl"
+                role="alert"
+              >
+                <div className="flex items-center justify-center space-x-2">
+                  <div className="py-1 text-4xl">
+                    <AiOutlineCheckCircle />
+                  </div>
+                  <div>
+                    <p className="font-bold">
+                      백업 파일이 다운로드 되었습니다.
+                    </p>
+                    {/* <p className="text-sm">백업 파일이 다운로드 되었습니다.</p> */}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
         <div className="flex items-center justify-between rounded-md bg-white p-8 shadow-md">
           <span className="text-xl font-bold text-gray-700">복원</span>
-          <div className="flex w-[80%] items-center justify-end space-x-4">
-            <label
-              htmlFor="bFileUp"
-              className="relative -right-11 cursor-pointer text-blue-700"
-            >
-              <AiOutlineUpload />
-            </label>
-            <input
-              id="bFileUp"
-              type="file"
-              className="min-w-[350px] cursor-pointer border-[1px] border-gray-200 text-sm text-slate-500
-                file:mr-4 file:cursor-pointer file:border-0
-                file:bg-violet-50 file:py-2
-                file:px-8 file:text-sm
-                file:font-semibold file:text-blue-700
-              "
-            />
-            <button
-              type="submit"
-              className="min-w-[280px] rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-10 text-sm font-medium text-white hover:bg-blue-800 "
-            >
-              복원
-            </button>
-          </div>
+          <RestoreFrom />
         </div>
       </div>
     </Layout>
