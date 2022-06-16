@@ -3,11 +3,12 @@ import axios from "axios";
 import { useCallback } from "react";
 import { AiOutlineDownload } from "react-icons/ai";
 import { useRecoilState } from "recoil";
-import { backUpState } from "recoil/atom";
+import { backUpFailState, backUpState } from "recoil/atom";
 
 export default function BackUp() {
   // const { backUpFileName } = getBackUpFile();
-  const [backUpProp, setBackUpProp] = useRecoilState(backUpState);
+  const [backUpSuccess, setBackUpSuccess] = useRecoilState(backUpState);
+  const [backUpFail, setBackUpFail] = useRecoilState(backUpFailState);
   const handleDownload = () => {
     axios({
       method: "GET",
@@ -28,7 +29,7 @@ export default function BackUp() {
           window.URL.revokeObjectURL(fileObjectUrl);
         }, 50000);
         link.remove();
-        setBackUpProp(true);
+        setBackUpSuccess(true);
 
         // useCallback(() => {
         // }, [setBackUpState]);
@@ -37,6 +38,7 @@ export default function BackUp() {
       })
       .catch((err) => {
         console.error("err: ", err);
+        setBackUpFail(true);
       });
   };
   return (

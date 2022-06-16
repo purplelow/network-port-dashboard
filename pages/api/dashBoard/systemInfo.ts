@@ -12,7 +12,10 @@ interface SystemInfoProps {
 }
 
 const fetcher = (url: string) =>
-  axios.get<SystemInfoProps>(url).then((res) => res.data);
+  axios
+    .get<SystemInfoProps>(url)
+    .then((res) => res.data)
+    .catch((err) => console.error("System data error ", err));
 
 export default function useSystemInfo() {
   const { data, error } = useSWR(

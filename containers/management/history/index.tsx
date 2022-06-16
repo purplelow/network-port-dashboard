@@ -8,24 +8,35 @@ import { AiOutlineDownload } from "react-icons/ai";
 import DownloadButton from "./DownloadBtn";
 
 const History = () => {
-  const { logFilelist, defaultFileName } = useGetLogFilelist();
+  const [sqAdata, setSqAdata] = useState();
+  const [sqBdata, setSqBdata] = useState();
+  const sequentialSetting = async () => {
+    await axios({
+      method: "GET",
+      url: `http://192.168.123.190:8080/api/history/getLogFilelist`,
+    }).then((res) => {
+      setSqAdata(res.data);
+    });
+    await axios({
+      method: "GET",
+      url: `http://192.168.123.190:8080/api/history/getLogView?fileName=${currentFileName}`,
+    }).then((res) => {
+      setSqBdata(res.data);
+    });
+  };
+  console.log("파일 리스트 데이터", sqAdata);
+  console.log("로그 파일 뷰 데이터", sqBdata);
+  const { logFilelist, defaultFileName }: any = useGetLogFilelist();
+  // const defaultFileName = logFilelist?.filenames[0];
   const [currentFileName, setCurrentFimeName]: any = useState();
-  const { getLogView, isLoading } = useGetLogView(currentFileName);
+  const { getLogView, isLoading, isError } = useGetLogView(currentFileName);
 
-  // const [logtxt, setLogtxt] = useState();
-
-  // const getLogData = async () => {
-  //   await axios({
-  //     method: "get",
-  //     url: `http://192.168.123.190:8080/api/history/getLogView?fileName=${currentFileName}`,
-  //   }).then(res => {
-  //     setLogtxt({res.data})
-  //   });
-  // };
-
-  // useEffect(() => {}, [currentFileName]);
-
-  // console.log("@@ log data TXT :: ", getLogData);
+  useEffect(() => {
+    if (defaultFileName) {
+      setCurrentFimeName(defaultFileName[0]);
+      // console.log("In useEffect ::: ", defaultFileName[0]);
+    }
+  }, [setCurrentFimeName, defaultFileName]);
 
   return (
     <Layout title="히스토리">

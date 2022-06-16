@@ -1,6 +1,7 @@
 import axios from "axios";
 import useSWR from "swr";
-
+// import dotenv from "dotenv";
+// dotenv.config();
 interface CpuUtilizationProps {
   detail: [
     {
@@ -13,9 +14,13 @@ interface CpuUtilizationProps {
     load: number;
   };
 }
+const cpuUsage_API_URL = process.env.REACT_APP_CPUUSAGE;
 
 const fetcher = (url: string) =>
-  axios.get<CpuUtilizationProps>(url).then((res) => res.data);
+  axios
+    .get<CpuUtilizationProps>(url)
+    .then((res) => res.data)
+    .catch((err) => console.log("Cpu data error ", err));
 
 export default function useCpuUtilization() {
   const { data, error } = useSWR(

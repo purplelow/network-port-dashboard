@@ -38,7 +38,10 @@ interface Statistics {
 }
 
 const fetcher = (url: string) =>
-  axios.get<NetworkInfoProps>(url).then((res) => res.data);
+  axios
+    .get<NetworkInfoProps>(url)
+    .then((res) => res.data)
+    .catch((err) => console.error("Network data error ", err));
 
 export default function useNetworkInfo() {
   const { data, error } = useSWR(

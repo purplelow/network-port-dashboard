@@ -16,7 +16,10 @@ interface SubDevice {
 }
 
 const fetcher = (url: string) =>
-  axios.get<LowPortProps>(url).then((res) => res.data);
+  axios
+    .get<LowPortProps>(url)
+    .then((res) => res.data)
+    .catch((err) => console.error("Down port data error ", err));
 
 export default function useLowPortData() {
   const { data, error } = useSWR(

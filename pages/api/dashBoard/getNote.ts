@@ -6,7 +6,10 @@ interface getNoteProps {
 }
 
 const fetcher = async (url: string) =>
-  await axios.get<getNoteProps>(url).then((res) => res.data);
+  await axios
+    .get<getNoteProps>(url)
+    .then((res) => res.data)
+    .catch((err) => console.error("Note data error ", err));
 
 export default function useGetNote() {
   const { data, error } = useSWR(

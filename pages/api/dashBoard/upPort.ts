@@ -14,7 +14,10 @@ interface AppService {
 }
 
 const fetcher = (url: string) =>
-  axios.get<UpPortProps>(url).then((res) => res.data);
+  axios
+    .get<UpPortProps>(url)
+    .then((res) => res.data)
+    .catch((err) => console.error("Up port data error ", err));
 
 export default function useUpPortData() {
   const { data, error } = useSWR(

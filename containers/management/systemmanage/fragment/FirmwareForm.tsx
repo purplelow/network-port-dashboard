@@ -84,32 +84,32 @@ export default function FirmwareForm() {
         펌웨어 버전 업데이트
       </button>
 
-      {alert === true ? (
+      {alert && (
         <div
           role="alert"
           className="absolute top-5 left-[calc(50%-160px)] w-80 shadow-2xl"
         >
           <div className="rounded-t bg-blue-500 px-4 py-2 font-bold text-white">
-            파일 업로드 완료
+            펌웨어 파일 업로드 완료
           </div>
           <div className="rounded-b border border-t-0 border-blue-400 bg-blue-100 px-4 py-3 text-blue-700">
-            <p>펌웨어 업데이트를 시작합니다.</p>
+            <p>펌웨어 업데이트를 시작합니다</p>
           </div>
         </div>
-      ) : null}
-      {errorAlert === true ? (
+      )}
+      {errorAlert && (
         <div
           role="alert"
           className="absolute top-5 left-[calc(50%-160px)] w-80 shadow-2xl"
         >
           <div className="rounded-t bg-red-500 px-4 py-2 font-bold text-white">
-            Error
+            파일 업로드 실패
           </div>
           <div className="rounded-b border border-t-0 border-red-400 bg-red-100 px-4 py-3 text-red-700">
-            <p>⚠️ 파일 에러</p>
+            <p>⚠️ 선택된 파일이 없습니다</p>
           </div>
         </div>
-      ) : null}
+      )}
     </form>
   );
 }

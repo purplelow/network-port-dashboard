@@ -10,6 +10,7 @@ interface MemoryUtilizationProps {
     shared: number;
     free: number;
     total: number;
+    used: number;
   };
   summary: {
     percent: number;
@@ -19,7 +20,10 @@ interface MemoryUtilizationProps {
 }
 
 const fetcher = (url: string) =>
-  axios.get<MemoryUtilizationProps>(url).then((res) => res.data);
+  axios
+    .get<MemoryUtilizationProps>(url)
+    .then((res) => res.data)
+    .catch((err) => console.error("Memory data error ", err));
 
 export default function useMemoryUtilization() {
   const { data, error } = useSWR(

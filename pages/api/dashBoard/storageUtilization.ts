@@ -24,7 +24,10 @@ interface StorageUtilizationProps {
 }
 
 const fetcher = async (url: string) =>
-  await axios.get<StorageUtilizationProps>(url).then((res) => res.data);
+  await axios
+    .get<StorageUtilizationProps>(url)
+    .then((res) => res.data)
+    .catch((err) => console.error("Storage data error ", err));
 
 export default function useStorageUtilization() {
   const { data, error } = useSWR(

@@ -2,8 +2,12 @@ import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineUpload } from "react-icons/ai";
+import { useRecoilState } from "recoil";
+import { restoreFailState, restoreState } from "recoil/atom";
 
 export default function RestoreFrom() {
+  const [restoreSuccess, setRestoreSuccess] = useRecoilState(restoreState);
+  const [restoreFail, setRestoreFail] = useRecoilState(restoreFailState);
   const { register, handleSubmit } = useForm();
   const [selectedFile, setSelectedFile] = useState<any | Blob>();
 
@@ -25,11 +29,11 @@ export default function RestoreFrom() {
     })
       .then((res) => {
         console.log(res.data);
-        alert("Seccess!!");
+        setRestoreSuccess(true);
       })
       .catch((error) => {
         console.error("복원 파일 업로드 에러 : ", error);
-        alert("Fail!!");
+        setRestoreFail(true);
       });
   };
 
