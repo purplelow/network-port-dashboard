@@ -13,24 +13,33 @@ import {
   backUpState,
   restoreFailState,
   restoreState,
+  routerUrl,
 } from "recoil/atom";
 import RestoreFrom from "./fragment/RestoreForm";
-import useRestart from "@api/management/restart";
-import AlertAdminReq from "@components/common/AlertAdminReq";
+import AlertAdminReq from "containers/management/systemmanage/fragment/AlertAdminReq";
+
+import AlertModifyPw from "./fragment/AlertModifyPw";
+import urlBranch from "@libs/absoluteUrl";
 
 const SystemManage = () => {
+  urlBranch();
+  const ABS_URL = useRecoilValue(routerUrl);
   const { systemInfo } = useSystemInfo();
-  const backUpStateProp = useRecoilValue(backUpState);
-  const backUpFailStateProp = useRecoilValue(backUpFailState);
-  const [backUpProp, setBackUpProp] = useRecoilState(backUpState);
-  const [backUpFailProp, setBackUpFailProp] = useRecoilState(backUpFailState);
 
-  const restoreStateProp = useRecoilValue(restoreState);
-  const restoreFailStateProp = useRecoilValue(restoreFailState);
+  const [backUpSuccess, setBackUpSuccess] = useRecoilState(backUpState);
+  const [backUpFail, setBackUpFail] = useRecoilState(backUpFailState);
+
   const [restoreSuccess, setRestoreSuccess] = useRecoilState(restoreState);
   const [restoreFail, setRestoreFail] = useRecoilState(restoreFailState);
 
-  const [restartAlert, setRestartAlert] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openPwModal = () => {
+    setModalOpen(true);
+  };
+  const closePwModal = () => {
+    setModalOpen(false);
+  };
 
   // useCallback(() => {
   //   setBackUpProp(backUpStateProp);
@@ -39,32 +48,40 @@ const SystemManage = () => {
 
   useEffect(() => {
     let timer = setTimeout(() => {
-      setBackUpProp(false);
-      setBackUpFailProp(false);
+      setBackUpSuccess(false);
+      setBackUpFail(false);
       setRestoreSuccess(false);
       setRestoreFail(false);
     }, 2500);
     return () => {
       clearTimeout(timer);
     };
-  }, [
-    backUpStateProp,
-    backUpFailStateProp,
-    restoreStateProp,
-    restoreFailStateProp,
-  ]);
+  }, [backUpSuccess, backUpFail, restoreSuccess, restoreFail]);
 
+  // console.log("Recoil 전역 상태 ABS_URL :: ", ABS_URL);
+  console.log("모달 state :: ", modalOpen);
   return (
     <Layout title="시스템 관리">
+      {modalOpen && (
+        <AlertModifyPw
+          ABS_URL={ABS_URL}
+          open={modalOpen}
+          close={closePwModal}
+          header={"비밀번호 변경"}
+        />
+      )}
       <div className="space-y-4">
         <div className="flex justify-end space-x-4">
-          <button className="flex items-center space-x-2 rounded-sm bg-gray-600 px-4 py-3 text-sm text-white">
+          <button
+            onClick={openPwModal}
+            className="flex items-center space-x-2 rounded-sm bg-gray-600 px-4 py-3 text-sm text-white"
+          >
             <RiLockPasswordLine className="text-lg" />
-            <span>패스워드 변경</span>
+            <span>비밀번호 변경</span>
           </button>
           <button
-            type="submit"
-            onClick={() => AlertAdminReq()}
+            // type="submit"
+            onClick={() => AlertAdminReq(ABS_URL)}
             className="flex items-center space-x-2 rounded-sm bg-gray-900 px-4 py-3 text-sm text-white"
           >
             <VscDebugRestart className="text-lg" />
@@ -88,7 +105,7 @@ const SystemManage = () => {
           <span className="text-xl font-bold text-gray-700">백업</span>
           <div className="flex w-[80%] items-center justify-end space-x-4">
             <BackUp />
-            {backUpStateProp && (
+            {backUpSuccess && (
               <div
                 className="absolute top-7 left-1/2 -translate-x-1/2 rounded-b  border-t-4 border-teal-500 bg-teal-100 px-3 py-3 pr-10 text-teal-900 shadow-2xl"
                 role="alert"
@@ -106,7 +123,7 @@ const SystemManage = () => {
                 </div>
               </div>
             )}
-            {backUpFailStateProp && (
+            {backUpFail && (
               <div
                 className="absolute top-7 left-1/2 -translate-x-1/2 rounded-b  border-t-4 border-red-500 bg-red-100 px-3 py-3 pr-10 text-teal-900 shadow-2xl"
                 role="alert"
@@ -131,7 +148,7 @@ const SystemManage = () => {
           <span className="text-xl font-bold text-gray-700">복원</span>
           <RestoreFrom />
 
-          {restoreStateProp && (
+          {restoreSuccess && (
             <div
               className="absolute top-7 left-1/2 -translate-x-1/2 rounded-b  border-t-4 border-teal-500 bg-teal-100 px-3 py-3 pr-10 text-teal-900 shadow-2xl"
               role="alert"
@@ -147,7 +164,7 @@ const SystemManage = () => {
               </div>
             </div>
           )}
-          {restoreFailStateProp && (
+          {restoreFail && (
             <div
               className="absolute top-7 left-1/2 -translate-x-1/2 rounded-b  border-t-4 border-red-500 bg-red-100 px-3 py-3 pr-10 text-teal-900 shadow-2xl"
               role="alert"

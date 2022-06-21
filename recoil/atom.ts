@@ -19,3 +19,8 @@ export const restoreFailState = atom({
   key: "restoreFailState",
   default: false,
 });
+
+export const routerUrl = atom({
+  key: "routerURL",
+  default: "",
+});

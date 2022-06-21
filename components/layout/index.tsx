@@ -79,7 +79,7 @@ export default function Layout({
 
   return (
     <div className="flex h-screen w-screen">
-      <nav className="fixed top-0 left-0 z-50 h-screen w-[200px] bg-white shadow-md">
+      <nav className="fixed top-0 left-0 z-10 h-screen w-[200px] bg-white shadow-md">
         <div className="m-auto h-20 w-[140px] bg-logo bg-contain bg-center bg-no-repeat"></div>
         <Link href="/">
           <a

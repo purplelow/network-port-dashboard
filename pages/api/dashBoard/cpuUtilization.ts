@@ -1,4 +1,6 @@
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
 // import dotenv from "dotenv";
 // dotenv.config();
@@ -14,7 +16,7 @@ interface CpuUtilizationProps {
     load: number;
   };
 }
-const cpuUsage_API_URL = process.env.REACT_APP_CPUUSAGE;
+const CPU_API_URL = process.env.NEXT_PUBLIC_CPU_USAGE;
 
 const fetcher = (url: string) =>
   axios
@@ -23,10 +25,9 @@ const fetcher = (url: string) =>
     .catch((err) => console.log("Cpu data error ", err));
 
 export default function useCpuUtilization() {
-  const { data, error } = useSWR(
-    `http://192.168.123.190:8080/api/dashBoard/cpuUsage`,
-    fetcher
-  );
+  const ABS_URL = useRecoilValue(routerUrl);
+  console.log("대시보드 cpu api url", ABS_URL);
+  const { data, error } = useSWR(`${ABS_URL}${CPU_API_URL}`, fetcher);
   return {
     cpuUtilization: data,
     isLoading: !error && !data,
