@@ -73,7 +73,7 @@ const SystemManage = () => {
       <div className="space-y-4">
         <div className="flex justify-end space-x-4">
           <button
-            onClick={openPwModal}
+            onClick={() => setModalOpen(true)}
             className="flex items-center space-x-2 rounded-sm bg-gray-600 px-4 py-3 text-sm text-white"
           >
             <RiLockPasswordLine className="text-lg" />

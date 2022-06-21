@@ -14,8 +14,8 @@ const MODIFYPASSWD_API_URL = process.env.NEXT_PUBLIC_MODIFYPASSWORD;
 
 export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
   const { register, handleSubmit } = useForm<ModifyPwForm>();
-  const [asisPwd, setAsisPwd]: any = useState("");
-  const [tobePwd, setTobePwd]: any = useState("");
+  const [asisPwd, setAsisPwd] = useState<ModifyPwForm>();
+  const [tobePwd, setTobePwd] = useState<ModifyPwForm>();
   const [modiFyPwSuccess, setModiFyPwSuccess] = useState(false);
 
   const passwordJson = {
@@ -57,7 +57,7 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
           <div className="w-1/3 min-w-[120px]">
             <label
               className="block pr-4 text-right text-base font-medium text-gray-600"
-              htmlFor="inline-full-name"
+              htmlFor="asisPw"
             >
               현재 비밀번호
             </label>
@@ -69,7 +69,7 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
                 onChange: (e) => setAsisPwd(e.target.value),
               })}
               className="w-full appearance-none rounded border-[1px] border-gray-500 bg-gray-100 py-2 px-4 leading-tight text-gray-700 focus:border-purple-500 focus:bg-white focus:outline-none"
-              id="inline-full-name"
+              id="asisPw"
               type="password"
             />
           </div>
@@ -78,7 +78,7 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
           <div className="w-1/3 min-w-[120px]">
             <label
               className="block pr-4 text-right text-base font-medium text-gray-600"
-              htmlFor="inline-password"
+              htmlFor="tobePw"
             >
               새로운 비밀번호
             </label>
@@ -89,7 +89,7 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
                 // required: "새로운 비밀번호를 입력하세요.",
               })}
               className="w-full appearance-none rounded border-[1px] border-gray-500 bg-gray-100 py-2 px-4 leading-tight text-gray-700 focus:border-purple-500 focus:bg-white focus:outline-none"
-              id="inline-password"
+              id="tobePw"
               type="password"
             />
           </div>
@@ -99,7 +99,7 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
           <div className="w-1/3 min-w-[120px]">
             <label
               className="block  pr-4 text-right text-base font-medium text-gray-600"
-              htmlFor="inline-password"
+              htmlFor="tobePwCheck"
             >
               새로운 비밀번호 확인
             </label>
@@ -111,7 +111,7 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
                 onChange: (e) => setTobePwd(e.target.value),
               })}
               className="w-full appearance-none rounded border-[1px] border-gray-500 bg-gray-100 py-2 px-4 leading-tight text-gray-700 focus:border-purple-500 focus:bg-white focus:outline-none"
-              id="inline-password"
+              id="tobePwCheck"
               type="password"
             />
           </div>

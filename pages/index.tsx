@@ -15,9 +15,9 @@ import urlBranch from "@libs/absoluteUrl";
 
 const Dashboard: NextPage = () => {
   urlBranch();
-  useEffect(() => {
-    return () => {};
-  }, []);
+  // useEffect(() => {
+  //   return () => {};
+  // }, []);
 
   return <DashboardContainer />;
 };

@@ -32,7 +32,12 @@ const fetcher = async (url: string) =>
 export default function useStorageUtilization() {
   const { data, error } = useSWR(
     `http://192.168.123.190:8080/api/dashBoard/storageUsage`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+      revalidateOnReconnect: false,
+    }
   );
   return {
     storageUtilization: data,

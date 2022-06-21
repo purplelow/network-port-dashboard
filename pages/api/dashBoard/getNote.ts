@@ -14,7 +14,12 @@ const fetcher = async (url: string) =>
 export default function useGetNote() {
   const { data, error } = useSWR(
     `http://192.168.123.190:8080/api/dashBoard/getNote`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+      revalidateOnReconnect: false,
+    }
   );
   return {
     getNoteData: data,

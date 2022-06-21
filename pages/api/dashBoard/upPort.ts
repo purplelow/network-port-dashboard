@@ -13,8 +13,8 @@ interface AppService {
   id: string;
 }
 
-const fetcher = (url: string) =>
-  axios
+const fetcher = async (url: string) =>
+  await axios
     .get<UpPortProps>(url)
     .then((res) => res.data)
     .catch((err) => console.error("Up port data error ", err));
@@ -22,7 +22,12 @@ const fetcher = (url: string) =>
 export default function useUpPortData() {
   const { data, error } = useSWR(
     `http://192.168.123.190:8080/api/dashBoard/getUpPortStatus`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+      revalidateOnReconnect: false,
+    }
   );
   return {
     upPortInfo: data,

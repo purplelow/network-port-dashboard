@@ -11,8 +11,8 @@ interface SystemInfoProps {
   };
 }
 
-const fetcher = (url: string) =>
-  axios
+const fetcher = async (url: string) =>
+  await axios
     .get<SystemInfoProps>(url)
     .then((res) => res.data)
     .catch((err) => console.error("System data error ", err));
@@ -20,7 +20,12 @@ const fetcher = (url: string) =>
 export default function useSystemInfo() {
   const { data, error } = useSWR(
     `http://192.168.123.190:8080/api/dashBoard/systemInfo`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+      revalidateOnReconnect: false,
+    }
   );
   return {
     systemInfo: data,

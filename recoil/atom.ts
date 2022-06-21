@@ -21,6 +21,6 @@ export const restoreFailState = atom({
 });
 
 export const routerUrl = atom({
-  key: "routerURL",
+  key: "routerUrl",
   default: "",
 });
