@@ -24,7 +24,6 @@ const PortSetting = () => {
         <button
           type="submit"
           className="flex items-center space-x-2 rounded-sm border border-blue-700 bg-blue-700 p-2 px-11 text-sm font-medium text-white hover:bg-blue-800 "
-          onClick={()=> }
         >
           <span>설정 적용</span>
         </button>
