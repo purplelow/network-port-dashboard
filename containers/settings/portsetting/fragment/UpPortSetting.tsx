@@ -108,7 +108,7 @@ export default function UpPortSetting() {
             </th>
           </tr>
         </thead>
-        <tbody className="h-full overflow-auto">
+        <tbody className="overflow-auto">
           {upPortList?.map((com: any, i: string) => (
             <tr className="border-b bg-white hover:bg-gray-50" key={i}>
               <td className="w-4 px-4">
@@ -138,11 +138,9 @@ export default function UpPortSetting() {
                   onChange={onChangePort}
                 />
               </td>
-              <td id="t3" className="px-6 py-1.5 text-right">{com.t3}</td>
-              <td id="t5" className="px-6 py-1.5 text-right">{com.t5}</td>
-              <td id="t6" className="px-6 py-1.5 text-right">{com.t6}</td>
-              <td className="px-6 py-1.5 text-right">{com.t7}</td>
-              <td className="px-6 py-1.5 text-right">{com.t8}</td>
+              <td className="px-6 py-1.5 text-right">{com.t3}</td>
+              <td className="px-6 py-1.5 text-right">{com.t5}</td>
+              <td className="px-6 py-1.5 text-right">{com.t6}</td>
             </tr>
           ))}
         </tbody>

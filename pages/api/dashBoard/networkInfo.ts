@@ -37,13 +37,21 @@ interface Statistics {
   tx_packets: number;
 }
 
-const fetcher = (url: string) =>
-  axios.get<NetworkInfoProps>(url).then((res) => res.data);
+const fetcher = async (url: string) =>
+  await axios
+    .get<NetworkInfoProps>(url)
+    .then((res) => res.data)
+    .catch((err) => console.error("Network data error ", err));
 
 export default function useNetworkInfo() {
   const { data, error } = useSWR(
     `http://192.168.123.190:8080/api/dashBoard/networkInfo`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+      revalidateOnReconnect: false,
+    }
   );
   return {
     networkInfo: data,

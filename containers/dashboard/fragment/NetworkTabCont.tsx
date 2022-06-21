@@ -8,9 +8,10 @@ export default function NetworkTabCont({ tabIndex }: TabProp) {
   const { networkInfo, isLoading, isError } = useNetworkInfo();
   // const mbpsCalc = () => { let bpsSpeed = networkInfo?.interfaces[0].speed; bpsSpeed / 10000; };
 
-  const bpsSpeed = networkInfo?.interfaces[0].speed;
+  const bpsSpeedA = networkInfo?.interfaces[0].speed! / 1000000;
+  const bpsSpeedB = networkInfo?.interfaces[1]?.speed! / 1000000;
 
-  const statusImg = () => {
+  const statusImgA = () => {
     let result;
     if (
       networkInfo?.interfaces[0].admin_status === 1 &&
@@ -27,6 +28,23 @@ export default function NetworkTabCont({ tabIndex }: TabProp) {
     }
     return result;
   };
+  const statusImgB = () => {
+    let result;
+    if (
+      networkInfo?.interfaces[1]?.admin_status === 1 &&
+      networkInfo?.interfaces[1]?.oper_status === 1
+    ) {
+      result = "bg-lanConnected";
+    } else if (
+      networkInfo?.interfaces[1]?.admin_status === 1 &&
+      networkInfo?.interfaces[1]?.oper_status === 2
+    ) {
+      result = "bg-lanDisconnected";
+    } else {
+      result = "bg-lanInactive";
+    }
+    return result;
+  };
 
   return (
     <div className="h-[calc(100%-50px)] w-full">
@@ -36,12 +54,12 @@ export default function NetworkTabCont({ tabIndex }: TabProp) {
             <h5
               className={cls(
                 "h-[41px] bg-[left_bottom] bg-no-repeat pl-16 text-xl font-bold leading-[41px] text-gray-900",
-                statusImg()
+                statusImgA()
               )}
             >
               {networkInfo?.interfaces[0].name}
             </h5>
-            <span>{bpsSpeed! / 1000000} Mbps</span>
+            <span>{bpsSpeedA ? bpsSpeedA : "-"} Mbps</span>
           </div>
 
           <div className="mx-auto w-[98%] p-4">
@@ -135,10 +153,15 @@ export default function NetworkTabCont({ tabIndex }: TabProp) {
       ) : (
         <div className="h-full w-full rounded-b-lg border bg-white p-2 shadow-sm">
           <div className="mx-auto flex w-[98%] items-center justify-start space-x-4 border-b-[1px] border-gray-200 p-2 pb-4">
-            <h5 className="h-[36px] bg-lanIco bg-[left_center] bg-no-repeat pl-16 text-xl font-bold leading-[36px] text-gray-900">
-              LAN 2
+            <h5
+              className={cls(
+                "h-[41px] bg-[left_bottom] bg-no-repeat pl-16 text-xl font-bold leading-[41px] text-gray-900",
+                statusImgB()
+              )}
+            >
+              {networkInfo?.interfaces[1]?.name}
             </h5>
-            <span>100Mbps</span>
+            <span>{bpsSpeedB ? bpsSpeedB : "-"} Mbps</span>
           </div>
 
           <div className="mx-auto w-[98%] p-4">
@@ -147,13 +170,21 @@ export default function NetworkTabCont({ tabIndex }: TabProp) {
               className="grid grid-cols-6 gap-y-2 align-middle text-sm"
             >
               <li className="font-bold text-gray-700">IP</li>
-              <li className="col-span-2 text-gray-600">112341234</li>
+              <li className="col-span-2 text-gray-600">
+                {networkInfo?.interfaces[1]?.addresses[0].address}
+              </li>
               <li className="font-bold text-gray-700">NETMASK</li>
-              <li className="col-span-2 text-gray-600">23450</li>
-              <li className="font-bold text-gray-700">MAP</li>
-              <li className="col-span-2 text-gray-600">004567d</li>
+              <li className="col-span-2 text-gray-600">
+                {networkInfo?.interfaces[1]?.addresses[0].mask}
+              </li>
+              <li className="font-bold text-gray-700">MAC</li>
+              <li className="col-span-2 text-gray-600">
+                {networkInfo?.interfaces[1]?.mac_address}
+              </li>
               <li className="font-bold text-gray-700">GATEWAY</li>
-              <li className="col-span-2 text-gray-600">1956781</li>
+              <li className="col-span-2 text-gray-600">
+                {networkInfo?.interfaces[1]?.addresses[0].gateway}
+              </li>
             </ul>
 
             <ul
@@ -165,26 +196,26 @@ export default function NetworkTabCont({ tabIndex }: TabProp) {
                 <span className="mr-2 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                   BYTES
                 </span>
-                3465
+                {networkInfo?.interfaces[1]?.statistics.rx_bytes}
               </li>
               <li className="col-span-2 text-gray-600">
                 <span className="mr-2 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                   DISCARDS
                 </span>
-                56786785
+                {networkInfo?.interfaces[1]?.statistics.rx_discards}
               </li>
               <li className="font-bold text-gray-700"></li>
               <li className="col-span-2 text-gray-600">
                 <span className="mr-2 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                   ERRORS
                 </span>
-                0
+                {networkInfo?.interfaces[1]?.statistics.rx_errors}
               </li>
               <li className="col-span-2 text-gray-600">
                 <span className="mr-2 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                   PACKETS
                 </span>
-                0
+                {networkInfo?.interfaces[1]?.statistics.rx_packets}
               </li>
             </ul>
 
@@ -197,26 +228,26 @@ export default function NetworkTabCont({ tabIndex }: TabProp) {
                 <span className="mr-2 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                   BYTES
                 </span>
-                123456456789
+                {networkInfo?.interfaces[1]?.statistics.tx_bytes}
               </li>
               <li className="col-span-2 text-gray-600">
                 <span className="mr-2 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                   DISCARDS
                 </span>
-                5678123
+                {networkInfo?.interfaces[1]?.statistics.tx_discards}
               </li>
               <li className="font-bold text-gray-700"></li>
               <li className="col-span-2 text-gray-600">
                 <span className="mr-2 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                   ERRORS
                 </span>
-                0
+                {networkInfo?.interfaces[1]?.statistics.tx_errors}
               </li>
               <li className="col-span-2 text-gray-600">
                 <span className="mr-2 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                   PACKETS
                 </span>
-                0
+                {networkInfo?.interfaces[1]?.statistics.tx_packets}
               </li>
             </ul>
           </div>

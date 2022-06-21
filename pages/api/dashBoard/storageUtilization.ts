@@ -24,12 +24,20 @@ interface StorageUtilizationProps {
 }
 
 const fetcher = async (url: string) =>
-  await axios.get<StorageUtilizationProps>(url).then((res) => res.data);
+  await axios
+    .get<StorageUtilizationProps>(url)
+    .then((res) => res.data)
+    .catch((err) => console.error("Storage data error ", err));
 
 export default function useStorageUtilization() {
   const { data, error } = useSWR(
     `http://192.168.123.190:8080/api/dashBoard/storageUsage`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+      revalidateOnReconnect: false,
+    }
   );
   return {
     storageUtilization: data,

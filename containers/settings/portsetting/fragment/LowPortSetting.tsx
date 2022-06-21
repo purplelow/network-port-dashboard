@@ -107,7 +107,7 @@ export default function DownPortSetting() {
             </th>
           </tr>
         </thead>
-        <tbody className="input-w-s h-full overflow-auto">
+        <tbody className="input-w-s overflow-auto">
           {downPortList?.map((com: any, i: string) => (
             <tr className="border-b bg-white hover:bg-gray-50" key={i}>
               <td className="w-4 px-4">
@@ -200,10 +200,7 @@ export default function DownPortSetting() {
                   defaultValue={com.deviceId}
                 />
               </td>
-              <td className="px-2 py-1.5 text-right">{com.t1}</td>
-              <td className="px-2 py-1.5 text-right">{com.t2}</td>
-              <td className="px-2 py-1.5 text-right">{com.t3}</td>
-              <td className="px-2 py-1.5 text-right">{com.t4}</td>
+             <td className="px-2 py-1.5 text-right">{com.t4}</td>
             </tr>
           ))}
         </tbody>

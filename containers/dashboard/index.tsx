@@ -14,8 +14,10 @@ import SystemTabCont from "./fragment/SystemTabCont";
 import UpCom from "./fragment/UpCom";
 import LowCom from "./fragment/LowCom";
 import SystemInfo from "./fragment/SystemInfo";
+import useNetworkInfo from "@api/dashBoard/networkInfo";
 
 const Dashboard = () => {
+  const { networkInfo } = useNetworkInfo();
   const [tabIndex, setTabIndex] = useState(0);
   const [sysTabIndex, setSysTabIndex] = useState(0);
   return (
@@ -39,7 +41,7 @@ const Dashboard = () => {
                     )}
                     aria-current="page"
                   >
-                    LAN 1
+                    {networkInfo?.interfaces[0].name ?? "LAN -"}
                   </button>
                 </li>
                 <li className="">
@@ -54,7 +56,7 @@ const Dashboard = () => {
                         : "bg-gray-200 text-gray-600 hover:bg-gray-300"
                     )}
                   >
-                    LAN 2
+                    {networkInfo?.interfaces[1]?.name ?? "LAN -"}
                   </button>
                 </li>
               </ul>

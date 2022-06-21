@@ -23,5 +23,8 @@ export default function modifySerialNumber(modelInfoJson: any) {
       //     </Button>
       //   );
       // };
+    })
+    .catch((err) => {
+      console.error("시리얼 넘버 수정 오류 : ", err);
     });
 }

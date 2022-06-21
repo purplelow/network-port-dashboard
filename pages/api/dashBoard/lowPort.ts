@@ -15,13 +15,21 @@ interface SubDevice {
   id: string;
 }
 
-const fetcher = (url: string) =>
-  axios.get<LowPortProps>(url).then((res) => res.data);
+const fetcher = async (url: string) =>
+  await axios
+    .get<LowPortProps>(url)
+    .then((res) => res.data)
+    .catch((err) => console.error("Down port data error ", err));
 
 export default function useLowPortData() {
   const { data, error } = useSWR(
     `http://192.168.123.190:8080/api/dashBoard/getDownPortStatus`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+      revalidateOnReconnect: false,
+    }
   );
   return {
     lowPortInfo: data,

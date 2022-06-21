@@ -29,7 +29,7 @@ export default function SystemTabCont({ sysTabIndex }: SysTabProp) {
                 Mem
               </th>
               <td className="py-4 pr-2">{memoryUtilization?.details.total}</td>
-              <td className="py-4 pr-2">?</td>
+              <td className="py-4 pr-2">{memoryUtilization?.details.used}</td>
               <td className="py-4 pr-2">{memoryUtilization?.details.free}</td>
               <td className="py-4 pr-2">{memoryUtilization?.details.shared}</td>
               <td className="py-4 pr-2">{memoryUtilization?.details.buffer}</td>
