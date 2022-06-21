@@ -4,10 +4,31 @@ import StatusInfo from "@components/common/StatusInfo";
 import Layout from "@components/layout";
 import LowPortSetting from "./fragment/LowPortSetting";
 import UpPortSetting from "./fragment/UpPortSetting";
+import { useRef } from "react";
+
+
 
 const PortSetting = () => {
+  const sampleRef = useRef({});
+
+
   return (
     <Layout title="포트 설정">
+      <div className="flex justify-end space-x-4 py-2">
+        <button
+          type="submit"
+          className="flex items-center space-x-2 rounded-sm border border-[#707070] bg-[#707070] p-2 px-8 text-sm font-medium text-white hover:bg-neutral-600 "
+        >
+          <span>이전 설정 적용</span>
+        </button>
+        <button
+          type="submit"
+          className="flex items-center space-x-2 rounded-sm border border-blue-700 bg-blue-700 p-2 px-11 text-sm font-medium text-white hover:bg-blue-800 "
+          onClick={()=> }
+        >
+          <span>설정 적용</span>
+        </button>
+      </div>
       <div className="grid h-full grid-rows-2 gap-y-2">
         <div className="relative w-full rounded-md bg-white p-2 shadow-md">
           <BoardTitle subTitle="상위 포트 설정 (HSMS)" />
