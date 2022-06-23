@@ -36,7 +36,7 @@ export default function DonwloadButton({ fileName }: any) {
       className="flex items-center space-x-2 rounded-sm border border-blue-700 bg-blue-700 p-2 pr-8 pl-6 text-sm font-medium text-white hover:bg-blue-800 "
     >
       <AiOutlineDownload className="text-2xl" />
-      <span>다운로드</span>
+      <span>파일 다운로드</span>
     </button>
   );
 }

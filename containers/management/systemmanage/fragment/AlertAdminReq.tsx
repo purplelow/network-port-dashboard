@@ -38,7 +38,7 @@ export default function AlertAdminReq(ABS_URL: string) {
           return res.json();
         })
         .catch((err) => {
-          Swal.showValidationMessage(`올바른 암호를 입력하세요: ${err}`);
+          Swal.showValidationMessage(`올바른 암호를 입력하세요.`);
         });
     },
     allowOutsideClick: () => !Swal.isLoading(),

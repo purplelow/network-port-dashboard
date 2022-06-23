@@ -5,15 +5,21 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import { encryptModule } from "@libs/encryptModule";
 
 interface ModifyPwForm {
-  asisPw: number;
-  tobePw?: number;
-  tobePwCheck: number;
+  asisPw: string;
+  tobePw?: string;
+  tobePwCheck: string;
 }
 
 const MODIFYPASSWD_API_URL = process.env.NEXT_PUBLIC_MODIFYPASSWORD;
 
 export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
-  const { register, handleSubmit } = useForm<ModifyPwForm>();
+  const {
+    register,
+    watch,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm<ModifyPwForm>();
   const [asisPwd, setAsisPwd] = useState<ModifyPwForm>();
   const [tobePwd, setTobePwd] = useState<ModifyPwForm>();
   const [modiFyPwSuccess, setModiFyPwSuccess] = useState(false);
@@ -53,7 +59,7 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
         <div className="w-full pb-4 text-center text-2xl font-medium text-slate-700">
           {header}
         </div>
-        <div className="mb-6 flex items-center">
+        <div className="mb-7 flex items-center">
           <div className="w-1/3 min-w-[120px]">
             <label
               className="block pr-4 text-right text-base font-medium text-gray-600"
@@ -62,19 +68,32 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
               현재 비밀번호
             </label>
           </div>
-          <div className="w-2/3">
+          <div className="relative w-2/3">
             <input
               {...register("asisPw", {
-                required: "올바른 현재 비밀번호를 입력하세요.",
+                required: "비밀번호를 입력하세요.",
                 onChange: (e) => setAsisPwd(e.target.value),
+                minLength: {
+                  value: 4,
+                  message: "최소 4자 이상의 비밀번호를 입력하세요.",
+                },
+                maxLength: {
+                  value: 16,
+                  message: "16자 이하의 비밀번호만 사용가능합니다.",
+                },
               })}
               className="w-full appearance-none rounded border-[1px] border-gray-500 bg-gray-100 py-2 px-4 leading-tight text-gray-700 focus:border-purple-500 focus:bg-white focus:outline-none"
               id="asisPw"
               type="password"
             />
+            {errors.asisPw && (
+              <p className="absolute -bottom-5 text-sm italic text-red-500">
+                {errors.asisPw.message}
+              </p>
+            )}
           </div>
         </div>
-        <div className="mb-6 flex items-center">
+        <div className="mb-7 flex items-center">
           <div className="w-1/3 min-w-[120px]">
             <label
               className="block pr-4 text-right text-base font-medium text-gray-600"
@@ -83,19 +102,38 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
               새로운 비밀번호
             </label>
           </div>
-          <div className="w-2/3">
+          <div className="relative w-2/3">
             <input
               {...register("tobePw", {
-                // required: "새로운 비밀번호를 입력하세요.",
+                required: "새로운 비밀번호를 입력하세요.",
+                minLength: {
+                  value: 4,
+                  message: "최소 4자 이상의 비밀번호를 입력하세요.",
+                },
+                maxLength: {
+                  value: 16,
+                  message: "16자 이하의 비밀번호만 사용가능합니다.",
+                },
+                validate: {
+                  matchesAsisPw: (value) => {
+                    const asisPw = getValues("asisPw");
+                    return asisPw !== value || "기존 비밀번호와 같습니다.";
+                  },
+                },
               })}
               className="w-full appearance-none rounded border-[1px] border-gray-500 bg-gray-100 py-2 px-4 leading-tight text-gray-700 focus:border-purple-500 focus:bg-white focus:outline-none"
               id="tobePw"
               type="password"
             />
+            {errors.tobePw && (
+              <p className="absolute -bottom-5 text-sm italic text-red-500">
+                {errors.tobePw.message}
+              </p>
+            )}
           </div>
         </div>
 
-        <div className="mb-6 flex items-center">
+        <div className="mb-7 flex items-center">
           <div className="w-1/3 min-w-[120px]">
             <label
               className="block  pr-4 text-right text-base font-medium text-gray-600"
@@ -104,21 +142,32 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
               새로운 비밀번호 확인
             </label>
           </div>
-          <div className="w-2/3">
+          <div className="relative w-2/3">
             <input
               {...register("tobePwCheck", {
                 required: "비밀번호가 일치하지 않습니다.",
                 onChange: (e) => setTobePwd(e.target.value),
+                validate: {
+                  matchesPreviousPw: (value) => {
+                    const tobePw = getValues("tobePw");
+                    return tobePw === value || "비밀번호가 일치하지 않습니다.";
+                  },
+                },
               })}
               className="w-full appearance-none rounded border-[1px] border-gray-500 bg-gray-100 py-2 px-4 leading-tight text-gray-700 focus:border-purple-500 focus:bg-white focus:outline-none"
               id="tobePwCheck"
               type="password"
             />
+            {errors.tobePwCheck && (
+              <p className="absolute -bottom-5 text-sm italic text-red-500">
+                {errors.tobePwCheck.message}
+              </p>
+            )}
           </div>
         </div>
         <div className="flex items-center justify-center space-x-4">
           <button
-            className="focus:shadow-outline rounded bg-purple-500 py-2 px-4 font-medium text-white shadow hover:bg-purple-400 focus:outline-none"
+            className="focus:shadow-outline rounded bg-blue-600 py-2 px-4 font-medium text-white shadow hover:bg-blue-500 focus:outline-none"
             type="submit"
           >
             변경하기

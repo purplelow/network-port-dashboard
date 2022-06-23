@@ -6,11 +6,14 @@ import { useEffect } from "react";
 export default function urlBranch() {
   const DEV_ENV = process.env.NEXT_PUBLIC_DEV;
   const [absUrl, setAbsUrl] = useRecoilState(routerUrl);
+
   if (typeof window !== "undefined") {
     useEffect(() => {
-      const { origin } = absoluteUrl();
+      const { host } = absoluteUrl();
+      const apiURL = `http://${host}`;
+
       if (DEV_ENV) setAbsUrl(DEV_ENV);
-      else setAbsUrl(origin);
+      else setAbsUrl(apiURL);
     }, []);
   }
 }
