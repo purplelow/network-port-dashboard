@@ -67,7 +67,7 @@ export default function UpPortSetting() {
   return (
     <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-md border-[1px] border-gray-300 shadow-md">
       {/* <button onClick={upPortPut}>test</button> */}
-      <table className="h-full w-full text-left text-sm text-gray-500 align-top">
+      <table className="w-full text-left text-sm text-gray-500">
         <thead className="bg-blue-100 text-xs uppercase text-gray-700">
           <tr>
             <th scope="col" className="px-4 py-2">
