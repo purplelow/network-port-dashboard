@@ -1,6 +1,5 @@
-import useGetLogFilelist from "@api/management/getLogFilelist";
-import useGetLogView from "@api/management/getLogView";
 import LoadingA from "@components/common/LoadingA";
+import LoadingB from "@components/common/LoadingB";
 import Layout from "@components/layout";
 import axios from "axios";
 import { useState } from "react";
@@ -11,19 +10,9 @@ import DownloadButton from "./DownloadBtn";
 
 const History = ({ data }: any) => {
   const [currentFileName, setCurrentFimeName] = useState(data?.filenames[0]);
-  // const { getLogView, isLoading, isError, isValidating } = useGetLogView(
-  //   currentFileName || data?.filenames[0]
-  // );
-  // console.log(
-  //   " @@ ? swr isValidating ??? :: ",
-  //   isValidating,
-  //   " @loading? : ",
-  //   isLoading
-  // );
   const [logViewData, setLogViewData] = useState("");
   const [loading, setLoading] = useState(false);
 
-  console.log("currentFileName ? : ", currentFileName);
   const logViewHandle = () => {
     setLoading(true);
     axios({
@@ -33,7 +22,6 @@ const History = ({ data }: any) => {
       .then((res) => {
         setLogViewData(res.data.logview);
         setLoading(false);
-        console.log("log view success");
       })
       .catch((err) => console.error("로그 뷰 api 에러 : ", err));
   };
@@ -63,7 +51,7 @@ const History = ({ data }: any) => {
                 className="flex cursor-wait items-center space-x-2 rounded-sm border border-slate-400 bg-slate-400 p-2 pr-8 pl-6 text-sm font-medium text-white hover:bg-slate-500 "
               >
                 <AiOutlineFolderView className="text-2xl" />
-                <span>파일 로드중</span>
+                <span>로그 파일 로드중</span>
               </button>
             ) : (
               <button
@@ -72,15 +60,14 @@ const History = ({ data }: any) => {
                 className="flex items-center space-x-2 rounded-sm border border-blue-700 bg-blue-700 p-2 pr-8 pl-6 text-sm font-medium text-white hover:bg-blue-800 "
               >
                 <AiOutlineFolderView className="text-2xl" />
-                <span>파일 보기</span>
+                <span>로그 보기</span>
               </button>
             )}
             <DownloadButton fileName={currentFileName} />
           </div>
 
-          <div className="mt-10 h-[calc(100%-80px)] w-full overflow-auto rounded-md border-[1px] border-gray-400 p-4">
-            {/* {!logViewData ? " Loading ... " : logViewData} */}
-            {loading ? <LoadingA /> : logViewData}
+          <div className="mt-10 h-[calc(100%-80px)] w-full overflow-auto whitespace-pre-line rounded-md border-[1px] border-gray-400 p-4">
+            {loading ? <LoadingB /> : logViewData}
           </div>
         </div>
       </div>

@@ -14,10 +14,12 @@
     "deploy-gh-pages": "rm -rf node_modules/.cache && next build && next export && tailwindcss styles/globals.css -o out/globals.css && touch out/.nojekyll && git add -f out/ && git checkout -b temp-for-deploy-gh-pages && git commit -m \"Deploy Next.js to gh-pages\" && git subtree split --prefix out -b gh-pages && git push -f origin gh-pages:gh-pages && git branch -D gh-pages && git checkout main && git branch -D temp-for-deploy-gh-pages"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
     "apexcharts": "^3.35.0",
     "axios": "^0.27.2",
     "chart.js": "^3.7.1",
     "crypto-js": "^4.1.1",
+    "date-fns": "^2.28.0",
     "dotenv": "^16.0.1",
     "dotenv-webpack": "^7.1.0",
     "env-cmd": "^10.1.0",
@@ -47,6 +49,7 @@
     "@types/crypto-js": "^4.1.1",
     "@types/node": "17.0.26",
     "@types/react": "18.0.6",
+    "@types/react-datepicker": "^4.4.2",
     "@types/react-dom": "18.0.2",
     "autoprefixer": "^10.4.5",
     "babel-eslint": "^10.1.0",

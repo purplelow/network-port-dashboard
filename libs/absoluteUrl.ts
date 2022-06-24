@@ -9,7 +9,7 @@ export default function urlBranch() {
 
   if (typeof window !== "undefined") {
     useEffect(() => {
-      const { host } = absoluteUrl();
+      const { protocol, host } = absoluteUrl();
       const apiURL = `http://${host}`;
 
       if (DEV_ENV) setAbsUrl(DEV_ENV);

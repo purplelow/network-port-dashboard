@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from "next";
+import type { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import HistoryContainer from "../../containers/management/history";
 
 const History: NextPage = ({ data }: any) => {
@@ -7,7 +7,7 @@ const History: NextPage = ({ data }: any) => {
 
 export default History;
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const res = await fetch(
     `http://192.168.123.190:8080/api/history/getLogFilelist`
   );

@@ -25,11 +25,9 @@ export default function ModelSerial() {
     modelName: modelNameGetValue,
     modelSerial: modelSerial ?? modelSerialGetValue,
   };
-  console.log("시리얼 넘버 수정 값 json data : ", modelInfoJson);
 
   const onValid = (data: ModelForm) => {
     modifySerialNumber(modelInfoJson);
-    console.log("im valid");
   };
 
   const onInvalid = (errors: FieldErrors) => {
