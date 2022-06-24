@@ -1,6 +1,6 @@
 import useUpPortList from "@api/setting/upPortList";
 import updatePortSetting from "@api/setting/modifyPort";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { forwardRef, useImperativeHandle } from "react";
 import axios from "axios";
 
@@ -40,14 +40,14 @@ export default function UpPortSetting() {
         upPorts.map((u2) => u2.id === updateUpPort.id ? {...u2, port: updateUpPort.port } : u2)
       )
     }
-    // console.log(upPorts);
+     console.log(upPorts);
   }
 
   const upPortPut = () => {
     upPorts?.map((u) => {
       if(u.id !== "-1") {
         if(Number(u.port) < 1 || Number(u.port) > 65535) {
-          alert("1~65535 사이 숫자를 입력하세요.");
+          alert("상위 포트 설정: LISTEN PORT는 1~65535 사이 숫자를 입력하세요.");
         } else {
           let upPortJson = {
             upPortList: [
@@ -116,6 +116,7 @@ export default function UpPortSetting() {
                   <input
                     id="checkbox-table-1"
                     type="checkbox"
+                    key={i}
                     className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
                   />
                   <label htmlFor="checkbox-table-1" className="sr-only">
@@ -141,6 +142,8 @@ export default function UpPortSetting() {
               <td className="px-6 py-1.5 text-right">{com.t3}</td>
               <td className="px-6 py-1.5 text-right">{com.t5}</td>
               <td className="px-6 py-1.5 text-right">{com.t6}</td>
+              <td className="px-6 py-1.5 text-right">{com.t7}</td>
+              <td className="px-6 py-1.5 text-right">{com.t8}</td>
             </tr>
           ))}
         </tbody>

@@ -14,8 +14,8 @@ import axios from "axios";
 //     {
 //       baudrate: "",
 //       databits: "",
-//       deviceName: "",
-//       device_id: "",
+//       type: "",
+//       deviceId: "",
 //       id: "",
 //       model: "",
 //       name: "",

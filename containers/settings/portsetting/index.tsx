@@ -9,9 +9,6 @@ import { useRef } from "react";
 
 
 const PortSetting = () => {
-  const sampleRef = useRef({});
-
-
   return (
     <Layout title="포트 설정">
       <div className="absolute top-10 right-4 flex justify-end space-x-4 py-2">
