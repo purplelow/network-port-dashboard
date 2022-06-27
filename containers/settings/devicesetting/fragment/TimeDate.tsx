@@ -1,22 +1,43 @@
 import useTimeInfo from "@api/setting/getTimeInfo";
 import { cls } from "@libs/utils";
-import moment from "moment-timezone";
 import { useState } from "react";
-import TimezoneSelect from "react-timezone-select";
+import dynamic from "next/dynamic";
+import { useForm } from "react-hook-form";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+const TimezoneSelect = dynamic(() => import("react-timezone-select"), {
+  ssr: false,
+});
+
+interface upDataTimeProps {}
 
 export default function TimeDateInfo() {
-  const { sysTimeInfo } = useTimeInfo();
+  const { register, handleSubmit } = useForm();
   const [timeTabIndex, setTimeTabIndex] = useState(0);
-  const [datetime, setDatetime] = useState(moment());
+  const { sysTimeInfo } = useTimeInfo();
+  const sysSetTime = sysTimeInfo?.timeInfo;
 
-  // useEffect(() => {
-  //   const tzValue = tz.value ?? tz;
-  //   setDatetime(datetime.tz(tzValue));
-  // }, [tz, datetime]);
-
-  const [tz, setTz]: any = useState(
+  const [selectedTimezone, setSelectedTimezone]: any = useState(
     Intl.DateTimeFormat().resolvedOptions().timeZone
   );
+  const selectedGMT = () => {
+    let result;
+    if (selectedTimezone) {
+      result = selectedTimezone.toString().split("/");
+    } else {
+      result = "";
+    }
+    return result;
+  };
+  const GMTArea = selectedGMT()[0];
+  const GMTZone = selectedGMT()[1];
+
+  console.log("selectedTimezone ? : ", selectedTimezone);
+  console.log("GMTArea, GMTZone ? : ", GMTArea, ",", GMTZone);
+
+  const [startDate, setStartDate] = useState(new Date());
+  console.log("날짜 및 시간", startDate);
 
   return (
     <div className="row-span-2 rounded-md bg-white shadow-md">
@@ -57,75 +78,53 @@ export default function TimeDateInfo() {
                 </li> */}
           </ul>
           <div className="border border-gray-300 px-6 py-10">
-            {
-              timeTabIndex === 0 ? (
-                <form className="h-full">
-                  <div className="flex h-full items-end justify-between">
-                    <div className="flex w-2/5 items-center">
-                      <span className="pr-2 text-sm font-medium text-gray-900">
-                        날짜 및 시간
-                      </span>
-                      <input
-                        // value={sysTimeInfo?.timeInfo ?? 0}
-                        // onChange={(e) => e.target.value}
-                        defaultValue={sysTimeInfo?.timeInfo ?? ""}
-                        type="text"
-                        className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
-                        placeholder="날짜 및 시간"
-                        required
+            {timeTabIndex === 0 ? (
+              <form className="h-full">
+                <div className="flex h-full items-center justify-between">
+                  <div className="flex w-2/5 items-center">
+                    <label className="pr-2 text-sm font-medium text-gray-900">
+                      날짜 및 시간
+                    </label>
+                    {/* <DateCustom /> */}
+                    <div className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700">
+                      <DatePicker
+                        id="datezone"
+                        selected={startDate}
+                        onChange={(date: Date) => setStartDate(date)}
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={10}
+                        timeCaption="time"
+                        dateFormat="yyyy/MM/dd hh:mm aa"
+                        className=""
                       />
                     </div>
-                    <div className="flex w-2/5 items-center">
-                      <span className="pr-2 text-sm font-medium text-gray-900">
-                        표준 시간대
-                      </span>
-                      {/* <select
-                          id="countries"
-                          className="w-4/5 rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 outline-none focus:border-[1px] focus:border-gray-700"
-                        >
-                          {GmtList.map((gmt, i) => (
-                            <option value={gmt.zone} key={i}>
-                              {gmt.zone}&nbsp;
-                              {gmt.time}
-                            </option>
-                          ))}
-                        </select> */}
-
-                      <div className="w-4/5">
-                        <TimezoneSelect value={tz} onChange={setTz} />
-                      </div>
-
-                      {/* <div className="fixed top-0 left-0 z-50 h-1/3 w-1/3 border-2 bg-slate-100">
-                          <div>
-                            Current Date / Time in{" "}
-                            {tz.value
-                              ? tz.value.split("/")[1]
-                              : tz.split("/")[1]}
-                            : <pre>{datetime.format("DD.MM.YY HH:mm:ss")}</pre>
-                          </div>
-                          <div>
-                            <div>Selected Timezone:</div>
-                            <pre className="tz-output">
-                              {JSON.stringify(tz, null, 2)}
-                            </pre>
-                          </div>
-                        </div> */}
-                    </div>
-                    <div className="flex w-1/5 justify-end">
-                      <button
-                        type="submit"
-                        className="rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-10 text-sm font-medium text-white hover:bg-blue-800 "
-                      >
-                        설정 적용
-                      </button>
+                  </div>
+                  <div className="flex w-2/5 items-center">
+                    <label className="pr-2 text-sm font-medium text-gray-900">
+                      표준 시간대
+                    </label>
+                    <div className="w-4/5 text-sm">
+                      <TimezoneSelect
+                        value={selectedTimezone}
+                        onChange={(e) => setSelectedTimezone(e.value)}
+                      />
                     </div>
                   </div>
-                </form>
-              ) : (
-                <div>{/* <h2>시간설정 (NTP)</h2> */}</div>
-              )
+                  <div className="flex w-1/5 justify-end">
+                    <button
+                      type="submit"
+                      className="rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-10 text-sm font-medium text-white hover:bg-blue-800 "
+                    >
+                      설정 적용
+                    </button>
+                  </div>
+                </div>
+              </form>
+            ) : (
               // Diva 888 제외
-            }
+              <div>{/* <h2>시간설정 (NTP)</h2> */}</div>
+            )}
           </div>
         </div>
       </div>

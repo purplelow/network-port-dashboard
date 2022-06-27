@@ -22,7 +22,7 @@ const Dashboard = () => {
   const [sysTabIndex, setSysTabIndex] = useState(0);
   return (
     <Layout title="대시보드">
-      <div className="grid h-full grid-cols-7 gap-x-2">
+      <div className="h-full gap-x-2 xl:grid xl:grid-cols-7">
         <div className="col-span-3 grid w-full grid-flow-row grid-rows-4 gap-2">
           <div className="row-span-2 h-full rounded-md bg-white p-2 shadow-md">
             <BoardTitle subTitle="네트워크 정보" />

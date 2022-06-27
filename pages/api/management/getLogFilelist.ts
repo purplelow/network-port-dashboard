@@ -8,15 +8,22 @@ interface LogFilelistProps {
 }
 
 const fetcher = (url: string) =>
-  axios.get<LogFilelistProps>(url).then((res) => res.data);
+  axios
+    .get<LogFilelistProps>(url)
+    .then((res) => res.data)
+    .catch((err) => console.error("로그파일 리스트 에러", err));
 export default function useGetLogFilelist() {
   const { data, error } = useSWR(
     `http://192.168.123.190:8080/api/history/getLogFilelist`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+      revalidateOnReconnect: false,
+    }
   );
   return {
     logFilelist: data,
-    defaultFileName: data?.filenames,
     isLoading: !error && !data,
     isError: error,
   };

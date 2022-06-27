@@ -9,5 +9,6 @@ export default function updateNetwork(neworkInfoJson: any) {
     .then((res) => {
       console.log("네트워크 정보 response :: ", res.data);
       alert("수정되었습니다.");
-    });
+    })
+    .catch((err) => console.error("네트워크 설정 오류 : ", err));
 }

@@ -1,42 +1,30 @@
-import useGetLogFilelist from "@api/management/getLogFilelist";
-import useGetLogView from "@api/management/getLogView";
+import LoadingA from "@components/common/LoadingA";
+import LoadingB from "@components/common/LoadingB";
 import Layout from "@components/layout";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { AiOutlineDownload } from "react-icons/ai";
+import { useState } from "react";
+import { AiOutlineFolderView } from "react-icons/ai";
+// import { LeapFrog } from "@uiball/loaders";
 
 import DownloadButton from "./DownloadBtn";
 
-const History = () => {
-  // const [sqAdata, setSqAdata] = useState();
-  // const [sqBdata, setSqBdata] = useState();
-  // const sequentialSetting = async () => {
-  //   await axios({
-  //     method: "GET",
-  //     url: `http://192.168.123.190:8080/api/history/getLogFilelist`,
-  //   }).then((res) => {
-  //     setSqAdata(res.data);
-  //   });
-  //   await axios({
-  //     method: "GET",
-  //     url: `http://192.168.123.190:8080/api/history/getLogView?fileName=${currentFileName}`,
-  //   }).then((res) => {
-  //     setSqBdata(res.data);
-  //   });
-  // };
-  // console.log("파일 리스트 데이터", sqAdata);
-  // console.log("로그 파일 뷰 데이터", sqBdata);
-  const { logFilelist, defaultFileName }: any = useGetLogFilelist();
-  // const defaultFileName = logFilelist?.filenames[0];
-  const [currentFileName, setCurrentFimeName]: any = useState();
-  const { getLogView, isLoading, isError } = useGetLogView(currentFileName);
+const History = ({ data }: any) => {
+  const [currentFileName, setCurrentFimeName] = useState(data?.filenames[0]);
+  const [logViewData, setLogViewData] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (defaultFileName) {
-      setCurrentFimeName(defaultFileName[0]);
-      // console.log("In useEffect ::: ", defaultFileName[0]);
-    }
-  }, [setCurrentFimeName, defaultFileName]);
+  const logViewHandle = () => {
+    setLoading(true);
+    axios({
+      method: "GET",
+      url: `http://192.168.123.190:8080/api/history/getLogView?fileName=${currentFileName}`,
+    })
+      .then((res) => {
+        setLogViewData(res.data.logview);
+        setLoading(false);
+      })
+      .catch((err) => console.error("로그 뷰 api 에러 : ", err));
+  };
 
   return (
     <Layout title="히스토리">
@@ -45,21 +33,41 @@ const History = () => {
           <div className="flex items-center justify-start space-x-4">
             <span className="border-gray-300">파일 선택</span>
             <select
+              disabled={loading ? true : false}
               onChange={(e) => setCurrentFimeName(e.target.value)}
               id="countries"
               className=" w-1/3 rounded-sm border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-none focus:border-2 focus:border-gray-700"
             >
-              {logFilelist?.filenames.map((item: string, i: number) => (
-                <option defaultValue={item} key={i}>
+              {data?.filenames.map((item: string, i: number) => (
+                <option value={item} key={i}>
                   {item}
                 </option>
               ))}
             </select>
+            {loading ? (
+              <button
+                disabled
+                type="button"
+                className="flex cursor-wait items-center space-x-2 rounded-sm border border-slate-400 bg-slate-400 p-2 pr-8 pl-6 text-sm font-medium text-white hover:bg-slate-500 "
+              >
+                <AiOutlineFolderView className="text-2xl" />
+                <span>로그 파일 로드중</span>
+              </button>
+            ) : (
+              <button
+                onClick={logViewHandle}
+                type="button"
+                className="flex items-center space-x-2 rounded-sm border border-blue-700 bg-blue-700 p-2 pr-8 pl-6 text-sm font-medium text-white hover:bg-blue-800 "
+              >
+                <AiOutlineFolderView className="text-2xl" />
+                <span>로그 보기</span>
+              </button>
+            )}
             <DownloadButton fileName={currentFileName} />
           </div>
 
-          <div className="mt-10 h-[calc(100%-80px)] w-full overflow-auto rounded-md border-[1px] border-gray-400 p-4">
-            {isLoading ? "" : getLogView?.logview}
+          <div className="mt-10 h-[calc(100%-80px)] w-full overflow-auto whitespace-pre-line rounded-md border-[1px] border-gray-400 p-4">
+            {loading ? <LoadingB /> : logViewData}
           </div>
         </div>
       </div>
