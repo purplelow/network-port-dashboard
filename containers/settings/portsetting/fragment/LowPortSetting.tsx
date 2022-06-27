@@ -215,6 +215,30 @@ export default function DownPortSetting() {
     })
   }
 
+  //checkbox
+  const [checkItems, setCheckItems] = useState([{ id: "-1", }]);
+
+  const handleSingleCheck = (checked: boolean, id: any) => {
+    if (checked) {
+      setCheckItems([...checkItems, id]);
+    } else {
+      setCheckItems(checkItems.filter((el) => el !== id));
+    }
+    // console.log(checkItems);
+  };
+
+  const handleAllCheck = (checked: boolean) => {
+    if (checked) {
+      const idArray = [{id: "-1"}];
+      downPortList.forEach((el: any) => idArray.push(el.id));
+      setCheckItems(idArray);
+      // console.log(checkItems);
+    }
+    else {
+      setCheckItems([{ id: "-1", }]);
+    }
+  }
+
   return (
     <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-md border-[1px] border-gray-300 shadow-md">
       {/* <button onClick={downPortPut}>test</button> */}
@@ -226,6 +250,8 @@ export default function DownPortSetting() {
                 <input
                   id="checkbox-all"
                   type="checkbox"
+                  onChange={(e) => handleAllCheck(e.target.checked)}
+                  checked={checkItems.length-1 === downPortList.length ? true : false}
                   className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
                 />
                 <label htmlFor="checkbox-all" className="sr-only">
@@ -285,6 +311,8 @@ export default function DownPortSetting() {
                   <input
                     id="checkbox-table-1"
                     type="checkbox"
+                    onChange={(e) => handleSingleCheck(e.target.checked, com.id)}
+                    checked={checkItems.includes(com.id) ? true : false}
                     className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
                   />
                   <label htmlFor="checkbox-table-1" className="sr-only">
