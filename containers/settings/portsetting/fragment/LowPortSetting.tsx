@@ -4,6 +4,20 @@ import React, { useState } from "react";
 import { chmod } from "fs";
 
 export default function DownPortSetting() {
+  const [checkItems, setCheckItems] = useState([{ id: "-1", }]);
+  const [downPorts, setDownPorts] = useState([
+    {
+      id: "-1",
+      name: "",
+      model: "",
+      type: "",
+      baudrate: "",
+      parity: "",
+      databits: "",
+      stopbits: "",
+      deviceId: "",
+    }
+  ])
   const { downPortList, isLoading, isError }: any = useDownPortList();
     //  console.log("downPort: ", downPortList);
 
@@ -24,20 +38,6 @@ export default function DownPortSetting() {
     else result = "";
     return result;
   }
-
-  const [downPorts, setDownPorts] = useState([
-    {
-      id: "-1",
-      name: "",
-      model: "",
-      type: "",
-      baudrate: "",
-      parity: "",
-      databits: "",
-      stopbits: "",
-      deviceId: "",
-    }
-  ])
 
   const updateDownPort = {
     id: "",
@@ -223,8 +223,6 @@ export default function DownPortSetting() {
   }
 
   //checkbox
-  const [checkItems, setCheckItems] = useState([{ id: "-1", }]);
-
   const handleSingleCheck = (checked: boolean, id: any) => {
     if (checked) {
       setCheckItems([...checkItems, id]);
@@ -312,7 +310,11 @@ export default function DownPortSetting() {
         </thead>
         <tbody className="input-w-s overflow-auto">
           {downPortList?.map((com: any, i: string) => (
-            <tr className="border-b bg-white hover:bg-gray-50" key={i}>
+            <tr
+            className={checkItems.includes(com.id) 
+              ? "border-b bg-[#FFACAC] bg-opacity-20 hover:bg-[#FFACAC] hover:bg-opacity-25"
+              : "border-b bg-white hover:bg-gray-50"}
+            key={i}>
               <td className="w-4 px-4">
                 <div className="flex items-center">
                   <input
@@ -334,7 +336,9 @@ export default function DownPortSetting() {
               <td className="px-2 py-1.5 text-center">
                 <input
                   type="text"
-                  className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  className={downPorts.some(el => el.id === com.id && el.name !== "" && el.name !== com.name) 
+                    ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
+                    : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
                   defaultValue={com.name}
                   name={com.id}
                   onChange={onChangeName}
@@ -343,7 +347,9 @@ export default function DownPortSetting() {
               <td className="px-2 py-1.5 text-center">
                 <input
                   type="text"
-                  className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  className={downPorts.some(el => el.id === com.id && el.model !== "" && el.model !== com.model) 
+                    ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
+                    : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
                   defaultValue={com.model}
                   name={com.id}
                   onChange={onChangeModel}
@@ -352,7 +358,9 @@ export default function DownPortSetting() {
               <td className="px-2 py-1.5 text-center">
                 <input
                   type="text"
-                  className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  className={downPorts.some(el => el.id === com.id && el.type !== "" && el.type !== com.type) 
+                    ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
+                    : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
                   defaultValue={com.type}
                   name={com.id}
                   onChange={onChangeType}
@@ -360,7 +368,9 @@ export default function DownPortSetting() {
               </td>
               <td className="px-2 py-1.5 text-center">
                 <select
-                  className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  className={downPorts.some(el => el.id === com.id && el.baudrate !== "" && el.baudrate !== com.baudrate) 
+                  ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
+                  : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
                   defaultValue={com.baudrate}
                   name={com.id}
                   onChange={onChangeBaudrate}>
@@ -376,7 +386,9 @@ export default function DownPortSetting() {
               </td>
               <td className="px-2 py-1.5 text-center">
                 <select
-                  className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  className={downPorts.some(el => el.id === com.id && el.parity !== "" && el.parity !== com.parity) 
+                  ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
+                  : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
                   defaultValue={com.parity}
                   name={com.id}
                   onChange={onChangeParity}>
@@ -389,7 +401,9 @@ export default function DownPortSetting() {
               </td>
               <td className="px-2 py-1.5 text-center">
                 <select
-                  className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  className={downPorts.some(el => el.id === com.id && el.databits !== "" && el.databits !== com.databits) 
+                  ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
+                  : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
                   defaultValue={com.databits}
                   name={com.id}
                   onChange={onChangeDatabits}>
@@ -401,7 +415,9 @@ export default function DownPortSetting() {
               </td>
               <td className="px-2 py-1.5 text-center">
                 <select
-                  className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  className={downPorts.some(el => el.id === com.id && el.stopbits !== "" && el.stopbits !== com.stopbits) 
+                  ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
+                  : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
                   defaultValue={com.stopbits}
                   name={com.id}
                   onChange={onChangeStopbits}>
@@ -415,7 +431,9 @@ export default function DownPortSetting() {
                   type="number"
                   min="0"
                   max="32767"
-                  className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  className={downPorts.some(el => el.id === com.id && el.deviceId !== "" && el.deviceId !== com.deviceId) 
+                    ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
+                    : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
                   defaultValue={com.deviceId}
                   name={com.id}
                   onChange={onChangeDeviceId}

@@ -1,9 +1,15 @@
 import useUpPortList from "@api/setting/upPortList";
 import updatePortSetting from "@api/setting/modifyPort";
 import React, { useState, } from "react";
-import axios from "axios";
 
 export default function UpPortSetting() {
+  const [checkItems, setCheckItems] = useState([{ id: "-1", }]);
+  const [upPorts, setUpPorts] = useState([
+    {
+      id: "-1",
+      port: "",
+    }
+  ])
   const { upPortList, isLoading, isError }: any = useUpPortList();
     //  console.log("upPort: ", upPortList);
 
@@ -25,13 +31,7 @@ export default function UpPortSetting() {
     return result;
   }
 
-  const [upPorts, setUpPorts] = useState([
-    {
-      id: "-1",
-      port: "",
-    }
-  ])
-
+  // 설정 적용(상위 포트 설정)
   const onChangePort = (e: any) => {
     const updateUpPort = {
       id: e.target.name,
@@ -71,9 +71,7 @@ export default function UpPortSetting() {
   }
 
   //checkbox
-  const [checkItems, setCheckItems] = useState([{ id: "-1", }]);
-
-  const handleSingleCheck = (checked: boolean, id: any) => {
+  const handleSingleCheck = (checked: boolean, id: any, key: any) => {
     if (checked) {
       setCheckItems([...checkItems, id]);
     } else {
@@ -142,13 +140,17 @@ export default function UpPortSetting() {
         </thead>
         <tbody className="overflow-auto">
           {upPortList?.map((com: any, i: string) => (
-            <tr className="border-b bg-white hover:bg-gray-50" key={i}>
+            <tr
+              className={checkItems.includes(com.id) 
+                ? "border-b bg-[#FFACAC] bg-opacity-20 hover:bg-[#FFACAC] hover:bg-opacity-25"
+                : "border-b bg-white hover:bg-gray-50"}
+              key={i}>
               <td className="w-4 px-4">
                 <div className="flex items-center">
                   <input
                     id="checkbox-table-1"
                     type="checkbox"
-                    onChange={(e) => handleSingleCheck(e.target.checked, com.id)}
+                    onChange={(e) => handleSingleCheck(e.target.checked, com.id, i)}
                     checked={checkItems.includes(com.id) ? true : false}
                     className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
                   />
@@ -167,7 +169,9 @@ export default function UpPortSetting() {
                   type="number"
                   min="1"
                   max="65535"
-                  className="rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  className={upPorts.some(el => el.id === com.id && el.port !== com.port) 
+                    ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
+                    : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
                   defaultValue={com.port}
                   onChange={onChangePort}
                 />
