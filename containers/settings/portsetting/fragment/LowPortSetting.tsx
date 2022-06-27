@@ -7,6 +7,13 @@ export default function DownPortSetting() {
   const { downPortList, isLoading, isError }: any = useDownPortList();
     //  console.log("downPort: ", downPortList);
 
+  const downPortLength = () => {
+    let i = 0;
+    // const length = upPortList.length;
+    downPortList?.map(() => i+=1)
+    return i;
+  };
+
   const statusColor = (status: string) => {
     let result;
     if(status === "ERROR") result = "inline-block h-3 w-3 rounded-full bg-[#DE1717]";
@@ -237,7 +244,7 @@ export default function DownPortSetting() {
     else {
       setCheckItems([{ id: "-1", }]);
     }
-  }
+  };
 
   return (
     <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-md border-[1px] border-gray-300 shadow-md">
@@ -251,7 +258,7 @@ export default function DownPortSetting() {
                   id="checkbox-all"
                   type="checkbox"
                   onChange={(e) => handleAllCheck(e.target.checked)}
-                  checked={checkItems.length-1 === downPortList.length ? true : false}
+                  checked={checkItems.length-1 === downPortLength() ? true : false}
                   className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
                 />
                 <label htmlFor="checkbox-all" className="sr-only">

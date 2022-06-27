@@ -1,12 +1,18 @@
 import useUpPortList from "@api/setting/upPortList";
 import updatePortSetting from "@api/setting/modifyPort";
-import React, { useState, useCallback } from "react";
-import { forwardRef, useImperativeHandle } from "react";
+import React, { useState, } from "react";
 import axios from "axios";
 
 export default function UpPortSetting() {
   const { upPortList, isLoading, isError }: any = useUpPortList();
     //  console.log("upPort: ", upPortList);
+
+  const upPortLength = () => {
+    let i = 0;
+    // const length = upPortList.length;
+    upPortList?.map(() => i+=1)
+    return i;
+  };
 
   const statusColor = (status: string) => {
     let result;
@@ -86,7 +92,7 @@ export default function UpPortSetting() {
     else {
       setCheckItems([{ id: "-1", }]);
     }
-  }
+  };
 
   return (
     <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-md border-[1px] border-gray-300 shadow-md">
@@ -100,7 +106,7 @@ export default function UpPortSetting() {
                   id="checkbox-all"
                   type="checkbox"
                   onChange={(e) => handleAllCheck(e.target.checked)}
-                  checked={checkItems.length-1 === upPortList.length ? true : false}
+                  checked={checkItems.length-1 === upPortLength() ? true : false}
                   className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
                 />
                 <label htmlFor="checkbox-all" className="sr-only">
