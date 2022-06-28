@@ -1,11 +1,10 @@
 import Swal from "sweetalert2";
 import { encryptModule } from "@libs/encryptModule";
 
-const PASSWORD_API_URL = process.env.NEXT_PUBLIC_PASSWORDCHECK;
+const PASSWORD_API_URL = process.env.NEXT_PUBLIC_PASSWORD_CHECK;
 const RESTART_API_URL = process.env.NEXT_PUBLIC_RESTART;
 
 export default function AlertAdminReq(ABS_URL: string) {
-  console.log("Recoil 전역 상태 ABS_URL :: ", ABS_URL);
   Swal.fire({
     title: "관리자 암호를 입력하세요.",
     input: "password",
@@ -17,13 +16,10 @@ export default function AlertAdminReq(ABS_URL: string) {
     showLoaderOnConfirm: true,
     cancelButtonText: "취소",
     preConfirm: (login) => {
-      // const data = "admin";
-      console.log("로그인 암호", login);
-
       const reqForAdmin: any = {
         passWord: encryptModule(login),
       };
-      // console.log("암호화 키 ? :: ", cipher);
+      console.log("암호화 키 ? :: ", JSON.stringify(reqForAdmin));
       return fetch(`${ABS_URL}${PASSWORD_API_URL}`, {
         method: "POST",
         body: JSON.stringify(reqForAdmin),

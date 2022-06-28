@@ -10,12 +10,12 @@ interface NeworkForm {}
 export default function NetworkSetting() {
   const { register, handleSubmit } = useForm();
   const { networkInfo } = useNetworkInfo();
-  let networkName = networkInfo?.interfaces[0].name;
+  const networkName = networkInfo?.interfaces[0].name;
   const [ipAddr, setIpAddr] = useState();
   const [netMask, setNetMask] = useState();
   const [gateWay, setGateWay] = useState();
 
-  let neworkInfoJson = {
+  const neworkInfoJson = {
     networkInfos: [
       {
         gateway: gateWay,
@@ -26,9 +26,9 @@ export default function NetworkSetting() {
     ],
   };
 
+  console.log(" ?? : ", neworkInfoJson);
   const onValid = (data: NeworkForm) => {
     updateNetwork(neworkInfoJson);
-    console.log("im valid");
   };
 
   const onInvalid = (errors: FieldErrors) => {
@@ -86,7 +86,7 @@ export default function NetworkSetting() {
                 key={i}
               >
                 <div className="flex w-[20%] items-center space-x-8">
-                  <span className="font-bold">LAN 1</span>
+                  <span className="font-bold">{networkData.name}</span>
                   <span
                     className={cls(
                       "h-3 w-3 rounded-full bg-[#319500]",

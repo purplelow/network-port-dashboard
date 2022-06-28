@@ -10,7 +10,7 @@ interface ModifyPwForm {
   tobePwCheck: string;
 }
 
-const MODIFYPASSWD_API_URL = process.env.NEXT_PUBLIC_MODIFYPASSWORD;
+const MODIFYPASSWD_API_URL = process.env.NEXT_PUBLIC_MODIFY_PASSWORD;
 
 export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
   const {

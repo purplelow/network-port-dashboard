@@ -1,23 +1,33 @@
-import LoadingA from "@components/common/LoadingA";
+import useGetLogFilelist from "@api/management/getLogFilelist";
 import LoadingB from "@components/common/LoadingB";
 import Layout from "@components/layout";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineFolderView } from "react-icons/ai";
-// import { LeapFrog } from "@uiball/loaders";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
 
 import DownloadButton from "./DownloadBtn";
 
-const History = ({ data }: any) => {
-  const [currentFileName, setCurrentFimeName] = useState(data?.filenames[0]);
+const LOGVIEW_API_URL = process.env.NEXT_PUBLIC_GET_LOGVIEW;
+
+const History = () => {
+  const ABS_URL = useRecoilValue(routerUrl);
+  const { logFilelist }: any = useGetLogFilelist();
+  const [currentFileName, setCurrentFimeName] = useState("");
   const [logViewData, setLogViewData] = useState("");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    setCurrentFimeName(logFilelist?.filenames.toString().split(",")[0]);
+  }, [logFilelist]);
+
   const logViewHandle = () => {
     setLoading(true);
+    const defaultFileName = logFilelist?.filenames;
     axios({
       method: "GET",
-      url: `http://192.168.123.190:8080/api/history/getLogView?fileName=${currentFileName}`,
+      url: `${ABS_URL}${LOGVIEW_API_URL}${currentFileName ?? defaultFileName}`,
     })
       .then((res) => {
         setLogViewData(res.data.logview);
@@ -38,7 +48,7 @@ const History = ({ data }: any) => {
               id="countries"
               className=" w-1/3 rounded-sm border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-none focus:border-2 focus:border-gray-700"
             >
-              {data?.filenames.map((item: string, i: number) => (
+              {logFilelist?.filenames.map((item: string, i: number) => (
                 <option value={item} key={i}>
                   {item}
                 </option>

@@ -19,10 +19,8 @@ import RestoreFrom from "./fragment/RestoreForm";
 import AlertAdminReq from "containers/management/systemmanage/fragment/AlertAdminReq";
 
 import AlertModifyPw from "./fragment/AlertModifyPw";
-import urlBranch from "@libs/absoluteUrl";
 
 const SystemManage = () => {
-  urlBranch();
   const ABS_URL = useRecoilValue(routerUrl);
   const { systemInfo } = useSystemInfo();
 

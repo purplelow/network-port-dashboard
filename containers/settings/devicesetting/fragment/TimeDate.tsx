@@ -1,26 +1,37 @@
 import useTimeInfo from "@api/setting/getTimeInfo";
 import { cls } from "@libs/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
+import { ko } from "date-fns/locale";
+import { format } from "date-fns";
+import moment from "moment";
 
 const TimezoneSelect = dynamic(() => import("react-timezone-select"), {
   ssr: false,
 });
 
-interface upDataTimeProps {}
+// interface upDataTimeProps {}
+const UPDATETIME_API_URL = process.env.NEXT_PUBLIC_UPDATE_TIME;
 
-export default function TimeDateInfo() {
+export default function TimeDateInfo({ ABS_URL }: any) {
   const { register, handleSubmit } = useForm();
   const [timeTabIndex, setTimeTabIndex] = useState(0);
   const { sysTimeInfo } = useTimeInfo();
-  const sysSetTime = sysTimeInfo?.timeInfo;
-
+  const sysSetTimeGMT: any = sysTimeInfo?.timeInfo.split("_")[2];
   const [selectedTimezone, setSelectedTimezone]: any = useState(
     Intl.DateTimeFormat().resolvedOptions().timeZone
   );
+  // ${sysTimeInfo?.timeInfo.split("_")[1]}
+  const sysSetTime: string = `${sysTimeInfo?.timeInfo.split("_")[0]} ${
+    sysTimeInfo?.timeInfo.split("_")[1]
+  }`;
+  let date = moment(sysSetTime).toISOString();
+  const [startDate, setStartDate] = useState(new Date());
+
   const selectedGMT = () => {
     let result;
     if (selectedTimezone) {
@@ -33,11 +44,24 @@ export default function TimeDateInfo() {
   const GMTArea = selectedGMT()[0];
   const GMTZone = selectedGMT()[1];
 
-  console.log("selectedTimezone ? : ", selectedTimezone);
-  console.log("GMTArea, GMTZone ? : ", GMTArea, ",", GMTZone);
+  const updateTimeJson = {
+    area: GMTArea,
+    zone: GMTZone,
+    data: startDate,
+  };
+  const onValid = () => {
+    axios
+      .put(`${ABS_URL}${UPDATETIME_API_URL}`, updateTimeJson)
+      .then((res) => console.log("success", res.data))
+      .catch((err) => console.error("장비 날짜 수정 오류", err));
+  };
 
-  const [startDate, setStartDate] = useState(new Date());
-  console.log("날짜 및 시간", startDate);
+  useEffect(() => {
+    setSelectedTimezone(
+      sysSetTimeGMT ?? Intl.DateTimeFormat().resolvedOptions().timeZone
+    );
+    if (sysSetTime !== undefined) setStartDate(new Date(date));
+  }, [sysTimeInfo]);
 
   return (
     <div className="row-span-2 rounded-md bg-white shadow-md">
@@ -79,7 +103,7 @@ export default function TimeDateInfo() {
           </ul>
           <div className="border border-gray-300 px-6 py-10">
             {timeTabIndex === 0 ? (
-              <form className="h-full">
+              <form onSubmit={handleSubmit(onValid)} className="h-full">
                 <div className="flex h-full items-center justify-between">
                   <div className="flex w-2/5 items-center">
                     <label className="pr-2 text-sm font-medium text-gray-900">
@@ -88,15 +112,14 @@ export default function TimeDateInfo() {
                     {/* <DateCustom /> */}
                     <div className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700">
                       <DatePicker
-                        id="datezone"
+                        locale={ko}
                         selected={startDate}
                         onChange={(date: Date) => setStartDate(date)}
                         showTimeSelect
                         timeFormat="HH:mm"
                         timeIntervals={10}
-                        timeCaption="time"
-                        dateFormat="yyyy/MM/dd hh:mm aa"
-                        className=""
+                        timeCaption="시간"
+                        dateFormat="yyyy-MM-dd hh:mm aa"
                       />
                     </div>
                   </div>
