@@ -24,3 +24,26 @@ export const routerUrl = atom({
   key: "routerUrl",
   default: "",
 });
+
+export const upPortsState = atom({
+  key: "upPortsState",
+  default: [{
+    id: "-1",
+    port: "",
+  }],
+})
+
+export const downPortsState = atom({
+  key: "downPortsState",
+  default: [{
+    id: "-1",
+    name: "",
+    model: "",
+    type: "",
+    baudrate: "",
+    parity: "",
+    databits: "",
+    stopbits: "",
+    deviceId: "",
+  }],
+})

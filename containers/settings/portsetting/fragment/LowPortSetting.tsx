@@ -1,23 +1,11 @@
 import useDownPortList from "@api/setting/downPortList";
-import updatePortSetting from "@api/setting/modifyPort";
 import React, { useState } from "react";
-import { chmod } from "fs";
+import { useRecoilState } from "recoil";
+import { downPortsState } from "recoil/atom";
 
 export default function DownPortSetting() {
   const [checkItems, setCheckItems] = useState([{ id: "-1", }]);
-  const [downPorts, setDownPorts] = useState([
-    {
-      id: "-1",
-      name: "",
-      model: "",
-      type: "",
-      baudrate: "",
-      parity: "",
-      databits: "",
-      stopbits: "",
-      deviceId: "",
-    }
-  ])
+  const [downPorts, setDownPorts] = useRecoilState(downPortsState);
   const { downPortList, isLoading, isError }: any = useDownPortList();
     //  console.log("downPort: ", downPortList);
 
@@ -63,8 +51,8 @@ export default function DownPortSetting() {
         downPorts.map((u2) => u2.id === updateDownPort.id ? {...u2, name: updateDownPort.name } : u2)
       )
     }
-    updateDownPort.name = ""; 
-    // console.log(downPorts);
+    // updateDownPort.name = ""; 
+    console.log(downPorts);
   }
 
   const onChangeModel = (e: any) => {
@@ -79,7 +67,7 @@ export default function DownPortSetting() {
         downPorts.map((u2) => u2.id === updateDownPort.id ? {...u2, model: updateDownPort.model } : u2)
       )
     }
-    updateDownPort.model = ""; 
+    // updateDownPort.model = ""; 
     // console.log(downPorts);
   }
 
@@ -95,7 +83,7 @@ export default function DownPortSetting() {
         downPorts.map((u2) => u2.id === updateDownPort.id ? {...u2, type: updateDownPort.type } : u2)
       )
     }
-    updateDownPort.type = ""; 
+    // updateDownPort.type = ""; 
     // console.log(downPorts);
   }
 
@@ -111,7 +99,7 @@ export default function DownPortSetting() {
         downPorts.map((u2) => u2.id === updateDownPort.id ? {...u2, baudrate: updateDownPort.baudrate } : u2)
       )
     }
-    updateDownPort.baudrate = ""; 
+    // updateDownPort.baudrate = ""; 
     console.log(downPorts);
   }
 
@@ -127,7 +115,7 @@ export default function DownPortSetting() {
         downPorts.map((u2) => u2.id === updateDownPort.id ? {...u2, parity: updateDownPort.parity } : u2)
       )
     }
-    updateDownPort.parity = ""; 
+    // updateDownPort.parity = ""; 
     console.log(downPorts);
   }
 
@@ -143,7 +131,7 @@ export default function DownPortSetting() {
         downPorts.map((u2) => u2.id === updateDownPort.id ? {...u2, databits: updateDownPort.databits } : u2)
       )
     }
-    updateDownPort.databits = ""; 
+    // updateDownPort.databits = ""; 
     // console.log(downPorts);
   }
 
@@ -159,7 +147,7 @@ export default function DownPortSetting() {
         downPorts.map((u2) => u2.id === updateDownPort.id ? {...u2, stopbits: updateDownPort.stopbits } : u2)
       )
     }
-    updateDownPort.stopbits = ""; 
+    // updateDownPort.stopbits = ""; 
     // console.log(downPorts);
   }
 
@@ -175,51 +163,8 @@ export default function DownPortSetting() {
         downPorts.map((u2) => u2.id === updateDownPort.id ? {...u2, deviceId: updateDownPort.deviceId } : u2)
       )
     }
-    updateDownPort.deviceId = ""; 
+    // updateDownPort.deviceId = ""; 
     // console.log(downPorts);
-  }
-
-  const downPortPut = () => {
-    downPorts?.map((u) => {
-      if(u.id !== "-1") {
-        let putArr = {
-          id: u.id,
-          name: u.name,
-          model: u.model,
-          type: u.type,
-          baudrate: u.baudrate,
-          parity: u.parity,
-          databits: u.databits,
-          stopbits: u.stopbits,
-          deviceId: u.deviceId,
-        };
-        downPortList?.map((com: any, i: string) => {
-          if(com.id === u.id) {
-            if(putArr.name === "") putArr.name = com.name;
-            if(putArr.model === "") putArr.model = com.model;
-            if(putArr.type === "") putArr.type = com.type;
-            if(putArr.baudrate === "") putArr.baudrate = com.baudrate;
-            if(putArr.parity === "") putArr.parity = com.parity;
-            if(putArr.databits === "") putArr.databits = com.databits;
-            if(putArr.stopbits === "") putArr.stopbits = com.stopbits;
-            if(putArr.deviceId === "") putArr.deviceId = com.deviceId;
-          }
-        });
-
-        if(Number(putArr.deviceId) < 0 || Number(putArr.deviceId) > 32767) {
-          alert("하위 시리얼 포트 설정: DEVICE ID는 0~32767 사이 숫자를 입력하세요.");
-        }
-        else {
-          let upPortJson = {
-            downPortList: [
-              putArr,
-            ]
-          }
-          console.log(upPortJson);
-          updatePortSetting(upPortJson);
-        }
-      }
-    })
   }
 
   //checkbox

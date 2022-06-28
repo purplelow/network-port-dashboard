@@ -1,15 +1,12 @@
 import useUpPortList from "@api/setting/upPortList";
 import updatePortSetting from "@api/setting/modifyPort";
 import React, { useState, } from "react";
+import { useRecoilState } from "recoil";
+import { upPortsState } from "recoil/atom";
 
 export default function UpPortSetting() {
   const [checkItems, setCheckItems] = useState([{ id: "-1", }]);
-  const [upPorts, setUpPorts] = useState([
-    {
-      id: "-1",
-      port: "",
-    }
-  ])
+  const [upPorts, setUpPorts] = useRecoilState(upPortsState);
   const { upPortList, isLoading, isError }: any = useUpPortList();
     //  console.log("upPort: ", upPortList);
 
