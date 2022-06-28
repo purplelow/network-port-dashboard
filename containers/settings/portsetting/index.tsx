@@ -4,6 +4,9 @@ import StatusInfo from "@components/common/StatusInfo";
 import Layout from "@components/layout";
 import LowPortSetting from "./fragment/LowPortSetting";
 import UpPortSetting from "./fragment/UpPortSetting";
+import { useRef } from "react";
+
+
 
 const PortSetting = () => {
   return (

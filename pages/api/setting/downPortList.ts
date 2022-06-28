@@ -5,6 +5,7 @@ interface DownPortListProps {
   baudrate: string;
   databits: string;
   deviceName: string;
+  deviceId: string;
   id: string;
   model: string;
   name: string;
