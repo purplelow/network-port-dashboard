@@ -1,23 +1,11 @@
 import useDownPortList from "@api/setting/downPortList";
-import updatePortSetting from "@api/setting/modifyPort";
 import React, { useState } from "react";
-import { chmod } from "fs";
+import { useRecoilState } from "recoil";
+import { downPortsState } from "recoil/atom";
 
 export default function DownPortSetting() {
-  const [checkItems, setCheckItems] = useState([{ id: "-1" }]);
-  const [downPorts, setDownPorts] = useState([
-    {
-      id: "-1",
-      name: "",
-      model: "",
-      type: "",
-      baudrate: "",
-      parity: "",
-      databits: "",
-      stopbits: "",
-      deviceId: "",
-    },
-  ]);
+  const [checkItems, setCheckItems] = useState([{ id: "-1", }]);
+  const [downPorts, setDownPorts] = useRecoilState(downPortsState);
   const { downPortList, isLoading, isError }: any = useDownPortList();
   //  console.log("downPort: ", downPortList);
 
@@ -44,219 +32,68 @@ export default function DownPortSetting() {
     return result;
   };
 
-  const updateDownPort = {
-    id: "",
-    name: "",
-    model: "",
-    type: "",
-    baudrate: "",
-    parity: "",
-    databits: "",
-    stopbits: "",
-    deviceId: "",
-  };
-
-  const onChangeName = (e: any) => {
-    updateDownPort.id = e.target.name;
-    updateDownPort.name = e.target.value;
+  const onChangeDownPort = (e: any) => {
     let i = 0;
-    downPorts?.map((u) => (u.id !== updateDownPort.id ? (i = 1) : (i = 0)));
-    if (i === 1) {
-      setDownPorts([...downPorts, updateDownPort]);
-    } else {
-      setDownPorts(
-        downPorts.map((u2) =>
-          u2.id === updateDownPort.id
-            ? { ...u2, name: updateDownPort.name }
-            : u2
-        )
-      );
-    }
-    updateDownPort.name = "";
-    // console.log(downPorts);
-  };
-
-  const onChangeModel = (e: any) => {
-    updateDownPort.id = e.target.name;
-    updateDownPort.model = e.target.value;
-    let i = 0;
-    downPorts?.map((u) => (u.id !== updateDownPort.id ? (i = 1) : (i = 0)));
-    if (i === 1) {
-      setDownPorts([...downPorts, updateDownPort]);
-    } else {
-      setDownPorts(
-        downPorts.map((u2) =>
-          u2.id === updateDownPort.id
-            ? { ...u2, model: updateDownPort.model }
-            : u2
-        )
-      );
-    }
-    updateDownPort.model = "";
-    // console.log(downPorts);
-  };
-
-  const onChangeType = (e: any) => {
-    updateDownPort.id = e.target.name;
-    updateDownPort.type = e.target.value;
-    let i = 0;
-    downPorts?.map((u) => (u.id !== updateDownPort.id ? (i = 1) : (i = 0)));
-    if (i === 1) {
-      setDownPorts([...downPorts, updateDownPort]);
-    } else {
-      setDownPorts(
-        downPorts.map((u2) =>
-          u2.id === updateDownPort.id
-            ? { ...u2, type: updateDownPort.type }
-            : u2
-        )
-      );
-    }
-    updateDownPort.type = "";
-    // console.log(downPorts);
-  };
-
-  const onChangeBaudrate = (e: any) => {
-    updateDownPort.id = e.target.name;
-    updateDownPort.baudrate = e.target.value;
-    let i = 0;
-    downPorts?.map((u) => (u.id !== updateDownPort.id ? (i = 1) : (i = 0)));
-    if (i === 1) {
-      setDownPorts([...downPorts, updateDownPort]);
-    } else {
-      setDownPorts(
-        downPorts.map((u2) =>
-          u2.id === updateDownPort.id
-            ? { ...u2, baudrate: updateDownPort.baudrate }
-            : u2
-        )
-      );
-    }
-    updateDownPort.baudrate = "";
-    console.log(downPorts);
-  };
-
-  const onChangeParity = (e: any) => {
-    updateDownPort.id = e.target.name;
-    updateDownPort.parity = e.target.value;
-    let i = 0;
-    downPorts?.map((u) => (u.id !== updateDownPort.id ? (i = 1) : (i = 0)));
-    if (i === 1) {
-      setDownPorts([...downPorts, updateDownPort]);
-    } else {
-      setDownPorts(
-        downPorts.map((u2) =>
-          u2.id === updateDownPort.id
-            ? { ...u2, parity: updateDownPort.parity }
-            : u2
-        )
-      );
-    }
-    updateDownPort.parity = "";
-    console.log(downPorts);
-  };
-
-  const onChangeDatabits = (e: any) => {
-    updateDownPort.id = e.target.name;
-    updateDownPort.databits = e.target.value;
-    let i = 0;
-    downPorts?.map((u) => (u.id !== updateDownPort.id ? (i = 1) : (i = 0)));
-    if (i === 1) {
-      setDownPorts([...downPorts, updateDownPort]);
-    } else {
-      setDownPorts(
-        downPorts.map((u2) =>
-          u2.id === updateDownPort.id
-            ? { ...u2, databits: updateDownPort.databits }
-            : u2
-        )
-      );
-    }
-    updateDownPort.databits = "";
-    // console.log(downPorts);
-  };
-
-  const onChangeStopbits = (e: any) => {
-    updateDownPort.id = e.target.name;
-    updateDownPort.stopbits = e.target.value;
-    let i = 0;
-    downPorts?.map((u) => (u.id !== updateDownPort.id ? (i = 1) : (i = 0)));
-    if (i === 1) {
-      setDownPorts([...downPorts, updateDownPort]);
-    } else {
-      setDownPorts(
-        downPorts.map((u2) =>
-          u2.id === updateDownPort.id
-            ? { ...u2, stopbits: updateDownPort.stopbits }
-            : u2
-        )
-      );
-    }
-    updateDownPort.stopbits = "";
-    // console.log(downPorts);
-  };
-
-  const onChangeDeviceId = (e: any) => {
-    updateDownPort.id = e.target.name;
-    updateDownPort.deviceId = e.target.value;
-    let i = 0;
-    downPorts?.map((u) => (u.id !== updateDownPort.id ? (i = 1) : (i = 0)));
-    if (i === 1) {
-      setDownPorts([...downPorts, updateDownPort]);
-    } else {
-      setDownPorts(
-        downPorts.map((u2) =>
-          u2.id === updateDownPort.id
-            ? { ...u2, deviceId: updateDownPort.deviceId }
-            : u2
-        )
-      );
-    }
-    updateDownPort.deviceId = "";
-    // console.log(downPorts);
-  };
-
-  const downPortPut = () => {
-    downPorts?.map((u) => {
-      if (u.id !== "-1") {
-        let putArr = {
-          id: u.id,
-          name: u.name,
-          model: u.model,
-          type: u.type,
-          baudrate: u.baudrate,
-          parity: u.parity,
-          databits: u.databits,
-          stopbits: u.stopbits,
-          deviceId: u.deviceId,
-        };
-        downPortList?.map((com: any, i: string) => {
-          if (com.id === u.id) {
-            if (putArr.name === "") putArr.name = com.name;
-            if (putArr.model === "") putArr.model = com.model;
-            if (putArr.type === "") putArr.type = com.type;
-            if (putArr.baudrate === "") putArr.baudrate = com.baudrate;
-            if (putArr.parity === "") putArr.parity = com.parity;
-            if (putArr.databits === "") putArr.databits = com.databits;
-            if (putArr.stopbits === "") putArr.stopbits = com.stopbits;
-            if (putArr.deviceId === "") putArr.deviceId = com.deviceId;
-          }
-        });
-
-        if (Number(putArr.deviceId) < 0 || Number(putArr.deviceId) > 32767) {
-          alert(
-            "하위 시리얼 포트 설정: DEVICE ID는 0~32767 사이 숫자를 입력하세요."
-          );
-        } else {
-          let upPortJson = {
-            downPortList: [putArr],
-          };
-          console.log(upPortJson);
-          updatePortSetting(upPortJson);
-        }
+    downPorts?.map((u)=> u.id !== e.target.id ? i=1 : i=0);
+    if(e.target.name === "name") {
+      if(i===1) {
+        const updateDownPort = { id: e.target.id, name: e.target.value, model: "", type: "", baudrate: "", parity: "", databits: "", stopbits: "", deviceId: "", }
+        setDownPorts([...downPorts, updateDownPort]);
+      } else {
+        setDownPorts(downPorts.map((u2) => u2.id === e.target.id ? {...u2, name: e.target.value } : u2))
       }
-    });
-  };
+    } else if(e.target.name === "model") {
+      if(i===1) {
+        const updateDownPort = { id: e.target.id, name: "", model: e.target.value, type: "", baudrate: "", parity: "", databits: "", stopbits: "", deviceId: "", }
+        setDownPorts([...downPorts, updateDownPort]);
+      } else {
+        setDownPorts(downPorts.map((u2) => u2.id === e.target.id ? {...u2, model: e.target.value } : u2))
+      }
+    } else if(e.target.name === "type") {
+      if(i===1) {
+        const updateDownPort = { id: e.target.id, name: "", model: "", type: e.target.value, baudrate: "", parity: "", databits: "", stopbits: "", deviceId: "", }
+        setDownPorts([...downPorts, updateDownPort]);
+      } else {
+        setDownPorts(downPorts.map((u2) => u2.id === e.target.id ? {...u2, type: e.target.value } : u2))
+      }
+    } else if(e.target.name === "baudrate") {
+      if(i===1) {
+        const updateDownPort = { id: e.target.id, name: "", model: "", type: "", baudrate: e.target.value, parity: "", databits: "", stopbits: "", deviceId: "", }
+        setDownPorts([...downPorts, updateDownPort]);
+      } else {
+        setDownPorts(downPorts.map((u2) => u2.id === e.target.id ? {...u2, baudrate: e.target.value } : u2))
+      }
+    } else if(e.target.name === "parity") {
+      if(i===1) {
+        const updateDownPort = { id: e.target.id, name: "", model: "", type: "", baudrate: "", parity: e.target.value, databits: "", stopbits: "", deviceId: "", }
+        setDownPorts([...downPorts, updateDownPort]);
+      } else {
+        setDownPorts(downPorts.map((u2) => u2.id === e.target.id ? {...u2, parity: e.target.value } : u2))
+      }
+    } else if(e.target.name === "databits") {
+      if(i===1) {
+        const updateDownPort = { id: e.target.id, name: "", model: "", type: "", baudrate: "", parity: "", databits: e.target.value, stopbits: "", deviceId: "", }
+        setDownPorts([...downPorts, updateDownPort]);
+      } else {
+        setDownPorts(downPorts.map((u2) => u2.id === e.target.id ? {...u2, databits: e.target.value } : u2))
+      }
+    } else if(e.target.name === "stopbits") {
+      if(i===1) {
+        const updateDownPort = { id: e.target.id, name: "", model: "", type: "", baudrate: "", parity: "", databits: "", stopbits: e.target.value, deviceId: "", }
+        setDownPorts([...downPorts, updateDownPort]);
+      } else {
+        setDownPorts(downPorts.map((u2) => u2.id === e.target.id ? {...u2, stopbits: e.target.value } : u2))
+      }
+    } else if(e.target.name === "deviceId") {
+      if(i===1) {
+        const updateDownPort = { id: e.target.id, name: "", model: "", type: "", baudrate: "", parity: "", databits: "", stopbits: "", deviceId: e.target.value, }
+        setDownPorts([...downPorts, updateDownPort]);
+      } else {
+        setDownPorts(downPorts.map((u2) => u2.id === e.target.id ? {...u2, deviceId: e.target.value } : u2))
+      }
+    }
+    console.log(downPorts);
+  }
 
   //checkbox
   const handleSingleCheck = (checked: boolean, id: any) => {
@@ -389,8 +226,9 @@ export default function DownPortSetting() {
                       : "rounded-md border-[1px] border-gray-300 py-1 text-center"
                   }
                   defaultValue={com.name}
-                  name={com.id}
-                  onChange={onChangeName}
+                  id={com.id}
+                  name="name"
+                  onChange={onChangeDownPort}
                 />
               </td>
               <td className="px-2 py-1.5 text-center">
@@ -407,8 +245,9 @@ export default function DownPortSetting() {
                       : "rounded-md border-[1px] border-gray-300 py-1 text-center"
                   }
                   defaultValue={com.model}
-                  name={com.id}
-                  onChange={onChangeModel}
+                  id={com.id}
+                  name="model"
+                  onChange={onChangeDownPort}
                 />
               </td>
               <td className="px-2 py-1.5 text-center">
@@ -425,8 +264,9 @@ export default function DownPortSetting() {
                       : "rounded-md border-[1px] border-gray-300 py-1 text-center"
                   }
                   defaultValue={com.type}
-                  name={com.id}
-                  onChange={onChangeType}
+                  id={com.id}
+                  name="type"
+                  onChange={onChangeDownPort}
                 />
               </td>
               <td className="px-2 py-1.5 text-center">
@@ -442,9 +282,9 @@ export default function DownPortSetting() {
                       : "rounded-md border-[1px] border-gray-300 py-1 text-center"
                   }
                   defaultValue={com.baudrate}
-                  name={com.id}
-                  onChange={onChangeBaudrate}
-                >
+                  id={com.id}
+                  name="baudrate"
+                  onChange={onChangeDownPort}>
                   <option value="1200">1200</option>
                   <option value="2400">2400</option>
                   <option value="4800">4800</option>
@@ -468,9 +308,9 @@ export default function DownPortSetting() {
                       : "rounded-md border-[1px] border-gray-300 py-1 text-center"
                   }
                   defaultValue={com.parity}
-                  name={com.id}
-                  onChange={onChangeParity}
-                >
+                  id={com.id}
+                  name="parity"
+                  onChange={onChangeDownPort}>
                   <option value="NONE">NONE</option>
                   <option value="ODD">ODD</option>
                   <option value="EVEN">EVEN</option>
@@ -491,9 +331,9 @@ export default function DownPortSetting() {
                       : "rounded-md border-[1px] border-gray-300 py-1 text-center"
                   }
                   defaultValue={com.databits}
-                  name={com.id}
-                  onChange={onChangeDatabits}
-                >
+                  id={com.id}
+                  name="databits"
+                  onChange={onChangeDownPort}>
                   <option value="5">5</option>
                   <option value="6">6</option>
                   <option value="7">7</option>
@@ -513,9 +353,9 @@ export default function DownPortSetting() {
                       : "rounded-md border-[1px] border-gray-300 py-1 text-center"
                   }
                   defaultValue={com.stopbits}
-                  name={com.id}
-                  onChange={onChangeStopbits}
-                >
+                  id={com.id}
+                  name="stopbits"
+                  onChange={onChangeDownPort}>
                   <option value="1">1</option>
                   <option value="1.5">1.5</option>
                   <option value="2">2</option>
@@ -537,8 +377,9 @@ export default function DownPortSetting() {
                       : "rounded-md border-[1px] border-gray-300 py-1 text-center"
                   }
                   defaultValue={com.deviceId}
-                  name={com.id}
-                  onChange={onChangeDeviceId}
+                  id={com.id}
+                  name="deviceId"
+                  onChange={onChangeDownPort}
                 />
               </td>
               <td className="px-2 py-1.5 text-right">{com.t1}</td>

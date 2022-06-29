@@ -1,15 +1,14 @@
 import useUpPortList from "@api/setting/upPortList";
 import updatePortSetting from "@api/setting/modifyPort";
 import React, { useState, } from "react";
+import { useRecoilState } from "recoil";
+import { upPortsState } from "recoil/atom";
+import { useForm } from "react-hook-form";
 
 export default function UpPortSetting() {
   const [checkItems, setCheckItems] = useState([{ id: "-1", }]);
-  const [upPorts, setUpPorts] = useState([
-    {
-      id: "-1",
-      port: "",
-    }
-  ])
+  const [upPorts, setUpPorts] = useRecoilState(upPortsState);
+  const { register } = useForm();
   const { upPortList, isLoading, isError }: any = useUpPortList();
     //  console.log("upPort: ", upPortList);
 
@@ -95,6 +94,7 @@ export default function UpPortSetting() {
   return (
     <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-md border-[1px] border-gray-300 shadow-md">
       {/* <button onClick={upPortPut}>test</button> */}
+      <form>
       <table className="w-full text-left text-sm text-gray-500">
         <thead className="bg-blue-100 text-xs uppercase text-gray-700">
           <tr>
@@ -185,6 +185,7 @@ export default function UpPortSetting() {
           ))}
         </tbody>
       </table>
+      </form>
     </div>
   );
 }
