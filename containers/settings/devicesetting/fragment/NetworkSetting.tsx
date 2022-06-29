@@ -2,7 +2,7 @@ import useNetworkInfo from "@api/dashBoard/networkInfo";
 import updateNetwork from "@api/setting/updateNetwork";
 import BoardTitle from "@components/common/BoardTitle";
 import { cls } from "@libs/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FieldErrors, useForm, useFieldArray } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { toast } from "react-toastify";
@@ -21,30 +21,39 @@ export default function NetworkSetting({ ABS_URL }: any) {
   const { networkInfo } = useNetworkInfo();
   const networkData = networkInfo?.interfaces;
   let networkName = networkInfo?.interfaces[0].name;
-  const [ipAddr, setIpAddr] = useState(networkData);
+  const [ipAddr, setIpAddr] = useState("");
   const [netMask, setNetMask] = useState("");
   const [gateWay, setGateWay] = useState("");
 
-  // const { fields } = useFieldArray({
-  //   control,
-  //   name: "networkInfoData",
-  // });
+  const [networkJson, setNetworkJson] = useState([{ ipaddress: "" }]);
+  const [newIpAddr, setNewIpAddr] = useState({ ipaddress: "" });
 
-  let neworkInfoJson = {
-    networkInfos: [
-      {
-        gateway: gateWay,
-        ipaddress: ipAddr,
-        // name: networkName,
-        netmask: netMask,
-      },
-    ],
-  };
-  console.log("??? : ", networkData);
+  useEffect(() => {
+    console.log("useEffect 진입", newIpAddr, ipAddr);
+    setNewIpAddr({ ipaddress: ipAddr });
+  }, [ipAddr]);
+
+  // let neworkInfoJson = {
+  //   networkInfos: [
+  //     {
+  //       gateway: gateWay,
+  //       ipaddress: ipAddr,
+  //       // name: networkName,
+  //       netmask: netMask,
+  //     },
+  //   ],
+  // };
 
   const onValid = (data: any) => {
+    setNetworkJson([...networkJson, newIpAddr]);
+    console.log("변경 내용 [] : ", networkJson);
+
+    let neworkInfoJson = {
+      networkInfos: networkJson,
+    };
+
     updateNetwork({ ABS_URL }, neworkInfoJson);
-    console.log(neworkInfoJson);
+    console.log("결과 JSON {} : ", neworkInfoJson);
   };
 
   const onInvalid = (errors: FieldErrors) => {
@@ -170,7 +179,7 @@ export default function NetworkSetting({ ABS_URL }: any) {
                           /^(([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])\.){3}([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])$/,
                         message: "ipv4 형식이 아닙니다.",
                       },
-                      onChange: (e) => setIpAddr(e.target.value),
+                      onChange: (e) => setNetMask(e.target.value),
                       required: "netmask를 입력해 주세요.",
                     })}
                     defaultValue={networkData.addresses[0].mask ?? ""}
@@ -202,7 +211,7 @@ export default function NetworkSetting({ ABS_URL }: any) {
                           /^(([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])\.){3}([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])$/,
                         message: "ipv4 형식이 아닙니다.",
                       },
-                      onChange: (e) => setIpAddr(e.target.value),
+                      onChange: (e) => setGateWay(e.target.value),
                       // required: "gateway를 입력해 주세요.",
                     })}
                     defaultValue={networkData.addresses[0].gateway ?? ""}
