@@ -2,20 +2,28 @@ import useNetworkInfo from "@api/dashBoard/networkInfo";
 import updateNetwork from "@api/setting/updateNetwork";
 import BoardTitle from "@components/common/BoardTitle";
 import { cls } from "@libs/utils";
+import axios from "axios";
 import { useState } from "react";
-import { FieldErrors, useForm } from "react-hook-form";
+import { Controller, FieldErrors, useForm } from "react-hook-form";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-interface NeworkForm {}
+interface NeworkForm {
+  gateway: string;
+  ipaddress: string;
+  name: string;
+  netmask: string;
+}
 
-export default function NetworkSetting() {
-  const { register, handleSubmit } = useForm();
+export default function NetworkSetting({ ABS_URL }: any) {
+  const { register, handleSubmit, control, formState } = useForm<NeworkForm>();
   const { networkInfo } = useNetworkInfo();
-  const networkName = networkInfo?.interfaces[0].name;
-  const [ipAddr, setIpAddr] = useState();
-  const [netMask, setNetMask] = useState();
-  const [gateWay, setGateWay] = useState();
+  let networkName = networkInfo?.interfaces[0].name;
+  const [ipAddr, setIpAddr] = useState("");
+  const [netMask, setNetMask] = useState("");
+  const [gateWay, setGateWay] = useState("");
 
-  const neworkInfoJson = {
+  let neworkInfoJson = {
     networkInfos: [
       {
         gateway: gateWay,
@@ -25,16 +33,23 @@ export default function NetworkSetting() {
       },
     ],
   };
+  console.log("??? : ", networkInfo);
 
-  console.log(" ?? : ", neworkInfoJson);
   const onValid = (data: NeworkForm) => {
-    updateNetwork(neworkInfoJson);
+    updateNetwork({ ABS_URL }, neworkInfoJson);
+    console.log(neworkInfoJson);
   };
 
   const onInvalid = (errors: FieldErrors) => {
-    console.log(errors);
+    toast.warning("ipv4 형식이 아닙니다.", {
+      position: toast.POSITION.BOTTOM_CENTER,
+    });
+    console.error(errors);
   };
-
+  const { errors } = formState;
+  const ipv4Regex =
+    /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+  const notify = () => toast("Wow so easy!");
   return (
     <div className="relative row-span-3 w-full overflow-hidden bg-white p-2 shadow-md">
       <BoardTitle subTitle="네트워크 설정" />
@@ -107,10 +122,13 @@ export default function NetworkSetting() {
                   />
                 </div>
                 <div className="flex w-[30%] items-center">
-                  <span className="pr-2 text-sm font-medium text-gray-900">
+                  <label
+                    htmlFor="ipaddress"
+                    className="pr-2 text-sm font-medium text-gray-900"
+                  >
                     IP 주소
-                  </span>
-                  <input
+                  </label>
+                  {/* <input
                     {...register("ipaddress", {
                       required: "IP 주소를 입력하세요",
                       onChange: (e) => setIpAddr(e.target.value),
@@ -118,8 +136,22 @@ export default function NetworkSetting() {
                     defaultValue={networkData.addresses[0].address}
                     type="text"
                     className="w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
+                  /> */}
+                  <input
                     placeholder="IP 주소"
+                    {...register("ipaddress", {
+                      pattern: {
+                        value:
+                          /^(([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])\.){3}([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])$/,
+                        message: "ipv4 형식이 아닙니다.",
+                      },
+                    })}
+                    className="w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
+                    // defaultValue={"ipAddr"}
+                    defaultValue={networkData.addresses[0].address}
+                    onChange={(e) => setIpAddr(e.target.value)}
                   />
+                  {/* {errors.ipaddress && errors.ipaddress.message} */}
                 </div>
                 <div className="flex w-[25%] items-center">
                   <span className="pr-2 text-sm font-medium text-gray-900">
@@ -128,8 +160,8 @@ export default function NetworkSetting() {
                   <input
                     {...register("netmask", {
                       required: "NETMASK를 입력하세요",
-                      onChange: (e) => setNetMask(e.target.value),
                     })}
+                    onChange={(e) => setNetMask(e.target.value)}
                     defaultValue={networkData.addresses[0].mask}
                     type="text"
                     className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"

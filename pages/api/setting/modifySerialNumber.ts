@@ -1,30 +1,22 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
-export default function modifySerialNumber(modelInfoJson: any) {
+const MODIFY_SERIALNUMBER_API_URL = process.env.NEXT_PUBLIC_MODIFY_SERIALNUMBER;
+
+export default function modifySerialNumber(
+  { ABS_URL }: any,
+  modelInfoJson: any
+) {
   axios
-    .put(
-      `http://192.168.123.190:8080/api/deviceSetting/modifySerialNumber`,
-      modelInfoJson
-    )
+    .put(`${ABS_URL}${MODIFY_SERIALNUMBER_API_URL}`, modelInfoJson)
     .then((res) => {
-      console.log("시리얼 넘버 response ::", res.data);
-      alert("수정되었습니다.");
-      // () => {
-      //   const toasts = useToasts();
-
-      //   return (
-      //     <Button
-      //       success
-      //       onClick={() => {
-      //         toasts.success("The Evil Rabbit jumped over the fence.");
-      //       }}
-      //     >
-      //       Show Toast
-      //     </Button>
-      //   );
-      // };
+      toast.success("수정되었습니다.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
     })
     .catch((err) => {
-      console.error("시리얼 넘버 수정 오류 : ", err);
+      toast.error("설정 오류 !!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
     });
 }

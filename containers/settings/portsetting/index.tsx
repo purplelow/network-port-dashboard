@@ -6,8 +6,6 @@ import LowPortSetting from "./fragment/LowPortSetting";
 import UpPortSetting from "./fragment/UpPortSetting";
 import { useRef } from "react";
 
-
-
 const PortSetting = () => {
   return (
     <Layout title="포트 설정">

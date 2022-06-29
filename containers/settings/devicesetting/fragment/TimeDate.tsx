@@ -9,13 +9,14 @@ import axios from "axios";
 import { ko } from "date-fns/locale";
 import { format } from "date-fns";
 import moment from "moment";
+import { toast } from "react-toastify";
+import upDateTimeInfo from "@api/setting/upDateTimeInfo";
 
 const TimezoneSelect = dynamic(() => import("react-timezone-select"), {
   ssr: false,
 });
 
 // interface upDataTimeProps {}
-const UPDATETIME_API_URL = process.env.NEXT_PUBLIC_UPDATE_TIME;
 
 export default function TimeDateInfo({ ABS_URL }: any) {
   const { register, handleSubmit } = useForm();
@@ -25,7 +26,6 @@ export default function TimeDateInfo({ ABS_URL }: any) {
   const [selectedTimezone, setSelectedTimezone]: any = useState(
     Intl.DateTimeFormat().resolvedOptions().timeZone
   );
-  // ${sysTimeInfo?.timeInfo.split("_")[1]}
   const sysSetTime: string = `${sysTimeInfo?.timeInfo.split("_")[0]} ${
     sysTimeInfo?.timeInfo.split("_")[1]
   }`;
@@ -43,17 +43,15 @@ export default function TimeDateInfo({ ABS_URL }: any) {
   };
   const GMTArea = selectedGMT()[0];
   const GMTZone = selectedGMT()[1];
+  const dateJsonOb = format(startDate, "yyyy-MM-dd HH:mm:ss");
 
   const updateTimeJson = {
     area: GMTArea,
     zone: GMTZone,
-    data: startDate,
+    date: dateJsonOb,
   };
   const onValid = () => {
-    axios
-      .put(`${ABS_URL}${UPDATETIME_API_URL}`, updateTimeJson)
-      .then((res) => console.log("success", res.data))
-      .catch((err) => console.error("장비 날짜 수정 오류", err));
+    upDateTimeInfo({ ABS_URL }, updateTimeJson);
   };
 
   useEffect(() => {

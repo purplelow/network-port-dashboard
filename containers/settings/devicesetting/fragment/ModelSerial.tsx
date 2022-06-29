@@ -8,7 +8,7 @@ interface ModelForm {
   serialnumber: string;
 }
 
-export default function ModelSerial() {
+export default function ModelSerial({ ABS_URL }: any) {
   const { modelInfo } = useModelInfo();
   let modelNameGetValue = modelInfo?.modelName;
   let modelSerialGetValue = modelInfo?.modelSerial;
@@ -16,18 +16,13 @@ export default function ModelSerial() {
   const [modelSerial, setModelSerial] = useState(modelSerialGetValue);
   const { register, handleSubmit } = useForm<ModelForm>();
 
-  // useEffect(() => {
-  //   setModelName(modelNameGetValue);
-  //   setModelSerial(modelSerialGetValue);
-  // }, []);
-
   const modelInfoJson = {
     modelName: modelNameGetValue,
     modelSerial: modelSerial ?? modelSerialGetValue,
   };
 
   const onValid = (data: ModelForm) => {
-    modifySerialNumber(modelInfoJson);
+    modifySerialNumber({ ABS_URL }, modelInfoJson);
   };
 
   const onInvalid = (errors: FieldErrors) => {
@@ -42,8 +37,6 @@ export default function ModelSerial() {
               모델명
             </span>
             <input
-              // value={modelName ?? ""}
-              // onChange={(e) => e.target.value}
               {...register("modelname", {
                 disabled: true,
               })}
