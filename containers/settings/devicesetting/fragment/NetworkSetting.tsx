@@ -2,54 +2,57 @@ import useNetworkInfo from "@api/dashBoard/networkInfo";
 import updateNetwork from "@api/setting/updateNetwork";
 import BoardTitle from "@components/common/BoardTitle";
 import { cls } from "@libs/utils";
-import axios from "axios";
 import { useState } from "react";
-import { Controller, FieldErrors, useForm } from "react-hook-form";
-import { ToastContainer, toast } from "react-toastify";
+import { FieldErrors, useForm, useFieldArray } from "react-hook-form";
+import { ErrorMessage } from "@hookform/error-message";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-interface NeworkForm {
-  gateway: string;
-  ipaddress: string;
-  name: string;
-  netmask: string;
-}
+// interface NeworkForm {
+//   gateway: string;
+//   ipaddress: string;
+//   name: string;
+//   netmask: string;
+// }
 
 export default function NetworkSetting({ ABS_URL }: any) {
-  const { register, handleSubmit, control, formState } = useForm<NeworkForm>();
+  const { register, handleSubmit, control, formState } = useForm();
+  const { errors } = formState;
   const { networkInfo } = useNetworkInfo();
+  const networkData = networkInfo?.interfaces;
   let networkName = networkInfo?.interfaces[0].name;
-  const [ipAddr, setIpAddr] = useState("");
+  const [ipAddr, setIpAddr] = useState(networkData);
   const [netMask, setNetMask] = useState("");
   const [gateWay, setGateWay] = useState("");
+
+  // const { fields } = useFieldArray({
+  //   control,
+  //   name: "networkInfoData",
+  // });
 
   let neworkInfoJson = {
     networkInfos: [
       {
         gateway: gateWay,
         ipaddress: ipAddr,
-        name: networkName,
+        // name: networkName,
         netmask: netMask,
       },
     ],
   };
-  console.log("??? : ", networkInfo);
+  console.log("??? : ", networkData);
 
-  const onValid = (data: NeworkForm) => {
+  const onValid = (data: any) => {
     updateNetwork({ ABS_URL }, neworkInfoJson);
     console.log(neworkInfoJson);
   };
 
   const onInvalid = (errors: FieldErrors) => {
-    toast.warning("ipv4 형식이 아닙니다.", {
+    toast.warning("올바른 ip 주소를 입력해 주세요.", {
       position: toast.POSITION.BOTTOM_CENTER,
     });
     console.error(errors);
   };
-  const { errors } = formState;
-  const ipv4Regex =
-    /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
-  const notify = () => toast("Wow so easy!");
   return (
     <div className="relative row-span-3 w-full overflow-hidden bg-white p-2 shadow-md">
       <BoardTitle subTitle="네트워크 설정" />
@@ -76,7 +79,7 @@ export default function NetworkSetting({ ABS_URL }: any) {
         className="mt-8 h-[calc(100%-110px)] overflow-auto"
       >
         <ul className="space-y-2">
-          {networkInfo?.interfaces.map((networkData: any, i: number) => {
+          {networkData?.map((networkData: any, i: number) => {
             const statusImg = () => {
               let result;
               if (
@@ -97,7 +100,7 @@ export default function NetworkSetting({ ABS_URL }: any) {
 
             return (
               <li
-                className="flex items-center justify-between bg-blue-50 px-10 py-4"
+                className="flex items-center justify-between space-x-4 bg-blue-50 px-10 py-4"
                 key={i}
               >
                 <div className="flex w-[20%] items-center space-x-8">
@@ -121,153 +124,105 @@ export default function NetworkSetting({ ABS_URL }: any) {
                     )}
                   />
                 </div>
-                <div className="flex w-[30%] items-center">
+                <div className="relative flex w-[30%] items-center">
                   <label
-                    htmlFor="ipaddress"
+                    htmlFor={`ipaddress.${i}`}
                     className="pr-2 text-sm font-medium text-gray-900"
                   >
                     IP 주소
                   </label>
-                  {/* <input
-                    {...register("ipaddress", {
-                      required: "IP 주소를 입력하세요",
-                      onChange: (e) => setIpAddr(e.target.value),
-                    })}
-                    defaultValue={networkData.addresses[0].address}
-                    type="text"
-                    className="w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
-                  /> */}
                   <input
-                    placeholder="IP 주소"
-                    {...register("ipaddress", {
+                    {...register(`ipaddress.${i}`, {
                       pattern: {
                         value:
                           /^(([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])\.){3}([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])$/,
                         message: "ipv4 형식이 아닙니다.",
                       },
+                      onChange: (e) => setIpAddr(e.target.value),
+                      required: "ip 주소를 입력해 주세요.",
                     })}
-                    className="w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
-                    // defaultValue={"ipAddr"}
-                    defaultValue={networkData.addresses[0].address}
-                    onChange={(e) => setIpAddr(e.target.value)}
+                    defaultValue={networkData.addresses[0].address ?? ""}
+                    id={`ipaddress.${i}`}
+                    placeholder="IP 주소를 입력해 주세요."
+                    type="text"
+                    className={cls(
+                      "w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700",
+                      errors?.["ipaddress"]?.[i] ? "border-red-500" : ""
+                    )}
                   />
-                  {/* {errors.ipaddress && errors.ipaddress.message} */}
+                  {errors?.["ipaddress"]?.[i] && (
+                    <p className="absolute -bottom-5 left-12 mt-2 text-sm text-red-600">
+                      {errors?.["ipaddress"]?.[i]?.["message"]}
+                    </p>
+                  )}
                 </div>
                 <div className="flex w-[25%] items-center">
-                  <span className="pr-2 text-sm font-medium text-gray-900">
+                  <label
+                    htmlFor={`netmask.${i}`}
+                    className="pr-2 text-sm font-medium text-gray-900"
+                  >
                     NETMASK
-                  </span>
+                  </label>
                   <input
-                    {...register("netmask", {
-                      required: "NETMASK를 입력하세요",
+                    {...register(`netmask.${i}`, {
+                      pattern: {
+                        value:
+                          /^(([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])\.){3}([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])$/,
+                        message: "ipv4 형식이 아닙니다.",
+                      },
+                      onChange: (e) => setIpAddr(e.target.value),
+                      required: "netmask를 입력해 주세요.",
                     })}
-                    onChange={(e) => setNetMask(e.target.value)}
-                    defaultValue={networkData.addresses[0].mask}
+                    defaultValue={networkData.addresses[0].mask ?? ""}
+                    id={`netmask.${i}`}
+                    placeholder="NETMASK를를 입력해 주세요."
                     type="text"
-                    className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
-                    placeholder="NETMASK"
+                    className={cls(
+                      "w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700",
+                      errors?.["netmask"]?.[i] ? "border-red-500" : ""
+                    )}
                   />
+                  {errors?.["netmask"]?.[i] && (
+                    <p className="absolute -bottom-5 left-12 mt-2 text-sm text-red-600">
+                      {errors?.["netmask"]?.[i]?.["message"]}
+                    </p>
+                  )}
                 </div>
                 <div className="flex w-[25%] items-center">
-                  <span className="pr-2 text-sm font-medium text-gray-900">
+                  <label
+                    htmlFor={`ipaddress.${i}`}
+                    className="pr-2 text-sm font-medium text-gray-900"
+                  >
                     GATEWAY
-                  </span>
+                  </label>
                   <input
-                    {...register("gateway", {
-                      required: "GATEWAY를 입력하세요",
-                      onChange: (e) => setGateWay(e.target.value),
+                    {...register(`gateway.${i}`, {
+                      pattern: {
+                        value:
+                          /^(([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])\.){3}([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])$/,
+                        message: "ipv4 형식이 아닙니다.",
+                      },
+                      onChange: (e) => setIpAddr(e.target.value),
+                      // required: "gateway를 입력해 주세요.",
                     })}
-                    defaultValue={networkData.addresses[0].gateway}
+                    defaultValue={networkData.addresses[0].gateway ?? ""}
+                    id={`gateway.${i}`}
+                    placeholder="GATEWAY를 입력해 주세요."
                     type="text"
-                    className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
-                    placeholder="GATEWAY"
+                    className={cls(
+                      "w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700",
+                      errors?.["gateway"]?.[i] ? "border-red-500" : ""
+                    )}
                   />
+                  {errors?.["gateway"]?.[i] && (
+                    <p className="absolute -bottom-5 left-12 mt-2 text-sm text-red-600">
+                      {errors?.["gateway"]?.[i]?.["message"]}
+                    </p>
+                  )}
                 </div>
               </li>
             );
           })}
-
-          {/* <li className="flex items-center justify-between bg-blue-50 px-10 py-4">
-                <div className="flex w-[20%] items-center space-x-8">
-                  <span className="font-bold">LAN 2</span>
-                  <span className="h-3 w-3 rounded-full bg-[#DE1717]"></span>
-                  <div className="h-[41px] w-[49px] bg-lanDisconnected bg-no-repeat" />
-                </div>
-                <div className="flex w-[30%] items-center">
-                  <span className="px-4 text-sm font-medium text-gray-900">
-                    IP 주소
-                  </span>
-                  <input
-                    type="text"
-                    className="w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
-                    placeholder="IP 주소"
-                    required
-                  />
-                </div>
-                <div className="flex w-[25%] items-center">
-                  <span className="px-4 text-sm font-medium text-gray-900">
-                    NETMASK
-                  </span>
-                  <input
-                    type="text"
-                    className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
-                    placeholder="NETMASK"
-                    required
-                  />
-                </div>
-                <div className="flex w-[25%] items-center">
-                  <span className="px-4 text-sm font-medium text-gray-900">
-                    GATEWAY
-                  </span>
-                  <input
-                    type="text"
-                    className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
-                    placeholder="GATEWAY"
-                    required
-                  />
-                </div>
-              </li>
-
-              <li className="flex items-center justify-between bg-blue-50 px-10 py-4">
-                <div className="flex w-[20%] items-center space-x-8">
-                  <span className="font-bold">LAN 3</span>
-                  <span className="h-3 w-3 rounded-full bg-[#B5B5B5]"></span>
-                  <div className="h-[41px] w-[49px] bg-lanInactive bg-no-repeat" />
-                </div>
-                <div className="flex w-[30%] items-center">
-                  <span className="px-4 text-sm font-medium text-gray-900">
-                    IP 주소
-                  </span>
-                  <input
-                    type="text"
-                    className="w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
-                    placeholder="IP 주소"
-                    required
-                  />
-                </div>
-                <div className="flex w-[25%] items-center">
-                  <span className="px-4 text-sm font-medium text-gray-900">
-                    NETMASK
-                  </span>
-                  <input
-                    type="text"
-                    className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
-                    placeholder="NETMASK"
-                    required
-                  />
-                </div>
-                <div className="flex w-[25%] items-center">
-                  <span className="px-4 text-sm font-medium text-gray-900">
-                    GATEWAY
-                  </span>
-                  <input
-                    type="text"
-                    className="w-3/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
-                    placeholder="GATEWAY"
-                    required
-                  />
-                </div>
-              </li> */}
         </ul>
 
         <div className="absolute left-0 bottom-0 flex w-full justify-center py-2">

@@ -9,7 +9,7 @@ interface ModelForm {
 }
 
 export default function ModelSerial({ ABS_URL }: any) {
-  const { modelInfo } = useModelInfo();
+  const { modelInfo } = useModelInfo({ ABS_URL });
   let modelNameGetValue = modelInfo?.modelName;
   let modelSerialGetValue = modelInfo?.modelSerial;
   // const [modelName, setModelName] = useState(modelNameGetValue);
@@ -47,14 +47,18 @@ export default function ModelSerial({ ABS_URL }: any) {
             />
           </div>
           <div className="flex w-2/5 items-center">
-            <span className="pr-2 text-sm font-medium text-gray-900">
+            <label
+              htmlFor="serialnumber"
+              className="pr-2 text-sm font-medium text-gray-900"
+            >
               시리얼 넘버
-            </span>
+            </label>
             <input
               {...register("serialnumber", {
                 required: "시리얼 넘버를 입력하세요.",
                 onChange: (e) => setModelSerial(e.target.value),
               })}
+              id="serialnumber"
               defaultValue={modelSerialGetValue ?? ""}
               type="text"
               className="w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"

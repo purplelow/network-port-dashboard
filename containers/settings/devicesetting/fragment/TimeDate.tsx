@@ -21,7 +21,7 @@ const TimezoneSelect = dynamic(() => import("react-timezone-select"), {
 export default function TimeDateInfo({ ABS_URL }: any) {
   const { register, handleSubmit } = useForm();
   const [timeTabIndex, setTimeTabIndex] = useState(0);
-  const { sysTimeInfo } = useTimeInfo();
+  const { sysTimeInfo } = useTimeInfo({ ABS_URL });
   const sysSetTimeGMT: any = sysTimeInfo?.timeInfo.split("_")[2];
   const [selectedTimezone, setSelectedTimezone]: any = useState(
     Intl.DateTimeFormat().resolvedOptions().timeZone
