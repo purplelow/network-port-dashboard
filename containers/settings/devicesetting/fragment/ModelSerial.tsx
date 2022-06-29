@@ -8,18 +8,13 @@ interface ModelForm {
   serialnumber: string;
 }
 
-export default function ModelSerial() {
-  const { modelInfo } = useModelInfo();
+export default function ModelSerial({ ABS_URL }: any) {
+  const { modelInfo } = useModelInfo({ ABS_URL });
   let modelNameGetValue = modelInfo?.modelName;
   let modelSerialGetValue = modelInfo?.modelSerial;
   // const [modelName, setModelName] = useState(modelNameGetValue);
   const [modelSerial, setModelSerial] = useState(modelSerialGetValue);
   const { register, handleSubmit } = useForm<ModelForm>();
-
-  // useEffect(() => {
-  //   setModelName(modelNameGetValue);
-  //   setModelSerial(modelSerialGetValue);
-  // }, []);
 
   const modelInfoJson = {
     modelName: modelNameGetValue,
@@ -27,7 +22,7 @@ export default function ModelSerial() {
   };
 
   const onValid = (data: ModelForm) => {
-    modifySerialNumber(modelInfoJson);
+    modifySerialNumber({ ABS_URL }, modelInfoJson);
   };
 
   const onInvalid = (errors: FieldErrors) => {
@@ -42,8 +37,6 @@ export default function ModelSerial() {
               모델명
             </span>
             <input
-              // value={modelName ?? ""}
-              // onChange={(e) => e.target.value}
               {...register("modelname", {
                 disabled: true,
               })}
@@ -54,14 +47,18 @@ export default function ModelSerial() {
             />
           </div>
           <div className="flex w-2/5 items-center">
-            <span className="pr-2 text-sm font-medium text-gray-900">
+            <label
+              htmlFor="serialnumber"
+              className="pr-2 text-sm font-medium text-gray-900"
+            >
               시리얼 넘버
-            </span>
+            </label>
             <input
               {...register("serialnumber", {
                 required: "시리얼 넘버를 입력하세요.",
                 onChange: (e) => setModelSerial(e.target.value),
               })}
+              id="serialnumber"
               defaultValue={modelSerialGetValue ?? ""}
               type="text"
               className="w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"

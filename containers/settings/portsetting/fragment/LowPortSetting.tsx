@@ -7,25 +7,30 @@ export default function DownPortSetting() {
   const [checkItems, setCheckItems] = useState([{ id: "-1", }]);
   const [downPorts, setDownPorts] = useRecoilState(downPortsState);
   const { downPortList, isLoading, isError }: any = useDownPortList();
-    //  console.log("downPort: ", downPortList);
+  //  console.log("downPort: ", downPortList);
 
   const downPortLength = () => {
     let i = 0;
     // const length = upPortList.length;
-    downPortList?.map(() => i+=1)
+    downPortList?.map(() => (i += 1));
     return i;
   };
 
   const statusColor = (status: string) => {
     let result;
-    if(status === "ERROR") result = "inline-block h-3 w-3 rounded-full bg-[#DE1717]";
-    else if(status === "READY") result = "inline-block h-3 w-3 rounded-full bg-[#FFAB4A]";
-    else if(status === "RUN") result = "inline-block h-3 w-3 rounded-full bg-[#319500]";
-    else if(status === "DOWN") result = "inline-block h-3 w-3 rounded-full bg-[#1694D5]";
-    else if(status === "UNUSED") result = "inline-block h-3 w-3 rounded-full bg-[#B5B5B5]";
+    if (status === "ERROR")
+      result = "inline-block h-3 w-3 rounded-full bg-[#DE1717]";
+    else if (status === "READY")
+      result = "inline-block h-3 w-3 rounded-full bg-[#FFAB4A]";
+    else if (status === "RUN")
+      result = "inline-block h-3 w-3 rounded-full bg-[#319500]";
+    else if (status === "DOWN")
+      result = "inline-block h-3 w-3 rounded-full bg-[#1694D5]";
+    else if (status === "UNUSED")
+      result = "inline-block h-3 w-3 rounded-full bg-[#B5B5B5]";
     else result = "";
     return result;
-  }
+  };
 
   const onChangeDownPort = (e: any) => {
     let i = 0;
@@ -102,13 +107,12 @@ export default function DownPortSetting() {
 
   const handleAllCheck = (checked: boolean) => {
     if (checked) {
-      const idArray = [{id: "-1"}];
+      const idArray = [{ id: "-1" }];
       downPortList.forEach((el: any) => idArray.push(el.id));
       setCheckItems(idArray);
       // console.log(checkItems);
-    }
-    else {
-      setCheckItems([{ id: "-1", }]);
+    } else {
+      setCheckItems([{ id: "-1" }]);
     }
   };
 
@@ -124,7 +128,9 @@ export default function DownPortSetting() {
                   id="checkbox-all"
                   type="checkbox"
                   onChange={(e) => handleAllCheck(e.target.checked)}
-                  checked={checkItems.length-1 === downPortLength() ? true : false}
+                  checked={
+                    checkItems.length - 1 === downPortLength() ? true : false
+                  }
                   className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
                 />
                 <label htmlFor="checkbox-all" className="sr-only">
@@ -179,16 +185,21 @@ export default function DownPortSetting() {
         <tbody className="input-w-s overflow-auto">
           {downPortList?.map((com: any, i: string) => (
             <tr
-            className={checkItems.includes(com.id) 
-              ? "border-b bg-[#FFACAC] bg-opacity-20 hover:bg-[#FFACAC] hover:bg-opacity-25"
-              : "border-b bg-white hover:bg-gray-50"}
-            key={i}>
+              className={
+                checkItems.includes(com.id)
+                  ? "border-b bg-[#FFACAC] bg-opacity-20 hover:bg-[#FFACAC] hover:bg-opacity-25"
+                  : "border-b bg-white hover:bg-gray-50"
+              }
+              key={i}
+            >
               <td className="w-4 px-4">
                 <div className="flex items-center">
                   <input
                     id="checkbox-table-1"
                     type="checkbox"
-                    onChange={(e) => handleSingleCheck(e.target.checked, com.id)}
+                    onChange={(e) =>
+                      handleSingleCheck(e.target.checked, com.id)
+                    }
                     checked={checkItems.includes(com.id) ? true : false}
                     className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
                   />
@@ -204,9 +215,16 @@ export default function DownPortSetting() {
               <td className="px-2 py-1.5 text-center">
                 <input
                   type="text"
-                  className={downPorts.some(el => el.id === com.id && el.name !== "" && el.name !== com.name) 
-                    ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
-                    : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
+                  className={
+                    downPorts.some(
+                      (el) =>
+                        el.id === com.id &&
+                        el.name !== "" &&
+                        el.name !== com.name
+                    )
+                      ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
+                      : "rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  }
                   defaultValue={com.name}
                   id={com.id}
                   name="name"
@@ -216,9 +234,16 @@ export default function DownPortSetting() {
               <td className="px-2 py-1.5 text-center">
                 <input
                   type="text"
-                  className={downPorts.some(el => el.id === com.id && el.model !== "" && el.model !== com.model) 
-                    ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
-                    : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
+                  className={
+                    downPorts.some(
+                      (el) =>
+                        el.id === com.id &&
+                        el.model !== "" &&
+                        el.model !== com.model
+                    )
+                      ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
+                      : "rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  }
                   defaultValue={com.model}
                   id={com.id}
                   name="model"
@@ -228,9 +253,16 @@ export default function DownPortSetting() {
               <td className="px-2 py-1.5 text-center">
                 <input
                   type="text"
-                  className={downPorts.some(el => el.id === com.id && el.type !== "" && el.type !== com.type) 
-                    ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
-                    : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
+                  className={
+                    downPorts.some(
+                      (el) =>
+                        el.id === com.id &&
+                        el.type !== "" &&
+                        el.type !== com.type
+                    )
+                      ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
+                      : "rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  }
                   defaultValue={com.type}
                   id={com.id}
                   name="type"
@@ -239,9 +271,16 @@ export default function DownPortSetting() {
               </td>
               <td className="px-2 py-1.5 text-center">
                 <select
-                  className={downPorts.some(el => el.id === com.id && el.baudrate !== "" && el.baudrate !== com.baudrate) 
-                  ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
-                  : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
+                  className={
+                    downPorts.some(
+                      (el) =>
+                        el.id === com.id &&
+                        el.baudrate !== "" &&
+                        el.baudrate !== com.baudrate
+                    )
+                      ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
+                      : "rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  }
                   defaultValue={com.baudrate}
                   id={com.id}
                   name="baudrate"
@@ -258,9 +297,16 @@ export default function DownPortSetting() {
               </td>
               <td className="px-2 py-1.5 text-center">
                 <select
-                  className={downPorts.some(el => el.id === com.id && el.parity !== "" && el.parity !== com.parity) 
-                  ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
-                  : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
+                  className={
+                    downPorts.some(
+                      (el) =>
+                        el.id === com.id &&
+                        el.parity !== "" &&
+                        el.parity !== com.parity
+                    )
+                      ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
+                      : "rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  }
                   defaultValue={com.parity}
                   id={com.id}
                   name="parity"
@@ -274,9 +320,16 @@ export default function DownPortSetting() {
               </td>
               <td className="px-2 py-1.5 text-center">
                 <select
-                  className={downPorts.some(el => el.id === com.id && el.databits !== "" && el.databits !== com.databits) 
-                  ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
-                  : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
+                  className={
+                    downPorts.some(
+                      (el) =>
+                        el.id === com.id &&
+                        el.databits !== "" &&
+                        el.databits !== com.databits
+                    )
+                      ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
+                      : "rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  }
                   defaultValue={com.databits}
                   id={com.id}
                   name="databits"
@@ -289,9 +342,16 @@ export default function DownPortSetting() {
               </td>
               <td className="px-2 py-1.5 text-center">
                 <select
-                  className={downPorts.some(el => el.id === com.id && el.stopbits !== "" && el.stopbits !== com.stopbits) 
-                  ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
-                  : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
+                  className={
+                    downPorts.some(
+                      (el) =>
+                        el.id === com.id &&
+                        el.stopbits !== "" &&
+                        el.stopbits !== com.stopbits
+                    )
+                      ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
+                      : "rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  }
                   defaultValue={com.stopbits}
                   id={com.id}
                   name="stopbits"
@@ -306,19 +366,26 @@ export default function DownPortSetting() {
                   type="number"
                   min="0"
                   max="32767"
-                  className={downPorts.some(el => el.id === com.id && el.deviceId !== "" && el.deviceId !== com.deviceId) 
-                    ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900" 
-                    : "rounded-md border-[1px] border-gray-300 py-1 text-center"}
+                  className={
+                    downPorts.some(
+                      (el) =>
+                        el.id === com.id &&
+                        el.deviceId !== "" &&
+                        el.deviceId !== com.deviceId
+                    )
+                      ? "rounded-md border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
+                      : "rounded-md border-[1px] border-gray-300 py-1 text-center"
+                  }
                   defaultValue={com.deviceId}
                   id={com.id}
                   name="deviceId"
                   onChange={onChangeDownPort}
                 />
               </td>
-             <td className="px-2 py-1.5 text-right">{com.t1}</td>
-             <td className="px-2 py-1.5 text-right">{com.t2}</td>
-             <td className="px-2 py-1.5 text-right">{com.t3}</td>
-             <td className="px-2 py-1.5 text-right">{com.t4}</td>
+              <td className="px-2 py-1.5 text-right">{com.t1}</td>
+              <td className="px-2 py-1.5 text-right">{com.t2}</td>
+              <td className="px-2 py-1.5 text-right">{com.t3}</td>
+              <td className="px-2 py-1.5 text-right">{com.t4}</td>
             </tr>
           ))}
         </tbody>

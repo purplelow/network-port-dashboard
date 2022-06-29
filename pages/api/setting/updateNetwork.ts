@@ -1,14 +1,21 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
-export default function updateNetwork(neworkInfoJson: any) {
+const UPDATE_NETWORK_APU_URL = process.env.NEXT_PUBLIC_UPDATE_NETWORK;
+
+export default function updateNetwork({ ABS_URL }: any, neworkInfoJson: any) {
   axios
-    .put(
-      `http://192.168.123.190:8080/api/deviceSetting/updateNetwork`,
-      neworkInfoJson
-    )
+    .put(`${ABS_URL}${UPDATE_NETWORK_APU_URL}`, neworkInfoJson)
     .then((res) => {
+      toast.success("네트워크 설정이 적용 되었습니다.", {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
       console.log("네트워크 정보 response :: ", res.data);
-      alert("수정되었습니다.");
     })
-    .catch((err) => console.error("네트워크 설정 오류 : ", err));
+    .catch((err) => {
+      toast.error("설정 오류 !!", {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+      console.error("네트워크 설정 오류 : ", err);
+    });
 }
