@@ -10,12 +10,11 @@ import { downPortsState } from "recoil/atom";
 import updatePortSetting from "@api/setting/modifyPort";
 import useDownPortList from "@api/setting/downPortList";
 
-
-
 const PortSetting = () => {
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
   const [downPorts, setDownPorts] = useRecoilState(downPortsState);
   const { downPortList, isLoading, isError }: any = useDownPortList();
+  let isSuccess = false;
 
   function refreshPage() {
     window.location.reload();
@@ -26,6 +25,7 @@ const PortSetting = () => {
       if(u.id !== "-1") {
         if(Number(u.port) < 1 || Number(u.port) > 65535) {
           alert("상위 포트 설정: LISTEN PORT는 1~65535 사이 숫자를 입력하세요.");
+          isSuccess = false;
         } else {
           let upPortJson = {
             upPortList: [
@@ -37,6 +37,7 @@ const PortSetting = () => {
           }
           console.log(upPortJson);
           updatePortSetting(upPortJson);
+          isSuccess = true;
         }
       }
     })
@@ -71,6 +72,7 @@ const PortSetting = () => {
 
         if(Number(putArr.deviceId) < 0 || Number(putArr.deviceId) > 32767) {
           alert("하위 시리얼 포트 설정: DEVICE ID는 0~32767 사이 숫자를 입력하세요.");
+          isSuccess = false;
         }
         else {
           let upPortJson = {
@@ -80,6 +82,7 @@ const PortSetting = () => {
           }
           console.log(upPortJson);
           updatePortSetting(upPortJson);
+          isSuccess = true;
         }
       }
     })
@@ -88,10 +91,12 @@ const PortSetting = () => {
   const onClickSetting = () => {
     upPortPut();
     downPortPut();
+    isSuccess === true ? alert("변경되었습니다.") : null;
   }
 
   return (
     <Layout title="포트 설정">
+      <form>
       <div className="absolute top-10 right-4 flex justify-end space-x-4 py-2">
         <button
           type="submit"
@@ -131,6 +136,7 @@ const PortSetting = () => {
           <LowPortSetting />
         </div>
       </div>
+      </form>
     </Layout>
   );
 };
