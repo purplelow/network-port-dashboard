@@ -1,5 +1,9 @@
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
+
+const UPPORTLIST_API_URL = process.env.NEXT_PUBLIC_GET_UPPORT_LIST;
 
 interface UpPortListProps {
   deviceName: string;
@@ -17,10 +21,8 @@ const fetcher = (url: string) =>
   axios.get<UpPortListProps>(url).then((res) => res.data);
 
 export default function useUpPortList() {
-  const { data, error } = useSWR(
-    `http://192.168.123.190:8080/api/portSetting/getUpPortList`,
-    fetcher
-  );
+  const ABS_URL = useRecoilValue(routerUrl);
+  const { data, error } = useSWR(`${ABS_URL}${UPPORTLIST_API_URL}`, fetcher);
   return {
     upPortList: data,
     isLoading: !error && !data,

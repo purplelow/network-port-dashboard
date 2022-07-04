@@ -1,5 +1,9 @@
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
+
+const DOWNPORT_API_URL = process.env.NEXT_PUBLIC_GET_DOWNPORT_STATUS;
 
 interface LowPortProps {
   sub_device: SubDevice[];
@@ -22,15 +26,12 @@ const fetcher = async (url: string) =>
     .catch((err) => console.error("Down port data error ", err));
 
 export default function useLowPortData() {
-  const { data, error } = useSWR(
-    `http://192.168.123.190:8080/api/dashBoard/getDownPortStatus`,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-    }
-  );
+  const ABS_URL = useRecoilValue(routerUrl);
+  const { data, error } = useSWR(`${ABS_URL}${DOWNPORT_API_URL}`, fetcher, {
+    revalidateOnFocus: false,
+    revalidateIfStale: false,
+    revalidateOnReconnect: false,
+  });
   return {
     lowPortInfo: data,
     isLoading: !error && !data,

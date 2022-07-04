@@ -2,8 +2,10 @@ import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineUpload } from "react-icons/ai";
-import { useRecoilState } from "recoil";
-import { restoreFailState, restoreState } from "recoil/atom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { restoreFailState, restoreState, routerUrl } from "recoil/atom";
+
+const RESTORE_API_URL = process.env.NEXT_PUBLCI_RESTORE;
 
 export default function RestoreFrom() {
   const [restoreSuccess, setRestoreSuccess] = useRecoilState(restoreState);
@@ -17,11 +19,12 @@ export default function RestoreFrom() {
   };
 
   const onSubmit = () => {
+    const ABS_URL = useRecoilValue(routerUrl);
     const formData = new FormData();
     formData.append("file", selectedFile);
     axios({
       method: "POST",
-      url: `http://192.168.123.190:8080/api/system/restore`,
+      url: `${ABS_URL}${RESTORE_API_URL}`,
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",

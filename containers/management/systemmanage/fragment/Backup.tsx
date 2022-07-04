@@ -2,17 +2,20 @@ import getBackUpFile from "@api/management/getBackUpFile";
 import axios from "axios";
 import { useCallback } from "react";
 import { AiOutlineDownload } from "react-icons/ai";
-import { useRecoilState } from "recoil";
-import { backUpFailState, backUpState } from "recoil/atom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { backUpFailState, backUpState, routerUrl } from "recoil/atom";
+
+const BACKUP_API_URL = process.env.NEXT_PUBLIC_BACKUP;
 
 export default function BackUp() {
   // const { backUpFileName } = getBackUpFile();
   const [backUpSuccess, setBackUpSuccess] = useRecoilState(backUpState);
   const [backUpFail, setBackUpFail] = useRecoilState(backUpFailState);
   const handleDownload = () => {
+    const ABS_URL = useRecoilValue(routerUrl);
     axios({
       method: "GET",
-      url: `http://192.168.123.190:8080/api/system/backup`,
+      url: `${ABS_URL}${BACKUP_API_URL}`,
       responseType: "blob",
     })
       .then((res) => {

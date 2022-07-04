@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import BoardTitle from "@components/common/BoardTitle";
 import useGetNote from "@api/dashBoard/getNote";
 import useSystemInfo from "@api/dashBoard/systemInfo";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
+
+const MODIFY_NOTE_API_URL = process.env.MEXT_PUBLIC_MODIFY_NOTE;
 
 export default function SystemInfo() {
   const { systemInfo, isLoading, isError } = useSystemInfo();
@@ -18,14 +22,13 @@ export default function SystemInfo() {
   }, [userNoteValue]);
   let userNoteJson = JSON.parse(`{"deviceNote": "${userNote}"}`);
 
-  const submit = (e: any) => {
+  const handleModifyNote = (e: any) => {
+    const ABS_URL = useRecoilValue(routerUrl);
     e.preventDefault();
-    axios
-      .put(`http://192.168.123.190:8080/api/dashBoard/modifyNote`, userNoteJson)
-      .then((res) => {
-        console.log(res.data);
-        alert("수정되었습니다.");
-      });
+    axios.put(`${ABS_URL}${MODIFY_NOTE_API_URL}`, userNoteJson).then((res) => {
+      console.log(res.data);
+      alert("수정되었습니다.");
+    });
     return;
   };
 
@@ -67,7 +70,7 @@ export default function SystemInfo() {
       </div>
       <div className="h-1/3 pt-2">
         <BoardTitle subTitle="메모" />
-        <form onSubmit={submit}>
+        <form onSubmit={handleModifyNote}>
           <div className="flex">
             <textarea
               value={userNote}

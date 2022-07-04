@@ -1,12 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { AiOutlineDownload } from "react-icons/ai";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
+
+const DOWNLOAD_LOGFILE_API_URL = process.env.NEXT_PUBLIC_DOWNLOAD_LOGFILE;
 
 export default function DonwloadButton({ fileName }: any) {
+  const ABS_URL = useRecoilValue(routerUrl);
   const handleDownload = () => {
     axios({
       method: "GET",
-      url: `http://192.168.123.190:8080/api/history/downloadLogFile/${fileName}`,
+      url: `${ABS_URL}${DOWNLOAD_LOGFILE_API_URL}${fileName}`,
       responseType: "blob",
     })
       .then((res) => {

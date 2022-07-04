@@ -9,6 +9,8 @@ import { upPortsState } from "recoil/atom";
 import { downPortsState } from "recoil/atom";
 import updatePortSetting from "@api/setting/modifyPort";
 import useDownPortList from "@api/setting/downPortList";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PortSetting = () => {
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
@@ -22,9 +24,11 @@ const PortSetting = () => {
 
   const upPortPut = () => {
     upPorts?.map((u) => {
-      if(u.id !== "-1") {
-        if(Number(u.port) < 1 || Number(u.port) > 65535) {
-          alert("상위 포트 설정: LISTEN PORT는 1~65535 사이 숫자를 입력하세요.");
+      if (u.id !== "-1") {
+        if (Number(u.port) < 1 || Number(u.port) > 65535) {
+          alert(
+            "상위 포트 설정: LISTEN PORT는 1~65535 사이 숫자를 입력하세요."
+          );
           isSuccess = false;
         } else {
           let upPortJson = {
@@ -32,20 +36,20 @@ const PortSetting = () => {
               {
                 id: u.id,
                 port: u.port,
-              }
-            ]
-          }
+              },
+            ],
+          };
           console.log(upPortJson);
           updatePortSetting(upPortJson);
           isSuccess = true;
         }
       }
-    })
-  }
+    });
+  };
 
   const downPortPut = () => {
     downPorts?.map((u) => {
-      if(u.id !== "-1") {
+      if (u.id !== "-1") {
         let putArr = {
           id: u.id,
           name: u.name,
@@ -58,47 +62,61 @@ const PortSetting = () => {
           deviceId: u.deviceId,
         };
         downPortList?.map((com: any, i: string) => {
-          if(com.id === u.id) {
-            if(putArr.name === "") putArr.name = com.name;
-            if(putArr.model === "") putArr.model = com.model;
-            if(putArr.type === "") putArr.type = com.type;
-            if(putArr.baudrate === "") putArr.baudrate = com.baudrate;
-            if(putArr.parity === "") putArr.parity = com.parity;
-            if(putArr.databits === "") putArr.databits = com.databits;
-            if(putArr.stopbits === "") putArr.stopbits = com.stopbits;
-            if(putArr.deviceId === "") putArr.deviceId = com.deviceId;
+          if (com.id === u.id) {
+            if (putArr.name === "") putArr.name = com.name;
+            if (putArr.model === "") putArr.model = com.model;
+            if (putArr.type === "") putArr.type = com.type;
+            if (putArr.baudrate === "") putArr.baudrate = com.baudrate;
+            if (putArr.parity === "") putArr.parity = com.parity;
+            if (putArr.databits === "") putArr.databits = com.databits;
+            if (putArr.stopbits === "") putArr.stopbits = com.stopbits;
+            if (putArr.deviceId === "") putArr.deviceId = com.deviceId;
           }
         });
 
-        if(Number(putArr.deviceId) < 0 || Number(putArr.deviceId) > 32767) {
-          alert("하위 시리얼 포트 설정: DEVICE ID는 0~32767 사이 숫자를 입력하세요.");
+        if (Number(putArr.deviceId) < 0 || Number(putArr.deviceId) > 32767) {
+          alert(
+            "하위 시리얼 포트 설정: DEVICE ID는 0~32767 사이 숫자를 입력하세요."
+          );
           isSuccess = false;
-        }
-        else {
+        } else {
           let upPortJson = {
-            downPortList: [
-              putArr,
-            ]
-          }
+            downPortList: [putArr],
+          };
           console.log(upPortJson);
           updatePortSetting(upPortJson);
           isSuccess = true;
         }
       }
-    })
-  }
+    });
+  };
 
   const onClickSetting = () => {
     upPortPut();
     downPortPut();
-    isSuccess === true ? alert("변경되었습니다.") : null;
-  }
+    isSuccess === true
+      ? toast.success("설정이 적용 되었습니다", {
+          position: toast.POSITION.TOP_CENTER,
+        })
+      : toast.error("설정 적용 오류", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+  };
 
   return (
     <Layout title="포트 설정">
+      <ToastContainer
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="absolute top-10 right-4 flex justify-end space-x-4 py-2">
         <button
-          type="submit"
           className="flex items-center space-x-2 rounded-sm border border-[#707070] bg-[#707070] p-2 px-8 text-sm font-medium text-white hover:bg-neutral-600 "
           onClick={refreshPage}
         >

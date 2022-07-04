@@ -1,5 +1,9 @@
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
+
+const UPPORT_API_URL = process.env.NEXT_PUBLIC_GET_UPPORT_STATUS;
 
 interface UpPortProps {
   app_service: AppService[];
@@ -20,15 +24,12 @@ const fetcher = async (url: string) =>
     .catch((err) => console.error("Up port data error ", err));
 
 export default function useUpPortData() {
-  const { data, error } = useSWR(
-    `http://192.168.123.190:8080/api/dashBoard/getUpPortStatus`,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-    }
-  );
+  const ABS_URL = useRecoilValue(routerUrl);
+  const { data, error } = useSWR(`${ABS_URL}${UPPORT_API_URL}`, fetcher, {
+    revalidateOnFocus: false,
+    revalidateIfStale: false,
+    revalidateOnReconnect: false,
+  });
   return {
     upPortInfo: data,
     isLoading: !error && !data,

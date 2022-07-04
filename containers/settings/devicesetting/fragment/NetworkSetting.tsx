@@ -2,7 +2,7 @@ import useNetworkInfo from "@api/dashBoard/networkInfo";
 import updateNetwork from "@api/setting/updateNetwork";
 import BoardTitle from "@components/common/BoardTitle";
 import { cls } from "@libs/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FieldErrors, useForm, useFieldArray } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { toast } from "react-toastify";
@@ -16,7 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 // }
 
 export default function NetworkSetting({ ABS_URL }: any) {
-  const { register, handleSubmit, control, formState } = useForm();
+  const { register, handleSubmit, watch, formState } = useForm();
   const { errors } = formState;
   const { networkInfo } = useNetworkInfo();
   const networkData = networkInfo?.interfaces;
@@ -25,12 +25,23 @@ export default function NetworkSetting({ ABS_URL }: any) {
   const [netMask, setNetMask] = useState("");
   const [gateWay, setGateWay] = useState("");
 
-  const [networkJson, setNetworkJson] = useState([{ ipaddress: "" }]);
-  const [newIpAddr, setNewIpAddr] = useState({ ipaddress: "" });
+  // const [networkJson, setNetworkJson] = useState([{ ipaddress: "" }]);
+  // const [newIpAddr, setNewIpAddr] = useState([{ ipaddress: "" }]);
 
+  const [data, setData]: any = useState([]);
+  const dataId = useRef(0);
   useEffect(() => {
-    console.log("useEffect 진입", newIpAddr, ipAddr);
-    setNewIpAddr({ ipaddress: ipAddr });
+    // setNewIpAddr([...ipAddr, { ipaddress: ipAddr }]);
+    const newItem = {
+      gateWay,
+      ipAddr,
+      name: "",
+      netMask,
+      id: dataId.current,
+    };
+    dataId.current += 1;
+    setData([newItem, ...data]);
+    console.log("useEffect data?: ", data);
   }, [ipAddr]);
 
   // let neworkInfoJson = {
@@ -44,15 +55,15 @@ export default function NetworkSetting({ ABS_URL }: any) {
   //   ],
   // };
 
-  const onValid = (data: any) => {
-    setNetworkJson([...networkJson, newIpAddr]);
-    console.log("변경 내용 [] : ", networkJson);
+  const onValid = () => {
+    // setNetworkJson([...networkJson, newIpAddr]);
 
-    let neworkInfoJson = {
-      networkInfos: networkJson,
+    const neworkInfoJson = {
+      networkInfos: data,
     };
 
-    updateNetwork({ ABS_URL }, neworkInfoJson);
+    // updateNetwork({ ABS_URL }, neworkInfoJson);
+
     console.log("결과 JSON {} : ", neworkInfoJson);
   };
 

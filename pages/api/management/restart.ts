@@ -1,11 +1,16 @@
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
 
+const RESTART_API_URL = process.env.NEXT_PUBLIC_RESTART;
+
 export default function useRestart() {
+  const ABS_URL = useRecoilValue(routerUrl);
   console.log("리스타트 api");
   axios({
     method: "GET",
-    url: `http://192.168.123.190:8080/api/system/restart`,
+    url: `${ABS_URL}${RESTART_API_URL}`,
   })
     .then((res) => console.log(res.data))
     .catch((err) => console.error("Restart error ", err));
