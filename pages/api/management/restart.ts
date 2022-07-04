@@ -7,7 +7,6 @@ const RESTART_API_URL = process.env.NEXT_PUBLIC_RESTART;
 
 export default function useRestart() {
   const ABS_URL = useRecoilValue(routerUrl);
-  console.log("리스타트 api");
   axios({
     method: "GET",
     url: `${ABS_URL}${RESTART_API_URL}`,

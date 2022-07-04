@@ -10,12 +10,10 @@ export default function upDateTimeInfo({ ABS_URL }: any, updateTimeJson: any) {
       toast.success("설정 완료.", {
         position: toast.POSITION.TOP_CENTER,
       });
-      console.log("success", res.data);
     })
     .catch((err) => {
       toast.error("설정 오류 !!", {
         position: toast.POSITION.TOP_CENTER,
       });
-      console.error("장비 날짜 수정 오류", err);
     });
 }

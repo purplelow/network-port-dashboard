@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { AiOutlineDownload } from "react-icons/ai";
+import { toast } from "react-toastify";
 import { useRecoilValue } from "recoil";
 import { routerUrl } from "recoil/atom";
 
@@ -27,10 +28,14 @@ export default function DonwloadButton({ fileName }: any) {
         }, 50000);
         link.remove();
 
-        console.log(res.data);
+        toast.success("다운로드중 입니다.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       })
       .catch((err) => {
-        console.log("err: ", err);
+        toast.error("다운로드 오류 !!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       });
   };
 

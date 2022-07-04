@@ -22,28 +22,32 @@ export const restoreFailState = atom({
 
 export const routerUrl = atom({
   key: "routerUrl",
-  default: "",
+  default: "http://192.168.123.190:8080",
 });
 
 export const upPortsState = atom({
   key: "upPortsState",
-  default: [{
-    id: "-1",
-    port: "",
-  }],
-})
+  default: [
+    {
+      id: "-1",
+      port: "",
+    },
+  ],
+});
 
 export const downPortsState = atom({
   key: "downPortsState",
-  default: [{
-    id: "-1",
-    name: "",
-    model: "",
-    type: "",
-    baudrate: "",
-    parity: "",
-    databits: "",
-    stopbits: "",
-    deviceId: "",
-  }],
-})
+  default: [
+    {
+      id: "-1",
+      name: "",
+      model: "",
+      type: "",
+      baudrate: "",
+      parity: "",
+      databits: "",
+      stopbits: "",
+      deviceId: "",
+    },
+  ],
+});

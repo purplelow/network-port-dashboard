@@ -2,17 +2,18 @@ import getBackUpFile from "@api/management/getBackUpFile";
 import axios from "axios";
 import { useCallback } from "react";
 import { AiOutlineDownload } from "react-icons/ai";
+import { toast } from "react-toastify";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { backUpFailState, backUpState, routerUrl } from "recoil/atom";
 
 const BACKUP_API_URL = process.env.NEXT_PUBLIC_BACKUP;
 
 export default function BackUp() {
+  const ABS_URL = useRecoilValue(routerUrl);
   // const { backUpFileName } = getBackUpFile();
   const [backUpSuccess, setBackUpSuccess] = useRecoilState(backUpState);
   const [backUpFail, setBackUpFail] = useRecoilState(backUpFailState);
   const handleDownload = () => {
-    const ABS_URL = useRecoilValue(routerUrl);
     axios({
       method: "GET",
       url: `${ABS_URL}${BACKUP_API_URL}`,
@@ -32,16 +33,17 @@ export default function BackUp() {
           window.URL.revokeObjectURL(fileObjectUrl);
         }, 50000);
         link.remove();
-        setBackUpSuccess(true);
 
-        // useCallback(() => {
-        // }, [setBackUpState]);
-
-        console.log(res.data);
+        // setBackUpSuccess(true);
+        toast.success("백업 파일 다운로드 완료.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       })
       .catch((err) => {
-        console.error("err: ", err);
-        setBackUpFail(true);
+        // setBackUpFail(true);
+        toast.error("다운로드 오류 !!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       });
   };
   return (

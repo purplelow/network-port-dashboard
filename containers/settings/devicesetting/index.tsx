@@ -1,10 +1,13 @@
+import { routerUrl } from "recoil/atom";
+import { useRecoilValue } from "recoil";
+import { ToastContainer } from "react-toastify";
+
 import Layout from "@components/layout";
 import ModelSerial from "./fragment/ModelSerial";
 import TimeDateInfo from "./fragment/TimeDate";
 import NetworkSetting from "./fragment/NetworkSetting";
-import { routerUrl } from "recoil/atom";
-import { useRecoilValue } from "recoil";
-import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const DeviceSetting = () => {
   const ABS_URL = useRecoilValue(routerUrl);

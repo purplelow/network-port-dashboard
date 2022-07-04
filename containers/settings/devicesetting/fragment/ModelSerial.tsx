@@ -2,6 +2,7 @@ import useModelInfo from "@api/setting/getModelInfo";
 import modifySerialNumber from "@api/setting/modifySerialNumber";
 import { useEffect, useState } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 interface ModelForm {
   modelname?: string;
@@ -26,7 +27,9 @@ export default function ModelSerial({ ABS_URL }: any) {
   };
 
   const onInvalid = (errors: FieldErrors) => {
-    console.log(errors);
+    toast.warning(`${errors}`, {
+      position: toast.POSITION.TOP_CENTER,
+    });
   };
   return (
     <div className="w-full rounded-md bg-white shadow-md">

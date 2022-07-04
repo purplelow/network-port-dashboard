@@ -5,9 +5,10 @@ import { AiOutlineUpload } from "react-icons/ai";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { restoreFailState, restoreState, routerUrl } from "recoil/atom";
 
-const RESTORE_API_URL = process.env.NEXT_PUBLCI_RESTORE;
+const RESTORE_API_URL = process.env.NEXT_PUBLIC_RESTORE;
 
 export default function RestoreFrom() {
+  const ABS_URL = useRecoilValue(routerUrl);
   const [restoreSuccess, setRestoreSuccess] = useRecoilState(restoreState);
   const [restoreFail, setRestoreFail] = useRecoilState(restoreFailState);
   const { register, handleSubmit } = useForm();
@@ -19,7 +20,6 @@ export default function RestoreFrom() {
   };
 
   const onSubmit = () => {
-    const ABS_URL = useRecoilValue(routerUrl);
     const formData = new FormData();
     formData.append("file", selectedFile);
     axios({
@@ -31,11 +31,9 @@ export default function RestoreFrom() {
       },
     })
       .then((res) => {
-        console.log(res.data);
         setRestoreSuccess(true);
       })
       .catch((error) => {
-        console.error("복원 파일 업로드 에러 : ", error);
         setRestoreFail(true);
       });
   };

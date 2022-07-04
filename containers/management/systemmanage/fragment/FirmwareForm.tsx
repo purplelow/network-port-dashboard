@@ -11,6 +11,7 @@ interface firmFile {
   file: object;
 }
 export default function FirmwareForm() {
+  const ABS_URL = useRecoilValue(routerUrl);
   const {
     register,
     handleSubmit,
@@ -36,7 +37,6 @@ export default function FirmwareForm() {
   };
 
   const onSubmit = () => {
-    const ABS_URL = useRecoilValue(routerUrl);
     const formData = new FormData();
     formData.append("file", selectedFile);
     axios({
@@ -49,11 +49,9 @@ export default function FirmwareForm() {
       },
     })
       .then((res) => {
-        console.log(res.data);
         setAlert(true);
       })
       .catch((error) => {
-        console.error("펌웨어 파일 업로드 에러 : ", error);
         setErrorAlert(true);
       });
   };

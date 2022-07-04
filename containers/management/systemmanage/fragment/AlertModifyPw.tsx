@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { encryptModule } from "@libs/encryptModule";
+import { toast } from "react-toastify";
 
 interface ModifyPwForm {
   asisPw: string;
@@ -28,7 +29,6 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
     asisPwd: encryptModule(asisPwd),
     tobePwd: encryptModule(tobePwd),
   };
-  console.log("비밀번호 encrypt 값 json data : ", passwordJson);
 
   const onValid = () => {
     // modifyPassword(passwordJson);
@@ -36,15 +36,16 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
       .put(`${ABS_URL}${MODIFYPASSWD_API_URL}`, passwordJson)
       .then((res) => {
         setModiFyPwSuccess(true);
+        // toast.success("비밀번호 변경 완료.", {
+        //   position: toast.POSITION.TOP_CENTER,
+        // });
       })
       .catch((err) => {
-        console.error("비밀번호 수정 오류 : ", err);
-        alert("비밀번호 수정 오류");
+        toast.error("비밀번호 수정 오류 !!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       });
-    console.log("im valid !");
   };
-  console.log("현재 비밀번호 인풋 값? : ", asisPwd);
-  console.log("새로운 비밀번호 인풋 값? : ", tobePwd);
 
   return (
     <>

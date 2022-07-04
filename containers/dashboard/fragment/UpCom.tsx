@@ -9,8 +9,6 @@ import useUpPortData from "@api/dashBoard/upPort";
 
 export default function UpCom() {
   const { upPortInfo, isLoading, isError }: any = useUpPortData();
-  // console.log("upPort :::: ", upPortInfo);
-
   // let upComData = [];
   // upComData[] = upPortInfo;
 

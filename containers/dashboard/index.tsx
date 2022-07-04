@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
 
 import { cls } from "@libs/utils";
-
+import useNetworkInfo from "@api/dashBoard/networkInfo";
 import Layout from "@components/layout";
 import BoardTitle from "@components/common/BoardTitle";
 import StatusInfo from "@components/common/StatusInfo";
@@ -14,14 +15,25 @@ import SystemTabCont from "./fragment/SystemTabCont";
 import UpCom from "./fragment/UpCom";
 import LowCom from "./fragment/LowCom";
 import SystemInfo from "./fragment/SystemInfo";
-import useNetworkInfo from "@api/dashBoard/networkInfo";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const Dashboard = () => {
-  const { networkInfo } = useNetworkInfo();
+  const { networkInfo, isLoading, isError } = useNetworkInfo();
   const [tabIndex, setTabIndex] = useState(0);
   const [sysTabIndex, setSysTabIndex] = useState(0);
   return (
     <Layout title="대시보드">
+      <ToastContainer
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="h-full gap-x-2 xl:grid xl:grid-cols-7">
         <div className="col-span-3 grid w-full grid-flow-row grid-rows-4 gap-2">
           <div className="row-span-2 h-full rounded-md bg-white p-2 shadow-md">
