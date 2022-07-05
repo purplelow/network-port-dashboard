@@ -6,12 +6,18 @@ const PASSWORD_API_URL = process.env.NEXT_PUBLIC_PASSWORD_CHECK;
 const RESTART_API_URL = process.env.NEXT_PUBLIC_RESTART;
 
 export default function AlertAdminReq(ABS_URL: string) {
+  // const checkCapsLock = (e: any) => {
+  //   let capsLock = e.getModifierState("CapsLock");
+  //   if (capsLock) alert("CapsLock On");
+  // };
+
   Swal.fire({
     title: "관리자 암호를 입력하세요.",
-    // html: `<input id="login" type="password" onKeyDown={} placeholder="관리자 암호를 입력하세요"/>`,
+    // html: `<input id="login" type="password" onKeyDown={(e) => checkCapsLock(e)} placeholder="관리자 암호를 입력하세요"/>`,
     input: "password",
     inputAttributes: {
-      autocapitalize: "off",
+      // autocapitalize: "off",
+      checkCapsLock: "on",
     },
     showCancelButton: true,
     confirmButtonText: "재부팅",

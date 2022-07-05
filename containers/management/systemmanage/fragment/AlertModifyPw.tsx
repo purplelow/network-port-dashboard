@@ -48,6 +48,18 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
       });
   };
 
+  const [pwType, setPwType] = useState({
+    type: "password",
+    visible: false,
+  });
+  const handlePwType = (e: any) => {
+    setPwType(() => {
+      if (!pwType.visible) {
+        return { type: "text", visible: true };
+      }
+      return { type: "password", visible: false };
+    });
+  };
   const [capsLockFlag, setCapsLockFlag] = useState(false);
   const checkCapsLock = (e: any) => {
     let capsLock = e.getModifierState("CapsLock");
@@ -90,9 +102,9 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
                   message: "16자 이하의 비밀번호만 사용가능합니다.",
                 },
               })}
-              className="w-full appearance-none rounded border border-gray-400 bg-gray-50 py-2 px-4 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
+              className="w-full appearance-none rounded border border-gray-400 bg-gray-50 py-2 px-4 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
               id="asisPw"
-              type="password"
+              type={pwType.type}
               onKeyDown={(e) => checkCapsLock(e)}
             />
             {errors.asisPw && (
@@ -108,7 +120,7 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
               className="block pr-4 text-right text-sm font-medium text-gray-900"
               htmlFor="tobePw"
             >
-              새로운 비밀번호
+              새 비밀번호
             </label>
           </div>
           <div className="relative w-2/3">
@@ -130,9 +142,9 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
                   },
                 },
               })}
-              className="w-full appearance-none rounded border border-gray-400 bg-gray-50 py-2 px-4 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
+              className="w-full appearance-none rounded border border-gray-400 bg-gray-50 py-2 px-4 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
               id="tobePw"
-              type="password"
+              type={pwType.type}
               onKeyDown={(e) => checkCapsLock(e)}
             />
             {errors.tobePw && (
@@ -149,7 +161,7 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
               className="block  pr-4 text-right text-sm font-medium text-gray-900"
               htmlFor="tobePwCheck"
             >
-              새로운 비밀번호 확인
+              새 비밀번호 확인
             </label>
           </div>
           <div className="relative w-2/3">
@@ -164,9 +176,9 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
                   },
                 },
               })}
-              className="w-full appearance-none rounded border border-gray-400 bg-gray-50 py-2 px-4 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
+              className="w-full appearance-none rounded border border-gray-400 bg-gray-50 py-2 px-4 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
               id="tobePwCheck"
-              type="password"
+              type={pwType.type}
               onKeyDown={(e) => checkCapsLock(e)}
             />
             {errors.tobePwCheck && (
@@ -178,14 +190,14 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
         </div>
         <div className="mb-6 flex items-center justify-center space-x-3">
           <div className="flex items-center justify-center">
-            <input id="showPW" type="checkbox" />
+            <input id="showPW" type="checkbox" onClick={handlePwType} />
             <label htmlFor="showPW" className="px-1 text-xs text-gray-700">
               비밀번호 표시
             </label>
           </div>
           <span
             className={cls(
-              "right-0 w-24 rounded-md  py-2 px-1 text-center text-xs text-white",
+              "right-0 w-24 rounded-md  py-1 px-1 text-center text-xs text-white",
               capsLockFlag ? "bg-red-600" : "bg-green-500"
             )}
           >

@@ -87,6 +87,7 @@ const SystemManage = () => {
             <RiLockPasswordLine className="text-lg" />
             <span>비밀번호 변경</span>
           </button>
+
           <button
             // type="submit"
             onClick={() => AlertAdminReq(ABS_URL)}
