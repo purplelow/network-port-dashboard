@@ -14,36 +14,48 @@ const PortSetting = () => {
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
   const [downPorts, setDownPorts] = useRecoilState(downPortsState);
   const { downPortList, isLoading, isError }: any = useDownPortList();
-  let isSuccess = false;
+  let upPortJson = [{
+    id: "",
+    port: "",
+  }]
+  let downPortJson = [{
+    id: "",
+    name: "",
+    model: "",
+    type: "",
+    baudrate: "",
+    parity: "",
+    databits: "",
+    stopbits: "",
+    deviceId: "",
+  }]
+  let isUpSuccess = true;
+  let isDownSuccess = true;
 
   function refreshPage() {
     window.location.reload();
   }
 
   const upPortPut = () => {
+    let i = 1;
+    isUpSuccess = true;
     upPorts?.map((u) => {
       if(u.id !== "-1") {
         if(Number(u.port) < 1 || Number(u.port) > 65535) {
           alert("상위 포트 설정: LISTEN PORT는 1~65535 사이 숫자를 입력하세요.");
-          isSuccess = false;
+          isUpSuccess = false;
         } else {
-          let upPortJson = {
-            upPortList: [
-              {
-                id: u.id,
-                port: u.port,
-              }
-            ]
-          }
+          i === 1 ? upPortJson = [{id: u.id, port: u.port}] : upPortJson = [...upPortJson, {id: u.id, port: u.port}];
           console.log(upPortJson);
-          updatePortSetting(upPortJson);
-          isSuccess = true;
+          i++;
         }
       }
     })
   }
 
   const downPortPut = () => {
+    let i = 1;
+    isDownSuccess = true;
     downPorts?.map((u) => {
       if(u.id !== "-1") {
         let putArr = {
@@ -72,17 +84,11 @@ const PortSetting = () => {
 
         if(Number(putArr.deviceId) < 0 || Number(putArr.deviceId) > 32767) {
           alert("하위 시리얼 포트 설정: DEVICE ID는 0~32767 사이 숫자를 입력하세요.");
-          isSuccess = false;
+          isDownSuccess = false;
         }
         else {
-          let upPortJson = {
-            downPortList: [
-              putArr,
-            ]
-          }
-          console.log(upPortJson);
-          updatePortSetting(upPortJson);
-          isSuccess = true;
+          i === 1 ? downPortJson = [putArr] : downPortJson = [...downPortJson, putArr];
+          console.log(downPortJson);
         }
       }
     })
@@ -91,7 +97,15 @@ const PortSetting = () => {
   const onClickSetting = () => {
     upPortPut();
     downPortPut();
-    isSuccess === true ? alert("변경되었습니다.") : null;
+    if(isUpSuccess === true && isDownSuccess === true) {
+      const putPortArr = {
+        downPortList: downPortJson,
+        upPortList: upPortJson,
+      }
+      updatePortSetting(putPortArr);
+      console.log(putPortArr);
+      alert("변경되었습니다.");
+    } 
   }
 
   return (

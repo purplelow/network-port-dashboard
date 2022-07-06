@@ -4,11 +4,12 @@ import React, { useState, } from "react";
 import { useRecoilState } from "recoil";
 import { upPortsState } from "recoil/atom";
 import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 export default function UpPortSetting() {
   const [checkItems, setCheckItems] = useState([{ id: "-1", }]);
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
-  const { register } = useForm();
   const { upPortList, isLoading, isError }: any = useUpPortList();
     //  console.log("upPort: ", upPortList);
 
@@ -33,7 +34,7 @@ export default function UpPortSetting() {
   // 설정 적용(상위 포트 설정)
   const onChangePort = (e: any) => {
     const updateUpPort = {
-      id: e.target.name,
+      id: e.target.id,
       port: e.target.value,
     }
     let i = 0;
@@ -46,27 +47,6 @@ export default function UpPortSetting() {
       )
     }
      console.log(upPorts);
-  }
-
-  const upPortPut = () => {
-    upPorts?.map((u) => {
-      if(u.id !== "-1") {
-        if(Number(u.port) < 1 || Number(u.port) > 65535) {
-          alert("상위 포트 설정: LISTEN PORT는 1~65535 사이 숫자를 입력하세요.");
-        } else {
-          let upPortJson = {
-            upPortList: [
-              {
-                id: u.id,
-                port: u.port,
-              }
-            ]
-          }
-          console.log(upPortJson);
-          updatePortSetting(upPortJson);
-        }
-      }
-    })
   }
 
   //checkbox
@@ -90,6 +70,21 @@ export default function UpPortSetting() {
       setCheckItems([{ id: "-1", }]);
     }
   };
+
+  // const portSchema = yup.object().shape({
+  //   port: yup
+  //     .number()
+  //     .required("상위 포트: 포트를 입력하세요.")
+  //     .positive()
+  //     .integer()
+  //     .min(1)
+  //     .max(65535),
+  // });
+
+  // const { register, handleSubmit } = useForm({
+  //   mode: "onBlur",
+  //   resolver: yupResolver(portSchema),
+  // });
 
   return (
     <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-md border-[1px] border-gray-300 shadow-md">
@@ -164,8 +159,9 @@ export default function UpPortSetting() {
               </td>
               <td className="px-6 py-1.5 text-right">{com.deviceName}</td>
               <td className="px-6 py-1.5 text-center">
-                <input
-                  name={com.id}
+                <input 
+                  name="port"
+                  id={com.id}
                   type="number"
                   min="1"
                   max="65535"
