@@ -31,7 +31,7 @@ export default function DownPortSetting() {
     else result = "";
     return result;
   };
-
+  console.log("?????? ::: ", downPorts);
   const onChangeDownPort = (e: any) => {
     let i = 0;
     downPorts?.map((u) => (u.id !== e.target.id ? (i = 1) : (i = 0)));

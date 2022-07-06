@@ -21,6 +21,12 @@
       "@libs/*": ["libs/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "mqtt/MqttComponent.jsx",
+    "mqtt/ab.js"
+  ],
   "exclude": ["node_modules"]
 }

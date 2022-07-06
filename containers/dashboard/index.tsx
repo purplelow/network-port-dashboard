@@ -17,7 +17,7 @@ import LowCom from "./fragment/LowCom";
 import SystemInfo from "./fragment/SystemInfo";
 
 import "react-toastify/dist/ReactToastify.css";
-
+import MqttPublish from "mqtt/MqttPublish";
 const Dashboard = () => {
   const { networkInfo, isLoading, isError } = useNetworkInfo();
   const [tabIndex, setTabIndex] = useState(0);
@@ -34,6 +34,7 @@ const Dashboard = () => {
         draggable
         pauseOnHover
       />
+      <MqttPublish />
       <div className="h-full gap-x-2 xl:grid xl:grid-cols-7">
         <div className="col-span-3 grid w-full grid-flow-row grid-rows-4 gap-2">
           <div className="row-span-2 h-full rounded-md bg-white p-2 shadow-md">
