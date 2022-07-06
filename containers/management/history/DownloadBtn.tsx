@@ -1,12 +1,18 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { AiOutlineDownload } from "react-icons/ai";
+import { toast } from "react-toastify";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
+
+const DOWNLOAD_LOGFILE_API_URL = process.env.NEXT_PUBLIC_DOWNLOAD_LOGFILE;
 
 export default function DonwloadButton({ fileName }: any) {
+  const ABS_URL = useRecoilValue(routerUrl);
   const handleDownload = () => {
     axios({
       method: "GET",
-      url: `http://192.168.123.190:8080/api/history/downloadLogFile/${fileName}`,
+      url: `${ABS_URL}${DOWNLOAD_LOGFILE_API_URL}${fileName}`,
       responseType: "blob",
     })
       .then((res) => {
@@ -22,10 +28,14 @@ export default function DonwloadButton({ fileName }: any) {
         }, 50000);
         link.remove();
 
-        console.log(res.data);
+        toast.success("다운로드중 입니다.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       })
       .catch((err) => {
-        console.log("err: ", err);
+        toast.error("다운로드 오류 !!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       });
   };
 

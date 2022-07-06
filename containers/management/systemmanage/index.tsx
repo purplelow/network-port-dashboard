@@ -1,3 +1,6 @@
+import { useCallback, useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { ToastContainer } from "react-toastify";
 import Layout from "@components/layout";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { VscDebugRestart } from "react-icons/vsc";
@@ -6,8 +9,6 @@ import { TbFaceIdError } from "react-icons/tb";
 import useSystemInfo from "@api/dashBoard/systemInfo";
 import FirmwareForm from "./fragment/FirmwareForm";
 import BackUp from "./fragment/Backup";
-import { useCallback, useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
 import {
   backUpFailState,
   backUpState,
@@ -19,6 +20,7 @@ import RestoreFrom from "./fragment/RestoreForm";
 import AlertAdminReq from "containers/management/systemmanage/fragment/AlertAdminReq";
 
 import AlertModifyPw from "./fragment/AlertModifyPw";
+import "react-toastify/dist/ReactToastify.css";
 
 const SystemManage = () => {
   const ABS_URL = useRecoilValue(routerUrl);
@@ -56,10 +58,18 @@ const SystemManage = () => {
     };
   }, [backUpSuccess, backUpFail, restoreSuccess, restoreFail]);
 
-  // console.log("Recoil 전역 상태 ABS_URL :: ", ABS_URL);
-  console.log("모달 state :: ", modalOpen);
   return (
     <Layout title="시스템 관리">
+      <ToastContainer
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       {modalOpen && (
         <AlertModifyPw
           ABS_URL={ABS_URL}
@@ -77,6 +87,7 @@ const SystemManage = () => {
             <RiLockPasswordLine className="text-lg" />
             <span>비밀번호 변경</span>
           </button>
+
           <button
             // type="submit"
             onClick={() => AlertAdminReq(ABS_URL)}

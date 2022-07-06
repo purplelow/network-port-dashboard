@@ -1,13 +1,16 @@
+import { useEffect, useState } from "react";
+import { AiOutlineFolderView } from "react-icons/ai";
+import { toast, ToastContainer } from "react-toastify";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
+import axios from "axios";
+
 import useGetLogFilelist from "@api/management/getLogFilelist";
 import LoadingB from "@components/common/LoadingB";
 import Layout from "@components/layout";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { AiOutlineFolderView } from "react-icons/ai";
-import { useRecoilValue } from "recoil";
-import { routerUrl } from "recoil/atom";
-
 import DownloadButton from "./DownloadBtn";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const LOGVIEW_API_URL = process.env.NEXT_PUBLIC_GET_LOGVIEW;
 
@@ -33,11 +36,25 @@ const History = () => {
         setLogViewData(res.data.logview);
         setLoading(false);
       })
-      .catch((err) => console.error("로그 뷰 api 에러 : ", err));
+      .catch((err) => {
+        toast.error("로그 파일 보기 오류 !!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      });
   };
 
   return (
     <Layout title="히스토리">
+      <ToastContainer
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="grid h-full">
         <div className="w-full overflow-hidden rounded-md bg-white p-10 shadow-md">
           <div className="flex items-center justify-start space-x-4">

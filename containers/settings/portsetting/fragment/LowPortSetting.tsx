@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 import { downPortsState } from "recoil/atom";
 
 export default function DownPortSetting() {
-  const [checkItems, setCheckItems] = useState([{ id: "-1", }]);
+  const [checkItems, setCheckItems] = useState([{ id: "-1" }]);
   const [downPorts, setDownPorts] = useRecoilState(downPortsState);
   const { downPortList, isLoading, isError }: any = useDownPortList();
   //  console.log("downPort: ", downPortList);
@@ -34,66 +34,178 @@ export default function DownPortSetting() {
 
   const onChangeDownPort = (e: any) => {
     let i = 0;
-    downPorts?.map((u)=> u.id !== e.target.id ? i=1 : i=0);
-    if(e.target.name === "name") {
-      if(i===1) {
-        const updateDownPort = { id: e.target.id, name: e.target.value, model: "", type: "", baudrate: "", parity: "", databits: "", stopbits: "", deviceId: "", }
+    downPorts?.map((u) => (u.id !== e.target.id ? (i = 1) : (i = 0)));
+    if (e.target.name === "name") {
+      if (i === 1) {
+        const updateDownPort = {
+          id: e.target.id,
+          name: e.target.value,
+          model: "",
+          type: "",
+          baudrate: "",
+          parity: "",
+          databits: "",
+          stopbits: "",
+          deviceId: "",
+        };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
-        setDownPorts(downPorts.map((u2) => u2.id === e.target.id ? {...u2, name: e.target.value } : u2))
+        setDownPorts(
+          downPorts.map((u2) =>
+            u2.id === e.target.id ? { ...u2, name: e.target.value } : u2
+          )
+        );
       }
-    } else if(e.target.name === "model") {
-      if(i===1) {
-        const updateDownPort = { id: e.target.id, name: "", model: e.target.value, type: "", baudrate: "", parity: "", databits: "", stopbits: "", deviceId: "", }
+    } else if (e.target.name === "model") {
+      if (i === 1) {
+        const updateDownPort = {
+          id: e.target.id,
+          name: "",
+          model: e.target.value,
+          type: "",
+          baudrate: "",
+          parity: "",
+          databits: "",
+          stopbits: "",
+          deviceId: "",
+        };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
-        setDownPorts(downPorts.map((u2) => u2.id === e.target.id ? {...u2, model: e.target.value } : u2))
+        setDownPorts(
+          downPorts.map((u2) =>
+            u2.id === e.target.id ? { ...u2, model: e.target.value } : u2
+          )
+        );
       }
-    } else if(e.target.name === "type") {
-      if(i===1) {
-        const updateDownPort = { id: e.target.id, name: "", model: "", type: e.target.value, baudrate: "", parity: "", databits: "", stopbits: "", deviceId: "", }
+    } else if (e.target.name === "type") {
+      if (i === 1) {
+        const updateDownPort = {
+          id: e.target.id,
+          name: "",
+          model: "",
+          type: e.target.value,
+          baudrate: "",
+          parity: "",
+          databits: "",
+          stopbits: "",
+          deviceId: "",
+        };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
-        setDownPorts(downPorts.map((u2) => u2.id === e.target.id ? {...u2, type: e.target.value } : u2))
+        setDownPorts(
+          downPorts.map((u2) =>
+            u2.id === e.target.id ? { ...u2, type: e.target.value } : u2
+          )
+        );
       }
-    } else if(e.target.name === "baudrate") {
-      if(i===1) {
-        const updateDownPort = { id: e.target.id, name: "", model: "", type: "", baudrate: e.target.value, parity: "", databits: "", stopbits: "", deviceId: "", }
+    } else if (e.target.name === "baudrate") {
+      if (i === 1) {
+        const updateDownPort = {
+          id: e.target.id,
+          name: "",
+          model: "",
+          type: "",
+          baudrate: e.target.value,
+          parity: "",
+          databits: "",
+          stopbits: "",
+          deviceId: "",
+        };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
-        setDownPorts(downPorts.map((u2) => u2.id === e.target.id ? {...u2, baudrate: e.target.value } : u2))
+        setDownPorts(
+          downPorts.map((u2) =>
+            u2.id === e.target.id ? { ...u2, baudrate: e.target.value } : u2
+          )
+        );
       }
-    } else if(e.target.name === "parity") {
-      if(i===1) {
-        const updateDownPort = { id: e.target.id, name: "", model: "", type: "", baudrate: "", parity: e.target.value, databits: "", stopbits: "", deviceId: "", }
+    } else if (e.target.name === "parity") {
+      if (i === 1) {
+        const updateDownPort = {
+          id: e.target.id,
+          name: "",
+          model: "",
+          type: "",
+          baudrate: "",
+          parity: e.target.value,
+          databits: "",
+          stopbits: "",
+          deviceId: "",
+        };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
-        setDownPorts(downPorts.map((u2) => u2.id === e.target.id ? {...u2, parity: e.target.value } : u2))
+        setDownPorts(
+          downPorts.map((u2) =>
+            u2.id === e.target.id ? { ...u2, parity: e.target.value } : u2
+          )
+        );
       }
-    } else if(e.target.name === "databits") {
-      if(i===1) {
-        const updateDownPort = { id: e.target.id, name: "", model: "", type: "", baudrate: "", parity: "", databits: e.target.value, stopbits: "", deviceId: "", }
+    } else if (e.target.name === "databits") {
+      if (i === 1) {
+        const updateDownPort = {
+          id: e.target.id,
+          name: "",
+          model: "",
+          type: "",
+          baudrate: "",
+          parity: "",
+          databits: e.target.value,
+          stopbits: "",
+          deviceId: "",
+        };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
-        setDownPorts(downPorts.map((u2) => u2.id === e.target.id ? {...u2, databits: e.target.value } : u2))
+        setDownPorts(
+          downPorts.map((u2) =>
+            u2.id === e.target.id ? { ...u2, databits: e.target.value } : u2
+          )
+        );
       }
-    } else if(e.target.name === "stopbits") {
-      if(i===1) {
-        const updateDownPort = { id: e.target.id, name: "", model: "", type: "", baudrate: "", parity: "", databits: "", stopbits: e.target.value, deviceId: "", }
+    } else if (e.target.name === "stopbits") {
+      if (i === 1) {
+        const updateDownPort = {
+          id: e.target.id,
+          name: "",
+          model: "",
+          type: "",
+          baudrate: "",
+          parity: "",
+          databits: "",
+          stopbits: e.target.value,
+          deviceId: "",
+        };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
-        setDownPorts(downPorts.map((u2) => u2.id === e.target.id ? {...u2, stopbits: e.target.value } : u2))
+        setDownPorts(
+          downPorts.map((u2) =>
+            u2.id === e.target.id ? { ...u2, stopbits: e.target.value } : u2
+          )
+        );
       }
-    } else if(e.target.name === "deviceId") {
-      if(i===1) {
-        const updateDownPort = { id: e.target.id, name: "", model: "", type: "", baudrate: "", parity: "", databits: "", stopbits: "", deviceId: e.target.value, }
+    } else if (e.target.name === "deviceId") {
+      if (i === 1) {
+        const updateDownPort = {
+          id: e.target.id,
+          name: "",
+          model: "",
+          type: "",
+          baudrate: "",
+          parity: "",
+          databits: "",
+          stopbits: "",
+          deviceId: e.target.value,
+        };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
-        setDownPorts(downPorts.map((u2) => u2.id === e.target.id ? {...u2, deviceId: e.target.value } : u2))
+        setDownPorts(
+          downPorts.map((u2) =>
+            u2.id === e.target.id ? { ...u2, deviceId: e.target.value } : u2
+          )
+        );
       }
     }
     console.log(downPorts);
-  }
+  };
 
   //checkbox
   const handleSingleCheck = (checked: boolean, id: any) => {
@@ -284,7 +396,8 @@ export default function DownPortSetting() {
                   defaultValue={com.baudrate}
                   id={com.id}
                   name="baudrate"
-                  onChange={onChangeDownPort}>
+                  onChange={onChangeDownPort}
+                >
                   <option value="1200">1200</option>
                   <option value="2400">2400</option>
                   <option value="4800">4800</option>
@@ -310,7 +423,8 @@ export default function DownPortSetting() {
                   defaultValue={com.parity}
                   id={com.id}
                   name="parity"
-                  onChange={onChangeDownPort}>
+                  onChange={onChangeDownPort}
+                >
                   <option value="NONE">NONE</option>
                   <option value="ODD">ODD</option>
                   <option value="EVEN">EVEN</option>
@@ -333,7 +447,8 @@ export default function DownPortSetting() {
                   defaultValue={com.databits}
                   id={com.id}
                   name="databits"
-                  onChange={onChangeDownPort}>
+                  onChange={onChangeDownPort}
+                >
                   <option value="5">5</option>
                   <option value="6">6</option>
                   <option value="7">7</option>
@@ -355,7 +470,8 @@ export default function DownPortSetting() {
                   defaultValue={com.stopbits}
                   id={com.id}
                   name="stopbits"
-                  onChange={onChangeDownPort}>
+                  onChange={onChangeDownPort}
+                >
                   <option value="1">1</option>
                   <option value="1.5">1.5</option>
                   <option value="2">2</option>

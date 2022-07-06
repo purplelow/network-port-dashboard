@@ -1,32 +1,27 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import BoardTitle from "@components/common/BoardTitle";
 import useGetNote from "@api/dashBoard/getNote";
 import useSystemInfo from "@api/dashBoard/systemInfo";
+import { useForm } from "react-hook-form";
+import modifyNote from "@api/dashBoard/modifyNote";
 
 export default function SystemInfo() {
   const { systemInfo, isLoading, isError } = useSystemInfo();
-  const { getNoteData }: any = useGetNote();
+  const { getNoteData } = useGetNote();
+  const { register, handleSubmit } = useForm();
   const [userNote, setUserNote] = useState(getNoteData?.deviceNote);
-  // console.log("getNoteData :: ", getNoteData);
   let userNoteValue = getNoteData?.deviceNote;
-  // console.log("userNoteValue :: ", userNoteValue);
 
   useEffect(() => {
     setUserNote(userNoteValue);
-    // console.log("userNote :: ", userNote);
   }, [userNoteValue]);
-  let userNoteJson = JSON.parse(`{"deviceNote": "${userNote}"}`);
 
-  const submit = (e: any) => {
-    e.preventDefault();
-    axios
-      .put(`http://192.168.123.190:8080/api/dashBoard/modifyNote`, userNoteJson)
-      .then((res) => {
-        console.log(res.data);
-        alert("수정되었습니다.");
-      });
-    return;
+  let userNoteJson = {
+    deviceNote: userNote ?? getNoteData?.deviceNote,
+  };
+
+  const handleModifyNote = () => {
+    modifyNote(userNoteJson);
   };
 
   return (
@@ -67,7 +62,7 @@ export default function SystemInfo() {
       </div>
       <div className="h-1/3 pt-2">
         <BoardTitle subTitle="메모" />
-        <form onSubmit={submit}>
+        <form onSubmit={handleSubmit(handleModifyNote)}>
           <div className="flex">
             <textarea
               value={userNote}

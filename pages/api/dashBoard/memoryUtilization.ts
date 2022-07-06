@@ -1,5 +1,9 @@
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
+
+const MEMORY_API_URL = process.env.NEXT_PUBLIC_MEMORY_USAGE;
 
 interface MemoryUtilizationProps {
   details: {
@@ -26,15 +30,12 @@ const fetcher = async (url: string) =>
     .catch((err) => console.error("Memory data error ", err));
 
 export default function useMemoryUtilization() {
-  const { data, error } = useSWR(
-    `http://192.168.123.190:8080/api/dashBoard/memoryUsage`,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-    }
-  );
+  const ABS_URL = useRecoilValue(routerUrl);
+  const { data, error } = useSWR(`${ABS_URL}${MEMORY_API_URL}`, fetcher, {
+    revalidateOnFocus: false,
+    revalidateIfStale: false,
+    revalidateOnReconnect: false,
+  });
   return {
     memoryUtilization: data,
     isLoading: !error && !data,

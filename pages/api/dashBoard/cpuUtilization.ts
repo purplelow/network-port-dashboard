@@ -3,6 +3,8 @@ import useSWR from "swr";
 import { useRecoilValue } from "recoil";
 import { routerUrl } from "recoil/atom";
 
+const CPU_API_URL = process.env.NEXT_PUBLIC_CPU_USAGE;
+
 interface CpuUtilizationProps {
   detail: [
     {
@@ -15,7 +17,6 @@ interface CpuUtilizationProps {
     load: number;
   };
 }
-const CPU_API_URL = process.env.NEXT_PUBLIC_CPU_USAGE;
 
 const fetcher = async (url: string) =>
   await axios

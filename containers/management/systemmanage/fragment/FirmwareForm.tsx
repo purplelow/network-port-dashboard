@@ -2,11 +2,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineUpload } from "react-icons/ai";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
 import Swal from "sweetalert2";
+
+const UPLOAD_FIRMWARE_API_URL = process.env.NEXT_PUBLIC_UPLOAD_FIRMWARE;
 interface firmFile {
   file: object;
 }
 export default function FirmwareForm() {
+  const ABS_URL = useRecoilValue(routerUrl);
   const {
     register,
     handleSubmit,
@@ -36,7 +41,7 @@ export default function FirmwareForm() {
     formData.append("file", selectedFile);
     axios({
       method: "POST",
-      url: `http://192.168.123.190:8080/api/system/uploadFirmware`,
+      url: `${ABS_URL}${UPLOAD_FIRMWARE_API_URL}`,
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -44,11 +49,9 @@ export default function FirmwareForm() {
       },
     })
       .then((res) => {
-        console.log(res.data);
         setAlert(true);
       })
       .catch((error) => {
-        console.error("펌웨어 파일 업로드 에러 : ", error);
         setErrorAlert(true);
       });
   };

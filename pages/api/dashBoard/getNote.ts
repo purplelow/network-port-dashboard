@@ -1,5 +1,9 @@
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
+
+const GET_NOTE_APU_URL = process.env.NEXT_PUBLIC_GET_NOTE;
 
 interface getNoteProps {
   deviceNote: string;
@@ -12,15 +16,12 @@ const fetcher = async (url: string) =>
     .catch((err) => console.error("Note data error ", err));
 
 export default function useGetNote() {
-  const { data, error } = useSWR(
-    `http://192.168.123.190:8080/api/dashBoard/getNote`,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-    }
-  );
+  const ABS_URL = useRecoilValue(routerUrl);
+  const { data, error } = useSWR(`${ABS_URL}${GET_NOTE_APU_URL}`, fetcher, {
+    revalidateOnFocus: false,
+    revalidateIfStale: false,
+    revalidateOnReconnect: false,
+  });
   return {
     getNoteData: data,
     isLoading: !error && !data,

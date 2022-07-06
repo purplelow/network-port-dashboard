@@ -1,6 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
+
+const LOGVIEW_API_URL = process.env.NEXT_PUBLIC_GET_LOGVIEW;
 
 interface LogFilelistProps {
   filename: string;
@@ -15,9 +19,10 @@ const fetcher = async (url: string) =>
     .catch((err) => console.error("로그 파일 뷰 에러", err));
 
 export default function useGetLogView(fileName: string) {
+  const ABS_URL = useRecoilValue(routerUrl);
   const [loading, setLoading] = useState(true);
   const { data, error, isValidating } = useSWR(
-    `http://192.168.123.190:8080/api/history/getLogView?fileName=${fileName}`,
+    `${ABS_URL}${LOGVIEW_API_URL}${fileName}`,
     fetcher,
     {
       revalidateOnFocus: false,

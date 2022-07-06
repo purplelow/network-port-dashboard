@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { encryptModule } from "@libs/encryptModule";
+import { toast } from "react-toastify";
+import { cls } from "@libs/utils";
 
 interface ModifyPwForm {
   asisPw: string;
@@ -28,7 +30,6 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
     asisPwd: encryptModule(asisPwd),
     tobePwd: encryptModule(tobePwd),
   };
-  console.log("비밀번호 encrypt 값 json data : ", passwordJson);
 
   const onValid = () => {
     // modifyPassword(passwordJson);
@@ -36,15 +37,34 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
       .put(`${ABS_URL}${MODIFYPASSWD_API_URL}`, passwordJson)
       .then((res) => {
         setModiFyPwSuccess(true);
+        // toast.success("비밀번호 변경 완료.", {
+        //   position: toast.POSITION.TOP_CENTER,
+        // });
       })
       .catch((err) => {
-        console.error("비밀번호 수정 오류 : ", err);
-        alert("비밀번호 수정 오류");
+        toast.error("비밀번호 수정 오류 !!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       });
-    console.log("im valid !");
   };
-  console.log("현재 비밀번호 인풋 값? : ", asisPwd);
-  console.log("새로운 비밀번호 인풋 값? : ", tobePwd);
+
+  const [pwType, setPwType] = useState({
+    type: "password",
+    visible: false,
+  });
+  const handlePwType = (e: any) => {
+    setPwType(() => {
+      if (!pwType.visible) {
+        return { type: "text", visible: true };
+      }
+      return { type: "password", visible: false };
+    });
+  };
+  const [capsLockFlag, setCapsLockFlag] = useState(false);
+  const checkCapsLock = (e: any) => {
+    let capsLock = e.getModifierState("CapsLock");
+    setCapsLockFlag(capsLock);
+  };
 
   return (
     <>
@@ -56,13 +76,13 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
         onSubmit={handleSubmit(onValid)}
         className="fixed top-1/2 left-1/2 z-30 h-auto w-auto -translate-x-1/2 -translate-y-1/2 rounded-md bg-white p-10 shadow-2xl"
       >
-        <div className="w-full pb-4 text-center text-2xl font-medium text-slate-700">
+        <div className="w-full pb-4 text-center text-xl font-medium text-slate-700">
           {header}
         </div>
         <div className="mb-7 flex items-center">
           <div className="w-1/3 min-w-[120px]">
             <label
-              className="block pr-4 text-right text-base font-medium text-gray-600"
+              className="block pr-4 text-right text-sm font-medium text-gray-900"
               htmlFor="asisPw"
             >
               현재 비밀번호
@@ -82,9 +102,10 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
                   message: "16자 이하의 비밀번호만 사용가능합니다.",
                 },
               })}
-              className="w-full appearance-none rounded border-[1px] border-gray-500 bg-gray-100 py-2 px-4 leading-tight text-gray-700 focus:border-purple-500 focus:bg-white focus:outline-none"
+              className="w-full appearance-none rounded border border-gray-400 bg-gray-50 py-2 px-4 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
               id="asisPw"
-              type="password"
+              type={pwType.type}
+              onKeyDown={(e) => checkCapsLock(e)}
             />
             {errors.asisPw && (
               <p className="absolute -bottom-5 text-sm italic text-red-500">
@@ -96,10 +117,10 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
         <div className="mb-7 flex items-center">
           <div className="w-1/3 min-w-[120px]">
             <label
-              className="block pr-4 text-right text-base font-medium text-gray-600"
+              className="block pr-4 text-right text-sm font-medium text-gray-900"
               htmlFor="tobePw"
             >
-              새로운 비밀번호
+              새 비밀번호
             </label>
           </div>
           <div className="relative w-2/3">
@@ -121,9 +142,10 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
                   },
                 },
               })}
-              className="w-full appearance-none rounded border-[1px] border-gray-500 bg-gray-100 py-2 px-4 leading-tight text-gray-700 focus:border-purple-500 focus:bg-white focus:outline-none"
+              className="w-full appearance-none rounded border border-gray-400 bg-gray-50 py-2 px-4 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
               id="tobePw"
-              type="password"
+              type={pwType.type}
+              onKeyDown={(e) => checkCapsLock(e)}
             />
             {errors.tobePw && (
               <p className="absolute -bottom-5 text-sm italic text-red-500">
@@ -133,13 +155,13 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
           </div>
         </div>
 
-        <div className="mb-7 flex items-center">
+        <div className="mb-4 flex items-center">
           <div className="w-1/3 min-w-[120px]">
             <label
-              className="block  pr-4 text-right text-base font-medium text-gray-600"
+              className="block  pr-4 text-right text-sm font-medium text-gray-900"
               htmlFor="tobePwCheck"
             >
-              새로운 비밀번호 확인
+              새 비밀번호 확인
             </label>
           </div>
           <div className="relative w-2/3">
@@ -154,9 +176,10 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
                   },
                 },
               })}
-              className="w-full appearance-none rounded border-[1px] border-gray-500 bg-gray-100 py-2 px-4 leading-tight text-gray-700 focus:border-purple-500 focus:bg-white focus:outline-none"
+              className="w-full appearance-none rounded border border-gray-400 bg-gray-50 py-2 px-4 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
               id="tobePwCheck"
-              type="password"
+              type={pwType.type}
+              onKeyDown={(e) => checkCapsLock(e)}
             />
             {errors.tobePwCheck && (
               <p className="absolute -bottom-5 text-sm italic text-red-500">
@@ -165,16 +188,32 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
             )}
           </div>
         </div>
-        <div className="flex items-center justify-center space-x-4">
+        <div className="mb-6 flex items-center justify-center space-x-3">
+          <div className="flex items-center justify-center">
+            <input id="showPW" type="checkbox" onClick={handlePwType} />
+            <label htmlFor="showPW" className="px-1 text-xs text-gray-700">
+              비밀번호 표시
+            </label>
+          </div>
+          <span
+            className={cls(
+              "right-0 w-24 rounded-md  py-1 px-1 text-center text-xs text-white",
+              capsLockFlag ? "bg-red-600" : "bg-green-500"
+            )}
+          >
+            {capsLockFlag ? "Caps Lock On" : "Caps Lock Off"}
+          </span>
+        </div>
+        <div className="reative flex items-center justify-center space-x-4">
           <button
-            className="focus:shadow-outline rounded bg-blue-600 py-2 px-4 font-medium text-white shadow hover:bg-blue-500 focus:outline-none"
+            className="focus:shadow-outline rounded bg-blue-600 py-2 px-20 font-medium text-white shadow hover:bg-blue-500 focus:outline-none"
             type="submit"
           >
             변경하기
           </button>
           <button
             onClick={close}
-            className="focus:shadow-outline rounded bg-slate-500 py-2 px-4 font-medium text-white shadow hover:bg-slate-400 focus:outline-none"
+            className="focus:shadow-outline rounded bg-slate-500 py-2 px-8 font-medium text-white shadow hover:bg-slate-400 focus:outline-none"
             type="button"
           >
             취소

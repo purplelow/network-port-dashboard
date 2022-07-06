@@ -1,5 +1,9 @@
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
+
+const LOGFILELIST_API_URL = process.env.NEXT_PUBLIC_GET_LOGFILE_LIST;
 
 interface LogFilelistProps {
   filename: string;
@@ -13,15 +17,12 @@ const fetcher = (url: string) =>
     .then((res) => res.data)
     .catch((err) => console.error("로그파일 리스트 에러", err));
 export default function useGetLogFilelist() {
-  const { data, error } = useSWR(
-    `http://192.168.123.190:8080/api/history/getLogFilelist`,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-    }
-  );
+  const ABS_URL = useRecoilValue(routerUrl);
+  const { data, error } = useSWR(`${ABS_URL}${LOGFILELIST_API_URL}`, fetcher, {
+    revalidateOnFocus: false,
+    revalidateIfStale: false,
+    revalidateOnReconnect: false,
+  });
   return {
     logFilelist: data,
     isLoading: !error && !data,

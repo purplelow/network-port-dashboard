@@ -1,5 +1,9 @@
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
+
+const SYSTEMINFO_API_URL = process.env.NEXT_PUBLIC_SYSTEM_INFO;
 
 interface SystemInfoProps {
   system_info: {
@@ -18,15 +22,12 @@ const fetcher = async (url: string) =>
     .catch((err) => console.error("System data error ", err));
 
 export default function useSystemInfo() {
-  const { data, error } = useSWR(
-    `http://192.168.123.190:8080/api/dashBoard/systemInfo`,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-    }
-  );
+  const ABS_URL = useRecoilValue(routerUrl);
+  const { data, error } = useSWR(`${ABS_URL}${SYSTEMINFO_API_URL}`, fetcher, {
+    revalidateOnFocus: false,
+    revalidateIfStale: false,
+    revalidateOnReconnect: false,
+  });
   return {
     systemInfo: data,
     isLoading: !error && !data,

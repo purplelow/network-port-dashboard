@@ -9,6 +9,8 @@ import { upPortsState } from "recoil/atom";
 import { downPortsState } from "recoil/atom";
 import updatePortSetting from "@api/setting/modifyPort";
 import useDownPortList from "@api/setting/downPortList";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PortSetting = () => {
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
@@ -50,14 +52,14 @@ const PortSetting = () => {
           i++;
         }
       }
-    })
-  }
+    });
+  };
 
   const downPortPut = () => {
     let i = 1;
     isDownSuccess = true;
     downPorts?.map((u) => {
-      if(u.id !== "-1") {
+      if (u.id !== "-1") {
         let putArr = {
           id: u.id,
           name: u.name,
@@ -70,15 +72,15 @@ const PortSetting = () => {
           deviceId: u.deviceId,
         };
         downPortList?.map((com: any, i: string) => {
-          if(com.id === u.id) {
-            if(putArr.name === "") putArr.name = com.name;
-            if(putArr.model === "") putArr.model = com.model;
-            if(putArr.type === "") putArr.type = com.type;
-            if(putArr.baudrate === "") putArr.baudrate = com.baudrate;
-            if(putArr.parity === "") putArr.parity = com.parity;
-            if(putArr.databits === "") putArr.databits = com.databits;
-            if(putArr.stopbits === "") putArr.stopbits = com.stopbits;
-            if(putArr.deviceId === "") putArr.deviceId = com.deviceId;
+          if (com.id === u.id) {
+            if (putArr.name === "") putArr.name = com.name;
+            if (putArr.model === "") putArr.model = com.model;
+            if (putArr.type === "") putArr.type = com.type;
+            if (putArr.baudrate === "") putArr.baudrate = com.baudrate;
+            if (putArr.parity === "") putArr.parity = com.parity;
+            if (putArr.databits === "") putArr.databits = com.databits;
+            if (putArr.stopbits === "") putArr.stopbits = com.stopbits;
+            if (putArr.deviceId === "") putArr.deviceId = com.deviceId;
           }
         });
 
@@ -91,8 +93,8 @@ const PortSetting = () => {
           console.log(downPortJson);
         }
       }
-    })
-  }
+    });
+  };
 
   const onClickSetting = () => {
     upPortPut();
@@ -110,9 +112,18 @@ const PortSetting = () => {
 
   return (
     <Layout title="포트 설정">
+      <ToastContainer
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="absolute top-10 right-4 flex justify-end space-x-4 py-2">
         <button
-          type="submit"
           className="flex items-center space-x-2 rounded-sm border border-[#707070] bg-[#707070] p-2 px-8 text-sm font-medium text-white hover:bg-neutral-600 "
           onClick={refreshPage}
         >

@@ -1,35 +1,12 @@
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
 
-// let upPortJson = {
-//   upPortList: [
-//     {
-//       id: "",
-//       port: "",
-//     }
-//   ]
-// }
-
-// let downPortJson = {
-//   downPortList: [
-//     {
-//       baudrate: "",
-//       databits: "",
-//       type: "",
-//       deviceId: "",
-//       id: "",
-//       model: "",
-//       name: "",
-//       parity: "",
-//       stopbits: "",
-//     }    
-//   ]
-// }
+const MODIFYPORT_API_URL = process.env.NEXT_PUBLIC_MODIFY_PORT;
 
 export default function updatePortSetting(portJson: any) {
-  axios.put(
-      `http://192.168.123.190:8080/api/portSetting/modifyPort`,
-      portJson
-    ).then((res) => {
-      console.log("포트정보 : "+res);
-    });
+  const ABS_URL = useRecoilValue(routerUrl);
+  axios.put(`${ABS_URL}${MODIFYPORT_API_URL}`, portJson).then((res) => {
+    console.log("포트정보 : " + res);
+  });
 }
