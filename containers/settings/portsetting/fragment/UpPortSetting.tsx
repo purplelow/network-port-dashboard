@@ -3,9 +3,6 @@ import updatePortSetting from "@api/setting/modifyPort";
 import React, { useState, } from "react";
 import { useRecoilState } from "recoil";
 import { upPortsState } from "recoil/atom";
-import { useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 
 export default function UpPortSetting() {
   const [checkItems, setCheckItems] = useState([{ id: "-1", }]);
@@ -37,13 +34,13 @@ export default function UpPortSetting() {
       id: e.target.id,
       port: e.target.value,
     }
-    let i = 0;
-    upPorts?.map((el)=> el.id !==updateUpPort.id ? i=1 : i=0);
+    let i = 1;
+    upPorts?.map((el)=> el.id !==updateUpPort.id ? null : i=0);
     if(i===1) {
       setUpPorts([...upPorts, updateUpPort]);
     } else {
       setUpPorts(
-        upPorts.map((el) => el.id === updateUpPort.id ? {...el, port: updateUpPort.port } : el)
+        upPorts?.map((el) => el.id === updateUpPort.id ? {...el, port: updateUpPort.port } : el)
       )
     }
      console.log(upPorts);
@@ -70,21 +67,6 @@ export default function UpPortSetting() {
       setCheckItems([{ id: "-1", }]);
     }
   };
-
-  // const portSchema = yup.object().shape({
-  //   port: yup
-  //     .number()
-  //     .required("상위 포트: 포트를 입력하세요.")
-  //     .positive()
-  //     .integer()
-  //     .min(1)
-  //     .max(65535),
-  // });
-
-  // const { register, handleSubmit } = useForm({
-  //   mode: "onBlur",
-  //   resolver: yupResolver(portSchema),
-  // });
 
   return (
     <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-md border-[1px] border-gray-300 shadow-md">
