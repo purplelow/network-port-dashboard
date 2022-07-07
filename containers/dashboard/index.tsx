@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { ToastContainer } from "react-toastify";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
 
 import { cls } from "@libs/utils";
 import useNetworkInfo from "@api/dashBoard/networkInfo";
@@ -17,11 +19,9 @@ import LowCom from "./fragment/LowCom";
 import SystemInfo from "./fragment/SystemInfo";
 
 import "react-toastify/dist/ReactToastify.css";
-import MqttPublish from "mqtt/MqttPublish";
+// import MqttPublish from "mqtt/MqttPublish";
 const Dashboard = () => {
-  const { networkInfo, isLoading, isError } = useNetworkInfo();
-  const [tabIndex, setTabIndex] = useState(0);
-  const [sysTabIndex, setSysTabIndex] = useState(0);
+  const ABS_URL = useRecoilValue(routerUrl);
   return (
     <Layout title="대시보드">
       <ToastContainer
@@ -34,47 +34,12 @@ const Dashboard = () => {
         draggable
         pauseOnHover
       />
-      <MqttPublish />
+
       <div className="h-full gap-x-2 xl:grid xl:grid-cols-7">
         <div className="col-span-3 grid w-full grid-flow-row grid-rows-4 gap-2">
           <div className="row-span-2 h-full rounded-md bg-white p-2 shadow-md">
             <BoardTitle subTitle="네트워크 정보" />
-            <div className="h-[calc(100%-20px)] w-full pt-3">
-              <ul className="flex divide-x divide-gray-200 text-center text-sm font-medium text-gray-500">
-                <li className="">
-                  <button
-                    onClick={() => {
-                      setTabIndex(0);
-                    }}
-                    className={cls(
-                      "inline-block w-full rounded-t-md py-2 px-10 outline-none focus:outline-none",
-                      tabIndex === 0
-                        ? "bg-blue-800 text-white hover:bg-blue-600"
-                        : "bg-gray-200 text-gray-600 hover:bg-gray-300"
-                    )}
-                    aria-current="page"
-                  >
-                    {networkInfo?.interfaces[0].name ?? "LAN -"}
-                  </button>
-                </li>
-                <li className="">
-                  <button
-                    onClick={() => {
-                      setTabIndex(1);
-                    }}
-                    className={cls(
-                      "inline-block w-full rounded-t-md py-2 px-10 outline-none focus:outline-none",
-                      tabIndex === 1
-                        ? "bg-blue-800 text-white hover:bg-blue-600"
-                        : "bg-gray-200 text-gray-600 hover:bg-gray-300"
-                    )}
-                  >
-                    {networkInfo?.interfaces[1]?.name ?? "LAN -"}
-                  </button>
-                </li>
-              </ul>
-              <NetworkTabCont tabIndex={tabIndex} />
-            </div>
+            <NetworkTabCont ABS_URL={ABS_URL} />
           </div>
 
           <div className="relative h-full rounded-md bg-white p-2 shadow-md">
@@ -83,7 +48,7 @@ const Dashboard = () => {
               TCP/IP 통신
             </span>
             <StatusInfo />
-            <UpCom />
+            <UpCom ABS_URL={ABS_URL} />
           </div>
 
           <div className="h-full rounded-md bg-white p-2 shadow-md">
@@ -91,7 +56,7 @@ const Dashboard = () => {
             <span className="block pl-2 text-sm text-gray-400">
               시리얼 통신
             </span>
-            <LowCom />
+            <LowCom ABS_URL={ABS_URL} />
           </div>
         </div>
 
@@ -104,62 +69,27 @@ const Dashboard = () => {
               <div className=" row-span-1">
                 <div className="flex h-full ">
                   <div className="flex h-full w-1/4 items-end">
-                    <SystemChart />
+                    <SystemChart ABS_URL={ABS_URL} />
                   </div>
                   <div className="flex h-full w-1/4 items-end">
-                    <MemoryChart />
+                    <MemoryChart ABS_URL={ABS_URL} />
                   </div>
                   <div className="flex h-full w-1/4 items-end">
-                    <StorageChart />
+                    <StorageChart ABS_URL={ABS_URL} />
                   </div>
                   <div className="flex h-full w-1/4 items-end">
-                    <HDDChart />
+                    <HDDChart ABS_URL={ABS_URL} />
                   </div>
                 </div>
               </div>
 
-              <div className="row-span-2 overflow-hidden">
-                <ul className="flex divide-x divide-gray-200 text-center text-sm font-medium text-gray-500">
-                  <li className="">
-                    <button
-                      onClick={() => {
-                        setSysTabIndex(0);
-                      }}
-                      className={cls(
-                        "inline-block w-full rounded-t-md py-2 px-10 outline-none focus:outline-none",
-                        sysTabIndex === 0
-                          ? "bg-blue-800 text-white hover:bg-blue-600"
-                          : "bg-gray-200 text-gray-600 hover:bg-gray-300"
-                      )}
-                      aria-current="page"
-                    >
-                      메모리
-                    </button>
-                  </li>
-                  <li className="">
-                    <button
-                      onClick={() => {
-                        setSysTabIndex(1);
-                      }}
-                      className={cls(
-                        "inline-block w-full rounded-t-md py-2 px-10 outline-none focus:outline-none",
-                        sysTabIndex === 1
-                          ? "bg-blue-800 text-white hover:bg-blue-600"
-                          : "bg-gray-200 text-gray-600 hover:bg-gray-300"
-                      )}
-                    >
-                      저장공간
-                    </button>
-                  </li>
-                </ul>
-                <SystemTabCont sysTabIndex={sysTabIndex} />
-              </div>
+              <SystemTabCont ABS_URL={ABS_URL} />
             </div>
           </div>
 
           <div className="h-full w-full rounded-md bg-white p-2 shadow-md">
             <BoardTitle subTitle="시스템 정보" />
-            <SystemInfo />
+            <SystemInfo ABS_URL={ABS_URL} />
           </div>
         </div>
       </div>

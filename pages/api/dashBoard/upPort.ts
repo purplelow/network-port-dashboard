@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useRecoilValue } from "recoil";
-import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
 
 const UPPORT_API_URL = process.env.NEXT_PUBLIC_GET_UPPORT_STATUS;
@@ -23,8 +21,7 @@ const fetcher = async (url: string) =>
     .then((res) => res.data)
     .catch((err) => console.error("Up port data error ", err));
 
-export default function useUpPortData() {
-  const ABS_URL = useRecoilValue(routerUrl);
+export default function useUpPortData(ABS_URL: string) {
   const { data, error } = useSWR(`${ABS_URL}${UPPORT_API_URL}`, fetcher, {
     revalidateOnFocus: false,
     revalidateIfStale: false,

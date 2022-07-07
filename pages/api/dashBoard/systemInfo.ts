@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useRecoilValue } from "recoil";
-import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
 
 const SYSTEMINFO_API_URL = process.env.NEXT_PUBLIC_SYSTEM_INFO;
@@ -21,8 +19,7 @@ const fetcher = async (url: string) =>
     .then((res) => res.data)
     .catch((err) => console.error("System data error ", err));
 
-export default function useSystemInfo() {
-  const ABS_URL = useRecoilValue(routerUrl);
+export default function useSystemInfo(ABS_URL: string) {
   const { data, error } = useSWR(`${ABS_URL}${SYSTEMINFO_API_URL}`, fetcher, {
     revalidateOnFocus: false,
     revalidateIfStale: false,

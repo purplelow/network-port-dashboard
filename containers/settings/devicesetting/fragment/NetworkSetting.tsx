@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import { FieldErrors, useForm, useFieldArray } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { toast } from "react-toastify";
-import { setDate } from "date-fns/esm";
 
 // interface NeworkForm {
 //   gateway: string;
@@ -18,7 +17,7 @@ import { setDate } from "date-fns/esm";
 export default function NetworkSetting({ ABS_URL }: any) {
   const { register, handleSubmit, watch, formState } = useForm();
   const { errors } = formState;
-  const { networkInfo } = useNetworkInfo();
+  const { networkInfo } = useNetworkInfo(ABS_URL);
   const networkData = networkInfo?.interfaces;
 
   const defaultName = networkInfo?.interfaces[0].name;
@@ -120,11 +119,10 @@ export default function NetworkSetting({ ABS_URL }: any) {
     console.log("결과 JSON {} : ", neworkInfoJson);
   };
 
-  const onInvalid = (errors: FieldErrors) => {
+  const onInvalid = () => {
     toast.warning("올바른 ip 주소를 입력해 주세요.", {
       position: toast.POSITION.BOTTOM_CENTER,
     });
-    console.error(errors);
   };
   return (
     <div className="relative row-span-3 w-full overflow-hidden bg-white p-2 shadow-md">
@@ -220,12 +218,14 @@ export default function NetworkSetting({ ABS_URL }: any) {
                     type="text"
                     className={cls(
                       "w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700",
-                      errors?.["ipaddress"]?.[i] ? "border-red-500" : ""
+                      errors.ipaddress?.[i]
+                        ? "border-red-400 focus:border-red-600"
+                        : ""
                     )}
                   />
-                  {errors?.["ipaddress"]?.[i] && (
+                  {errors.ipaddress?.[i] && (
                     <p className="absolute -bottom-5 left-12 mt-2 text-sm text-red-600">
-                      {errors?.["ipaddress"]?.[i]?.["message"]}
+                      {errors.ipaddress?.[i].message}
                     </p>
                   )}
                 </div>
@@ -252,12 +252,12 @@ export default function NetworkSetting({ ABS_URL }: any) {
                     type="text"
                     className={cls(
                       "w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700",
-                      errors?.["netmask"]?.[i] ? "border-red-500" : ""
+                      errors.netmask?.[i] ? "border-red-500" : ""
                     )}
                   />
-                  {errors?.["netmask"]?.[i] && (
+                  {errors.netmask?.[i] && (
                     <p className="absolute -bottom-5 left-20 mt-2 text-sm text-red-600">
-                      {errors?.["netmask"]?.[i]?.["message"]}
+                      {errors.netmask?.[i].message}
                     </p>
                   )}
                 </div>
@@ -284,12 +284,12 @@ export default function NetworkSetting({ ABS_URL }: any) {
                     type="text"
                     className={cls(
                       "w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700",
-                      errors?.["gateway"]?.[i] ? "border-red-500" : ""
+                      errors.gateway?.[i] ? "border-red-500" : ""
                     )}
                   />
-                  {errors?.["gateway"]?.[i] && (
+                  {errors.gateway?.[i] && (
                     <p className="absolute -bottom-5 left-20 mt-2 text-sm text-red-600">
-                      {errors?.["gateway"]?.[i]?.["message"]}
+                      {errors.gateway?.[i].message}
                     </p>
                   )}
                 </div>

@@ -4,8 +4,8 @@ import StatusInfo from "@components/common/StatusInfo";
 import Layout from "@components/layout";
 import LowPortSetting from "./fragment/LowPortSetting";
 import UpPortSetting from "./fragment/UpPortSetting";
-import { useRecoilState } from "recoil";
-import { upPortsState } from "recoil/atom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { routerUrl, upPortsState } from "recoil/atom";
 import { downPortsState } from "recoil/atom";
 import updatePortSetting from "@api/setting/modifyPort";
 import useDownPortList from "@api/setting/downPortList";
@@ -13,9 +13,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const PortSetting = () => {
+  const ABS_URL = useRecoilValue(routerUrl);
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
   const [downPorts, setDownPorts] = useRecoilState(downPortsState);
-  const { downPortList, isLoading, isError }: any = useDownPortList();
+  const { downPortList, isLoading, isError }: any = useDownPortList(ABS_URL);
   let upPortJson = [
     {
       id: "",
@@ -115,12 +116,9 @@ const PortSetting = () => {
         downPortList: downPortJson,
         upPortList: upPortJson,
       };
-      updatePortSetting(putPortArr);
-      toast.success("설정이 적용 되었습니다", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      updatePortSetting(ABS_URL, putPortArr);
     } else {
-      toast.error("설정 적용 오류", {
+      toast.warning("설정 적용 오류", {
         position: toast.POSITION.TOP_CENTER,
       });
     }
@@ -162,7 +160,7 @@ const PortSetting = () => {
           <button className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none">
             포트 리셋
           </button>
-          <UpPortSetting />
+          <UpPortSetting ABS_URL={ABS_URL} />
         </div>
 
         <div className="relative w-full rounded-md bg-white p-2 shadow-md">
@@ -173,7 +171,7 @@ const PortSetting = () => {
           <button className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none">
             포트 리셋
           </button>
-          <LowPortSetting />
+          <LowPortSetting ABS_URL={ABS_URL} />
         </div>
       </div>
     </Layout>

@@ -1,14 +1,10 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
 import { AiOutlineDownload } from "react-icons/ai";
 import { toast } from "react-toastify";
-import { useRecoilValue } from "recoil";
-import { routerUrl } from "recoil/atom";
 
 const DOWNLOAD_LOGFILE_API_URL = process.env.NEXT_PUBLIC_DOWNLOAD_LOGFILE;
 
-export default function DonwloadButton({ fileName }: any) {
-  const ABS_URL = useRecoilValue(routerUrl);
+export default function DonwloadButton({ ABS_URL, fileName }: any) {
   const handleDownload = () => {
     axios({
       method: "GET",
@@ -28,7 +24,7 @@ export default function DonwloadButton({ fileName }: any) {
         }, 50000);
         link.remove();
 
-        toast.success("다운로드중 입니다.", {
+        toast.success("로그 파일을 다운로드 합니다.", {
           position: toast.POSITION.TOP_CENTER,
         });
       })

@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useRecoilValue } from "recoil";
-import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
 
 const NETWORKINFO_API_URL = process.env.NEXT_PUBLIC_NETWORK_INFO;
@@ -47,8 +45,7 @@ const fetcher = async (url: string) =>
     .then((res) => res.data)
     .catch((err) => console.error("Network data error ", err));
 
-export default function useNetworkInfo() {
-  const ABS_URL = useRecoilValue(routerUrl);
+export default function useNetworkInfo(ABS_URL: string) {
   const { data, error } = useSWR(`${ABS_URL}${NETWORKINFO_API_URL}`, fetcher, {
     revalidateOnFocus: false,
     revalidateIfStale: false,

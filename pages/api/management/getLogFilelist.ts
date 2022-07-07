@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useRecoilValue } from "recoil";
-import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
 
 const LOGFILELIST_API_URL = process.env.NEXT_PUBLIC_GET_LOGFILE_LIST;
@@ -16,8 +14,7 @@ const fetcher = (url: string) =>
     .get<LogFilelistProps>(url)
     .then((res) => res.data)
     .catch((err) => console.error("로그파일 리스트 에러", err));
-export default function useGetLogFilelist() {
-  const ABS_URL = useRecoilValue(routerUrl);
+export default function useGetLogFilelist(ABS_URL: string) {
   const { data, error } = useSWR(`${ABS_URL}${LOGFILELIST_API_URL}`, fetcher, {
     revalidateOnFocus: false,
     revalidateIfStale: false,

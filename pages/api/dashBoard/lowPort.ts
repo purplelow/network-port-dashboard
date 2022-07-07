@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useRecoilValue } from "recoil";
-import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
 
 const DOWNPORT_API_URL = process.env.NEXT_PUBLIC_GET_DOWNPORT_STATUS;
@@ -25,8 +23,7 @@ const fetcher = async (url: string) =>
     .then((res) => res.data)
     .catch((err) => console.error("Down port data error ", err));
 
-export default function useLowPortData() {
-  const ABS_URL = useRecoilValue(routerUrl);
+export default function useLowPortData(ABS_URL: string) {
   const { data, error } = useSWR(`${ABS_URL}${DOWNPORT_API_URL}`, fetcher, {
     revalidateOnFocus: false,
     revalidateIfStale: false,

@@ -3,8 +3,9 @@ import { routerUrl } from "recoil/atom";
 import absoluteUrl from "next-absolute-url";
 import { useEffect } from "react";
 
+const DEV_ENV = process.env.NEXT_PUBLIC_DEV;
+
 export default function urlBranch() {
-  const DEV_ENV = process.env.NEXT_PUBLIC_DEV;
   const [absUrl, setAbsUrl] = useRecoilState(routerUrl);
 
   if (typeof window !== "undefined") {

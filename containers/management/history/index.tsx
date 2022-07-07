@@ -16,7 +16,7 @@ const LOGVIEW_API_URL = process.env.NEXT_PUBLIC_GET_LOGVIEW;
 
 const History = () => {
   const ABS_URL = useRecoilValue(routerUrl);
-  const { logFilelist }: any = useGetLogFilelist();
+  const { logFilelist }: any = useGetLogFilelist(ABS_URL);
   const [currentFileName, setCurrentFimeName] = useState("");
   const [logViewData, setLogViewData] = useState("");
   const [loading, setLoading] = useState(false);
@@ -90,7 +90,7 @@ const History = () => {
                 <span>로그 보기</span>
               </button>
             )}
-            <DownloadButton fileName={currentFileName} />
+            <DownloadButton ABS_URL={ABS_URL} fileName={currentFileName} />
           </div>
 
           <div className="mt-10 h-[calc(100%-80px)] w-full overflow-auto whitespace-pre-line rounded-md border-[1px] border-gray-400 p-4">

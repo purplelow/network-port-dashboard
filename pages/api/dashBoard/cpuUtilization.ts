@@ -1,7 +1,5 @@
 import axios from "axios";
 import useSWR from "swr";
-import { useRecoilValue } from "recoil";
-import { routerUrl } from "recoil/atom";
 
 const CPU_API_URL = process.env.NEXT_PUBLIC_CPU_USAGE;
 
@@ -24,8 +22,7 @@ const fetcher = async (url: string) =>
     .then((res) => res.data)
     .catch((err) => console.error("Cpu data error ", err.config));
 
-export default function useCpuUtilization() {
-  const ABS_URL = useRecoilValue(routerUrl);
+export default function useCpuUtilization(ABS_URL: string) {
   const { data, error } = useSWR(`${ABS_URL}${CPU_API_URL}`, fetcher, {
     revalidateOnFocus: false,
     revalidateIfStale: false,

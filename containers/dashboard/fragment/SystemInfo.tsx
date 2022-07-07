@@ -5,9 +5,9 @@ import useSystemInfo from "@api/dashBoard/systemInfo";
 import { useForm } from "react-hook-form";
 import modifyNote from "@api/dashBoard/modifyNote";
 
-export default function SystemInfo() {
-  const { systemInfo, isLoading, isError } = useSystemInfo();
-  const { getNoteData } = useGetNote();
+export default function SystemInfo({ ABS_URL }: any) {
+  const { systemInfo, isLoading, isError } = useSystemInfo(ABS_URL);
+  const { getNoteData } = useGetNote(ABS_URL);
   const { register, handleSubmit } = useForm();
   const [userNote, setUserNote] = useState(getNoteData?.deviceNote);
   let userNoteValue = getNoteData?.deviceNote;
@@ -21,7 +21,7 @@ export default function SystemInfo() {
   };
 
   const handleModifyNote = () => {
-    modifyNote(userNoteJson);
+    modifyNote(ABS_URL, userNoteJson);
   };
 
   return (

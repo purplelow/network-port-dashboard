@@ -5,8 +5,8 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export default function CpuChart() {
-  const { cpuUtilization, isLoading, isError } = useCpuUtilization();
+export default function CpuChart({ ABS_URL }: any) {
+  const { cpuUtilization, isLoading, isError } = useCpuUtilization(ABS_URL);
   const cpuSeries = cpuUtilization?.summary.load ?? 0;
   const chartState: any = {
     series: [cpuSeries],

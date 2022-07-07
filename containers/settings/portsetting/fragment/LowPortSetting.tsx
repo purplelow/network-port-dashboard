@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import { downPortsState } from "recoil/atom";
 
-export default function DownPortSetting() {
+export default function DownPortSetting({ ABS_URL }: any) {
   const [checkItems, setCheckItems] = useState([{ id: "-1" }]);
   const [downPorts, setDownPorts] = useRecoilState(downPortsState);
-  const { downPortList, isLoading, isError }: any = useDownPortList();
+  const { downPortList, isLoading, isError }: any = useDownPortList(ABS_URL);
   //  console.log("downPort: ", downPortList);
 
   const downPortLength = () => {

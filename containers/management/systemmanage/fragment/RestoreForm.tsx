@@ -2,15 +2,15 @@ import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineUpload } from "react-icons/ai";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { restoreFailState, restoreState, routerUrl } from "recoil/atom";
+import { toast } from "react-toastify";
+import { useRecoilState } from "recoil";
+import { restoreFailState, restoreState } from "recoil/atom";
 
 const RESTORE_API_URL = process.env.NEXT_PUBLIC_RESTORE;
 
-export default function RestoreFrom() {
-  const ABS_URL = useRecoilValue(routerUrl);
-  const [restoreSuccess, setRestoreSuccess] = useRecoilState(restoreState);
-  const [restoreFail, setRestoreFail] = useRecoilState(restoreFailState);
+export default function RestoreFrom({ ABS_URL }: any) {
+  // const [restoreSuccess, setRestoreSuccess] = useRecoilState(restoreState);
+  // const [restoreFail, setRestoreFail] = useRecoilState(restoreFailState);
   const { register, handleSubmit } = useForm();
   const [selectedFile, setSelectedFile] = useState<any | Blob>();
 
@@ -31,10 +31,16 @@ export default function RestoreFrom() {
       },
     })
       .then((res) => {
-        setRestoreSuccess(true);
+        // setRestoreSuccess(true);
+        toast.success("복원 파일 업로드 완료.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       })
       .catch((error) => {
-        setRestoreFail(true);
+        // setRestoreFail(true);
+        toast.error("파일 업로드 오류 !!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       });
   };
 

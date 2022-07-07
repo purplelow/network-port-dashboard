@@ -5,8 +5,9 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export default function MemoryChart() {
-  const { memoryUtilization, isLoading, isError } = useMemoryUtilization();
+export default function MemoryChart({ ABS_URL }: any) {
+  const { memoryUtilization, isLoading, isError } =
+    useMemoryUtilization(ABS_URL);
   const memorySeries = memoryUtilization?.summary.percent ?? 0;
   const chartState: any = {
     series: [memorySeries],

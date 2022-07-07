@@ -7,10 +7,10 @@ import { useForm } from "react-hook-form";
 // import { yupResolver } from '@hookform/resolvers/yup';
 // import * as yup from 'yup';
 
-export default function UpPortSetting() {
+export default function UpPortSetting({ ABS_URL }: any) {
   const [checkItems, setCheckItems] = useState([{ id: "-1" }]);
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
-  const { upPortList, isLoading, isError }: any = useUpPortList();
+  const { upPortList, isLoading, isError }: any = useUpPortList(ABS_URL);
   //  console.log("upPort: ", upPortList);
 
   const upPortLength = () => {

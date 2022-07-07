@@ -7,8 +7,8 @@ import ReactTooltip from "react-tooltip";
 import useUpPortData from "@api/dashBoard/upPort";
 // UNUSED(미설정)", "DOWN(정지)", "READY(준비)", "RUN(정상)", "ERROR(에러)
 
-export default function UpCom() {
-  const { upPortInfo, isLoading, isError }: any = useUpPortData();
+export default function UpCom({ ABS_URL }: any) {
+  const { upPortInfo, isLoading, isError }: any = useUpPortData(ABS_URL);
   // let upComData = [];
   // upComData[] = upPortInfo;
 

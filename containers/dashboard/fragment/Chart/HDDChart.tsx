@@ -6,8 +6,9 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export default function HDDChart() {
-  const { storageUtilization, isLoading, isError } = useStorageUtilization();
+export default function HDDChart({ ABS_URL }: any) {
+  const { storageUtilization, isLoading, isError } =
+    useStorageUtilization(ABS_URL);
   const hddSeries = storageUtilization?.summary.life ?? 0;
 
   // const [chartSeries, setChartSeries] = useState(100);
