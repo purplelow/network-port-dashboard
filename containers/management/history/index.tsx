@@ -65,7 +65,7 @@ const History = () => {
               id="countries"
               className=" w-1/3 rounded-sm border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-none focus:border-2 focus:border-gray-700"
             >
-              {logFilelist?.filenames.map((item: string, i: number) => (
+              {logFilelist?.filenames.map((item: string, i: any) => (
                 <option value={item} key={i}>
                   {item}
                 </option>

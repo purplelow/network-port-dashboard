@@ -1,10 +1,7 @@
-import { useState } from "react";
-import { ToastContainer } from "react-toastify";
 import { useRecoilValue } from "recoil";
 import { routerUrl } from "recoil/atom";
+import { ToastContainer } from "react-toastify";
 
-import { cls } from "@libs/utils";
-import useNetworkInfo from "@api/dashBoard/networkInfo";
 import Layout from "@components/layout";
 import BoardTitle from "@components/common/BoardTitle";
 import StatusInfo from "@components/common/StatusInfo";

@@ -1,8 +1,6 @@
-import urlBranch from "@libs/absoluteUrl";
-import type { GetServerSideProps, GetStaticProps, NextPage } from "next";
-import { useRecoilValue } from "recoil";
-import { routerUrl } from "recoil/atom";
+import type { NextPage } from "next";
 import HistoryContainer from "../../containers/management/history";
+import urlBranch from "@libs/absoluteUrl";
 
 const History: NextPage = ({ data }: any) => {
   urlBranch();

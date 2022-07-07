@@ -150,7 +150,7 @@ export default function NetworkSetting({ ABS_URL }: any) {
         className="mt-8 h-[calc(100%-110px)] overflow-auto"
       >
         <ul className="space-y-2">
-          {networkData?.map((networkData: any, i: number) => {
+          {networkData?.map((networkData: any, i: any) => {
             const statusImg = () => {
               let result;
               if (

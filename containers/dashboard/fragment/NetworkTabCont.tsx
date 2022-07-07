@@ -1,9 +1,10 @@
+import { useState } from "react";
+
 import { cls } from "@libs/utils";
 import useNetworkInfo from "@api/dashBoard/networkInfo";
-import { useState } from "react";
-interface TabProp {
-  tabIndex: number;
-}
+// interface TabProp {
+//   tabIndex: number;
+// }
 
 export default function NetworkTabCont({ ABS_URL }: any) {
   const { networkInfo, isLoading, isError } = useNetworkInfo(ABS_URL);

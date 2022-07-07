@@ -1,7 +1,7 @@
+import { useState } from "react";
 import useMemoryUtilization from "@api/dashBoard/memoryUtilization";
 import useStorageUtilization from "@api/dashBoard/storageUtilization";
 import { cls } from "@libs/utils";
-import { useState } from "react";
 
 export default function SystemTabCont({ ABS_URL }: any) {
   const { memoryUtilization } = useMemoryUtilization(ABS_URL);
