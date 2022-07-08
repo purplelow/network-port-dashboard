@@ -31,10 +31,10 @@ export default function DownPortSetting({ ABS_URL }: any) {
     else result = "";
     return result;
   };
-  console.log("?????? ::: ", downPorts);
+
   const onChangeDownPort = (e: any) => {
-    let i = 0;
-    downPorts?.map((u) => (u.id !== e.target.id ? (i = 1) : (i = 0)));
+    let i = 1;
+    downPorts?.map((u) => (u.id !== e.target.id ? null : (i = 0)));
     if (e.target.name === "name") {
       if (i === 1) {
         const updateDownPort = {
@@ -204,7 +204,6 @@ export default function DownPortSetting({ ABS_URL }: any) {
         );
       }
     }
-    console.log(downPorts);
   };
 
   //checkbox

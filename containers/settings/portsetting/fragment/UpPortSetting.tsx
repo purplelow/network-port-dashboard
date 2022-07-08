@@ -1,9 +1,10 @@
-import useUpPortList from "@api/setting/upPortList";
-import updatePortSetting from "@api/setting/modifyPort";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { upPortsState } from "recoil/atom";
 import { useForm } from "react-hook-form";
+
+import useUpPortList from "@api/setting/upPortList";
+import updatePortSetting from "@api/setting/modifyPort";
 // import { yupResolver } from '@hookform/resolvers/yup';
 // import * as yup from 'yup';
 
@@ -42,8 +43,8 @@ export default function UpPortSetting({ ABS_URL }: any) {
       id: e.target.id,
       port: e.target.value,
     };
-    let i = 0;
-    upPorts?.map((el) => (el.id !== updateUpPort.id ? (i = 1) : (i = 0)));
+    let i = 1;
+    upPorts?.map((el) => (el.id !== updateUpPort.id ? null : (i = 0)));
     if (i === 1) {
       setUpPorts([...upPorts, updateUpPort]);
     } else {

@@ -1,6 +1,6 @@
 import mqtt from "mqtt";
 
-const websocketUrl = "wss://<SERVER-ADDRESS>:443/mqtt";
+const websocketUrl = "";
 const apiEndpoint = "<API-ENDPOINT>/";
 
 function getClient(errorHandler) {
@@ -9,6 +9,7 @@ function getClient(errorHandler) {
     errorHandler(`Connection to ${websocketUrl} failed`);
     client.end();
   });
+  console.log("Mqtt: client ? : ", client);
   return client;
 }
 

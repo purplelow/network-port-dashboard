@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 // }
 
 export default function NetworkSetting({ ABS_URL }: any) {
+  21;
   const { register, handleSubmit, watch, formState } = useForm();
   const { errors } = formState;
   const { networkInfo } = useNetworkInfo(ABS_URL);

@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { routerUrl } from "recoil/atom";
 import { ToastContainer } from "react-toastify";
+import mqtt from "mqtt";
 
 import Layout from "@components/layout";
 import BoardTitle from "@components/common/BoardTitle";
@@ -16,9 +18,55 @@ import LowCom from "./fragment/LowCom";
 import SystemInfo from "./fragment/SystemInfo";
 
 import "react-toastify/dist/ReactToastify.css";
-// import MqttPublish from "mqtt/MqttPublish";
+import MqttConnect from "mqtt/MqttConnect";
+
 const Dashboard = () => {
   const ABS_URL = useRecoilValue(routerUrl);
+
+  // const [client, setClient]: any = useState(null);
+  const [connectStatus, setConnectStatus] = useState("");
+  const [payload, setPayload]: any = useState();
+
+  // const mqttConnection = (host: string) => {
+  //   console.log("Connecting");
+  //   setClient(mqtt.connect(host));
+  // };
+  const client = mqtt.connect(
+    "ws://192.168.123.190:9001/broadcast/monitoring/localhost/system/cpu"
+  );
+  // mqttConnection("ws://192.168.123.190:9001/#");
+  useEffect(() => {
+    if (client) {
+      console.log("MQTT client : ", client);
+      client.on("connect", () => {
+        console.log("Connected");
+      });
+      client.on("error", (err: any) => {
+        console.error("Connection error: ", err);
+        client.end();
+      });
+      client.on("reconnect", () => {
+        console.log("Reconnecting");
+      });
+      client.on("message", (topic: any, message: any) => {
+        const payload = { topic, message: message.toString() };
+        setPayload(payload);
+      });
+    }
+  }, []);
+
+  const mqttSub = (topic: string) => {
+    if (client) {
+      client.subscribe(topic, (err) => {
+        if (err) {
+          console.log("Subscribe to topics error", err);
+          return;
+        }
+        console.log("sub client : ", client);
+      });
+    }
+  };
+
   return (
     <Layout title="대시보드">
       <ToastContainer
