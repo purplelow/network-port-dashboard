@@ -8,7 +8,6 @@ const DEV_MQTT_ENV = process.env.NEXT_PUBLIC_DEV_MQTT;
 
 export default function urlBranch() {
   const [absUrl, setAbsUrl] = useRecoilState(routerUrl);
-
   const [mqttWsUrl, setMqttWsUrl] = useRecoilState(mqttUrl);
 
   if (typeof window !== "undefined") {

@@ -53,7 +53,7 @@ export default function useNetworkInfo(ABS_URL: string) {
     // refreshInterval: 3000,
   });
   return {
-    networkInfo: data,
+    networkInfoData: data,
     isLoading: !error && !data,
     isError: error,
   };

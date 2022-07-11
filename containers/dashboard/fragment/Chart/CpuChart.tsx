@@ -1,20 +1,20 @@
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import useCpuUtilization from "@api/dashBoard/cpuUtilization";
-import MqttWSReactService from "mqtt_ws";
-import { useEffect, useState } from "react";
-import mqtt from "mqtt";
+import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export default function CpuChart({ ABS_URL, ABS_WS_URL }: any) {
-  const host = ABS_WS_URL;
-  const clientId = "mqtt-ws-react-" + "cpuData";
-
+export default function CpuChart({ ABS_URL, client }: any) {
+  const topic = process.env.MQTT_TOPIC_CPU;
   const { cpuUtilization, isLoading, isError } = useCpuUtilization(ABS_URL);
-  const { mqttCpuData } = MqttWSReactService(host, clientId);
-
+  const { mqttData, connectStatus, currentTopic } = MqttSubScribe(
+    client,
+    topic
+  );
+  // console.log("cpuChart : ", currentTopic);
   const defaultCpuSeries = cpuUtilization?.summary?.load ?? 0;
   const [data, setData]: any = useState();
   const cpuSeries = data?.summary?.load ?? 0;
@@ -22,16 +22,14 @@ export default function CpuChart({ ABS_URL, ABS_WS_URL }: any) {
   useEffect(() => {
     if (cpuUtilization) {
       setData(cpuUtilization);
-      console.log("Rest Api Data Setting !@@@@@@@@@");
     }
   }, [cpuUtilization]);
 
   useEffect(() => {
-    if (mqttCpuData) {
-      setData(mqttCpuData);
-      console.log("Mqtt Data Setting !!@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    if (currentTopic.includes("/cpu")) {
+      setData(mqttData);
     }
-  }, [data]);
+  }, [mqttData]);
 
   const chartState: any = {
     series: [cpuSeries | defaultCpuSeries],

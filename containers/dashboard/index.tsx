@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 import Layout from "@components/layout";
 import BoardTitle from "@components/common/BoardTitle";
 import StatusInfo from "@components/common/StatusInfo";
-import SystemChart from "./fragment/Chart/CpuChart";
+import CpuChart from "./fragment/Chart/CpuChart";
 import HDDChart from "./fragment/Chart/HDDChart";
 import MemoryChart from "./fragment/Chart/MemoryChart";
 import StorageChart from "./fragment/Chart/StorageChart";
@@ -14,12 +14,20 @@ import SystemTabCont from "./fragment/SystemTabCont";
 import UpCom from "./fragment/UpCom";
 import LowCom from "./fragment/LowCom";
 import SystemInfo from "./fragment/SystemInfo";
+import MqttWSReactService from "mqtt_ws";
 
 import "react-toastify/dist/ReactToastify.css";
+
+const WS_CLIID = process.env.NEXT_PUBLIC_WS_CLIID;
 
 const Dashboard = () => {
   const ABS_URL = useRecoilValue(routerUrl);
   const ABS_WS_URL = useRecoilValue(mqttUrl);
+
+  const host = ABS_WS_URL;
+  const clientId = `${WS_CLIID}`;
+
+  const { client }: any = MqttWSReactService(host, clientId);
 
   return (
     <Layout title="대시보드">
@@ -38,7 +46,7 @@ const Dashboard = () => {
         <div className="col-span-3 grid w-full grid-flow-row grid-rows-4 gap-2">
           <div className="row-span-2 h-full rounded-md bg-white p-2 shadow-md">
             <BoardTitle subTitle="네트워크 정보" />
-            <NetworkTabCont ABS_URL={ABS_URL} />
+            <NetworkTabCont ABS_URL={ABS_URL} client={client} />
           </div>
 
           <div className="relative h-full rounded-md bg-white p-2 shadow-md">
@@ -68,10 +76,10 @@ const Dashboard = () => {
               <div className=" row-span-1">
                 <div className="flex h-full ">
                   <div className="flex h-full w-1/4 items-end">
-                    <SystemChart ABS_URL={ABS_URL} ABS_WS_URL={ABS_WS_URL} />
+                    <CpuChart ABS_URL={ABS_URL} client={client} />
                   </div>
                   <div className="flex h-full w-1/4 items-end">
-                    <MemoryChart ABS_URL={ABS_URL} />
+                    <MemoryChart ABS_URL={ABS_URL} client={client} />
                   </div>
                   <div className="flex h-full w-1/4 items-end">
                     <StorageChart ABS_URL={ABS_URL} />

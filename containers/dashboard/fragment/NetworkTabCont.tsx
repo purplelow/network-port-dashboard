@@ -1,15 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { cls } from "@libs/utils";
 import useNetworkInfo from "@api/dashBoard/networkInfo";
+import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 // interface TabProp {
 //   tabIndex: number;
 // }
 
-export default function NetworkTabCont({ ABS_URL }: any) {
-  const { networkInfo, isLoading, isError } = useNetworkInfo(ABS_URL);
+export default function NetworkTabCont({ ABS_URL, client }: any) {
+  const topic = process.env.MQTT_TOPIC_NETWORK;
+  const { networkInfoData, isLoading, isError } = useNetworkInfo(ABS_URL);
+  const { mqttData, connectStatus, currentTopic } = MqttSubScribe(
+    client,
+    topic
+  );
+  const [networkInfo, setNetworkInfo]: any = useState(null);
+
+  useEffect(() => {
+    if (networkInfoData) {
+      setNetworkInfo(networkInfoData);
+    }
+  }, [networkInfoData]);
+
+  useEffect(() => {
+    if (currentTopic.includes("/network")) {
+      setNetworkInfo(mqttData);
+    }
+  }, [mqttData]);
+
   const [tabIndex, setTabIndex] = useState(0);
-  const bpsSpeedA = networkInfo?.interfaces[0].speed! / 1000000;
+  const bpsSpeedA = networkInfo?.interfaces[0]?.speed! / 1000000;
   const bpsSpeedB = networkInfo?.interfaces[1]?.speed! / 1000000;
 
   const statusImgA = () => {

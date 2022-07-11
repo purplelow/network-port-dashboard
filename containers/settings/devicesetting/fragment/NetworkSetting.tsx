@@ -18,13 +18,13 @@ export default function NetworkSetting({ ABS_URL }: any) {
   21;
   const { register, handleSubmit, watch, formState } = useForm();
   const { errors } = formState;
-  const { networkInfo } = useNetworkInfo(ABS_URL);
-  const networkData = networkInfo?.interfaces;
+  const { networkInfoData } = useNetworkInfo(ABS_URL);
+  const networkData = networkInfoData?.interfaces;
 
-  const defaultName = networkInfo?.interfaces[0].name;
-  const defaultAddress = networkInfo?.interfaces[0].addresses[0].address;
-  const defaultMask = networkInfo?.interfaces[0].addresses[0].mask;
-  const defaultGateway = networkInfo?.interfaces[0].addresses[0].gateway;
+  const defaultName = networkInfoData?.interfaces[0].name;
+  const defaultAddress = networkInfoData?.interfaces[0].addresses[0].address;
+  const defaultMask = networkInfoData?.interfaces[0].addresses[0].mask;
+  const defaultGateway = networkInfoData?.interfaces[0].addresses[0].gateway;
   const [data, setData]: any = useState([
     {
       name: "",
@@ -42,7 +42,7 @@ export default function NetworkSetting({ ABS_URL }: any) {
         gateway: defaultGateway,
       },
     ]);
-  }, [networkInfo]);
+  }, [networkInfoData]);
 
   const setJSONData = (e: any) => {
     let i = e.target.id;

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 
 export default function MqttWSReactService(host: string, clientId: string) {
   const [client, setClient]: any = useState(null);
-  const [mqttCpuData, setMqttCpuDate] = useState({});
 
   const options: object = {
     keepalive: 30,
@@ -22,42 +21,12 @@ export default function MqttWSReactService(host: string, clientId: string) {
     rejectUnauthorized: false,
   };
 
-  // const mqttConnect = (host: string, options: object) => {
-  //   console.log("connecting... mqtt client");
-  // };
-
   useEffect(() => {
-    console.log("연결 !");
+    console.log("MQTT WS CONNECT !");
     setClient(mqtt.connect(host, options));
   }, []);
 
-  useEffect(() => {
-    if (client) {
-      client.on("connect", () => {
-        console.log("Client connectd: ", clientId);
-        client.subscribe("broadcast/monitoring/localhost/system/cpu", {
-          qos: 0,
-        });
-      });
-      // connection error
-      client.on("error", (err: any) => {
-        console.log("Connection error: ", err);
-        client.end();
-      });
-      // reconnect
-      client.on("reconnect", () => {
-        console.log("Reconnecting...");
-      });
-      client.on("message", (topic: string, message: any) => {
-        const mqttCpuData: any = JSON.parse(message.toString());
-        console.log("Received Message: ", mqttCpuData);
-        // console.log("Received Message: ", message.toString());
-        setMqttCpuDate(mqttCpuData);
-      });
-    }
-  }, [client]);
-
   return {
-    mqttCpuData: mqttCpuData,
+    client: client,
   };
 }
