@@ -91,13 +91,11 @@ export default function StorageChart({ ABS_URL }: any) {
   };
 
   return (
-    <>
-      <ApexChart
-        options={chartState.options}
-        series={chartState.series}
-        type="radialBar"
-        height="100%"
-      />
-    </>
+    <ApexChart
+      options={chartState.options}
+      series={chartState.series}
+      type="radialBar"
+      height="100%"
+    />
   );
 }

@@ -50,6 +50,7 @@ export default function useNetworkInfo(ABS_URL: string) {
     revalidateOnFocus: false,
     revalidateIfStale: false,
     revalidateOnReconnect: false,
+    // refreshInterval: 3000,
   });
   return {
     networkInfo: data,

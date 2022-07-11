@@ -51,3 +51,8 @@ export const downPortsState = atom({
     },
   ],
 });
+
+export const mqttUrl = atom({
+  key: "mqttUrl",
+  default: "ws://192.168.123.190:9001",
+});

@@ -40,7 +40,7 @@ const PortSetting = () => {
   let isDownSuccess = true;
 
   function refreshPage() {
-    window.location.reload();
+    location.reload();
   }
 
   const upPortPut = () => {

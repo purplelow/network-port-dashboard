@@ -32,6 +32,7 @@ export default function useMemoryUtilization(ABS_URL: string) {
     revalidateOnFocus: false,
     revalidateIfStale: false,
     revalidateOnReconnect: false,
+    // refreshInterval: 3000,
   });
   return {
     memoryUtilization: data,

@@ -27,6 +27,7 @@ export default function useCpuUtilization(ABS_URL: string) {
     revalidateOnFocus: false,
     revalidateIfStale: false,
     revalidateOnReconnect: false,
+    // refreshInterval: 3000,
   });
   return {
     cpuUtilization: data,
