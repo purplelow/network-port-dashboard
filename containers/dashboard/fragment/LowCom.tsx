@@ -2,8 +2,8 @@ import { cls } from "@libs/utils";
 import useLowPortData from "@api/dashBoard/lowPort";
 // UNUSED(미설정)", "DOWN(정지)", "READY(준비)", "RUN(정상)", "ERROR(에러)
 
-export default function LowCom() {
-  const { lowPortInfo, isLoading, isError }: any = useLowPortData();
+export default function LowCom({ ABS_URL }: any) {
+  const { lowPortInfo, isLoading, isError }: any = useLowPortData(ABS_URL);
   return (
     <>
       <ul className="my-auto mt-4 flex h-3/5 space-x-1">

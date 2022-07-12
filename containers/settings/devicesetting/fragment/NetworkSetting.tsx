@@ -15,62 +15,115 @@ import { toast } from "react-toastify";
 // }
 
 export default function NetworkSetting({ ABS_URL }: any) {
+  21;
   const { register, handleSubmit, watch, formState } = useForm();
   const { errors } = formState;
-  const { networkInfo } = useNetworkInfo();
-  const networkData = networkInfo?.interfaces;
-  let networkName = networkInfo?.interfaces[0].name;
-  const [ipAddr, setIpAddr] = useState("");
-  const [netMask, setNetMask] = useState("");
-  const [gateWay, setGateWay] = useState("");
+  const { networkInfoData } = useNetworkInfo(ABS_URL);
+  const networkData = networkInfoData?.interfaces;
 
-  // const [networkJson, setNetworkJson] = useState([{ ipaddress: "" }]);
-  // const [newIpAddr, setNewIpAddr] = useState([{ ipaddress: "" }]);
-
-  const [data, setData]: any = useState([]);
-  const dataId = useRef(0);
-  useEffect(() => {
-    // setNewIpAddr([...ipAddr, { ipaddress: ipAddr }]);
-    const newItem = {
-      gateWay,
-      ipAddr,
+  const defaultName = networkInfoData?.interfaces[0].name;
+  const defaultAddress = networkInfoData?.interfaces[0].addresses[0].address;
+  const defaultMask = networkInfoData?.interfaces[0].addresses[0].mask;
+  const defaultGateway = networkInfoData?.interfaces[0].addresses[0].gateway;
+  const [data, setData]: any = useState([
+    {
       name: "",
-      netMask,
-      id: dataId.current,
-    };
-    dataId.current += 1;
-    setData([newItem, ...data]);
-    console.log("useEffect data?: ", data);
-  }, [ipAddr]);
+      ipaddress: "",
+      netmask: "",
+      gateway: "",
+    },
+  ]);
+  useEffect(() => {
+    setData([
+      {
+        name: defaultName,
+        ipaddress: defaultAddress,
+        netmask: defaultMask,
+        gateway: defaultGateway,
+      },
+    ]);
+  }, [networkInfoData]);
 
-  // let neworkInfoJson = {
-  //   networkInfos: [
-  //     {
-  //       gateway: gateWay,
-  //       ipaddress: ipAddr,
-  //       // name: networkName,
-  //       netmask: netMask,
-  //     },
-  //   ],
-  // };
+  const setJSONData = (e: any) => {
+    let i = e.target.id;
+    const networkName = `LAN${Number(i) + 1}`;
+    let setTF = false;
+    data.map((t: any) =>
+      t.name === networkName ? (setTF = true) : (setTF = false)
+    );
+    const netName = e.target.name;
+    if (netName.includes("ipaddress")) {
+      if (setTF) {
+        setData(
+          data.map((asis: any) =>
+            asis.name === networkName
+              ? { ...asis, ipaddress: e.target.value }
+              : asis
+          )
+        );
+      } else {
+        const newItem = {
+          name: networkName,
+          ipaddress: e.target.value,
+          netmask: "",
+          gateway: "",
+        };
+        setData([...data, newItem]);
+      }
+    } else if (netName.includes("netmask")) {
+      if (setTF) {
+        setData(
+          data.map((asis: any) =>
+            asis.name === networkName
+              ? { ...asis, netmask: e.target.value }
+              : asis
+          )
+        );
+      } else {
+        const newItem = {
+          name: networkName,
+          ipaddress: "",
+          netmask: e.target.value,
+          gateway: "",
+        };
+        setData([...data, newItem]);
+      }
+    } else if (netName.includes("gateway")) {
+      if (setTF) {
+        setData(
+          data.map((asis: any) =>
+            asis.name === networkName
+              ? { ...asis, gateway: e.target.value }
+              : asis
+          )
+        );
+      } else {
+        const newItem = {
+          name: networkName,
+          ipaddress: "",
+          netmask: "",
+          gateway: e.target.value,
+        };
+        setData([...data, newItem]);
+      }
+    }
+  };
+
+  console.log("data?? : ", data);
 
   const onValid = () => {
-    // setNetworkJson([...networkJson, newIpAddr]);
-
     const neworkInfoJson = {
       networkInfos: data,
     };
-
-    // updateNetwork({ ABS_URL }, neworkInfoJson);
+    updateNetwork({ ABS_URL }, neworkInfoJson);
 
     console.log("결과 JSON {} : ", neworkInfoJson);
   };
 
-  const onInvalid = (errors: FieldErrors) => {
+  const onInvalid = () => {
     toast.warning("올바른 ip 주소를 입력해 주세요.", {
       position: toast.POSITION.BOTTOM_CENTER,
     });
-    console.error(errors);
   };
   return (
     <div className="relative row-span-3 w-full overflow-hidden bg-white p-2 shadow-md">
@@ -98,7 +151,7 @@ export default function NetworkSetting({ ABS_URL }: any) {
         className="mt-8 h-[calc(100%-110px)] overflow-auto"
       >
         <ul className="space-y-2">
-          {networkData?.map((networkData: any, i: number) => {
+          {networkData?.map((networkData: any, i: any) => {
             const statusImg = () => {
               let result;
               if (
@@ -126,7 +179,7 @@ export default function NetworkSetting({ ABS_URL }: any) {
                   <span className="font-bold">{networkData.name}</span>
                   <span
                     className={cls(
-                      "h-3 w-3 rounded-full bg-[#319500]",
+                      "h-3 w-3 rounded-full",
                       statusImg() === "bg-lanConnected"
                         ? "bg-[#319500]"
                         : statusImg() === "bg-lanDisconnected"
@@ -145,7 +198,7 @@ export default function NetworkSetting({ ABS_URL }: any) {
                 </div>
                 <div className="relative flex w-[30%] items-center">
                   <label
-                    htmlFor={`ipaddress.${i}`}
+                    htmlFor={`${i}`}
                     className="pr-2 text-sm font-medium text-gray-900"
                   >
                     IP 주소
@@ -157,27 +210,29 @@ export default function NetworkSetting({ ABS_URL }: any) {
                           /^(([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])\.){3}([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])$/,
                         message: "ipv4 형식이 아닙니다.",
                       },
-                      onChange: (e) => setIpAddr(e.target.value),
+                      onChange: setJSONData,
                       required: "ip 주소를 입력해 주세요.",
                     })}
                     defaultValue={networkData.addresses[0].address ?? ""}
-                    id={`ipaddress.${i}`}
+                    id={`${i}`}
                     placeholder="IP 주소를 입력해 주세요."
                     type="text"
                     className={cls(
                       "w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700",
-                      errors?.["ipaddress"]?.[i] ? "border-red-500" : ""
+                      errors.ipaddress?.[i]
+                        ? "border-red-400 focus:border-red-600"
+                        : ""
                     )}
                   />
-                  {errors?.["ipaddress"]?.[i] && (
+                  {errors.ipaddress?.[i] && (
                     <p className="absolute -bottom-5 left-12 mt-2 text-sm text-red-600">
-                      {errors?.["ipaddress"]?.[i]?.["message"]}
+                      {errors.ipaddress?.[i].message}
                     </p>
                   )}
                 </div>
-                <div className="flex w-[25%] items-center">
+                <div className="relative flex w-[25%] items-center">
                   <label
-                    htmlFor={`netmask.${i}`}
+                    htmlFor={`${i}`}
                     className="pr-2 text-sm font-medium text-gray-900"
                   >
                     NETMASK
@@ -189,27 +244,27 @@ export default function NetworkSetting({ ABS_URL }: any) {
                           /^(([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])\.){3}([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])$/,
                         message: "ipv4 형식이 아닙니다.",
                       },
-                      onChange: (e) => setNetMask(e.target.value),
+                      onChange: setJSONData,
                       required: "netmask를 입력해 주세요.",
                     })}
                     defaultValue={networkData.addresses[0].mask ?? ""}
-                    id={`netmask.${i}`}
+                    id={`${i}`}
                     placeholder="NETMASK를를 입력해 주세요."
                     type="text"
                     className={cls(
                       "w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700",
-                      errors?.["netmask"]?.[i] ? "border-red-500" : ""
+                      errors.netmask?.[i] ? "border-red-500" : ""
                     )}
                   />
-                  {errors?.["netmask"]?.[i] && (
-                    <p className="absolute -bottom-5 left-12 mt-2 text-sm text-red-600">
-                      {errors?.["netmask"]?.[i]?.["message"]}
+                  {errors.netmask?.[i] && (
+                    <p className="absolute -bottom-5 left-20 mt-2 text-sm text-red-600">
+                      {errors.netmask?.[i].message}
                     </p>
                   )}
                 </div>
-                <div className="flex w-[25%] items-center">
+                <div className="relative flex w-[25%] items-center">
                   <label
-                    htmlFor={`ipaddress.${i}`}
+                    htmlFor={`${i}`}
                     className="pr-2 text-sm font-medium text-gray-900"
                   >
                     GATEWAY
@@ -221,21 +276,21 @@ export default function NetworkSetting({ ABS_URL }: any) {
                           /^(([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])\.){3}([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])$/,
                         message: "ipv4 형식이 아닙니다.",
                       },
-                      onChange: (e) => setGateWay(e.target.value),
-                      // required: "gateway를 입력해 주세요.",
+                      onChange: setJSONData,
+                      required: "gateway를 입력해 주세요.",
                     })}
                     defaultValue={networkData.addresses[0].gateway ?? ""}
-                    id={`gateway.${i}`}
+                    id={`${i}`}
                     placeholder="GATEWAY를 입력해 주세요."
                     type="text"
                     className={cls(
                       "w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700",
-                      errors?.["gateway"]?.[i] ? "border-red-500" : ""
+                      errors.gateway?.[i] ? "border-red-500" : ""
                     )}
                   />
-                  {errors?.["gateway"]?.[i] && (
-                    <p className="absolute -bottom-5 left-12 mt-2 text-sm text-red-600">
-                      {errors?.["gateway"]?.[i]?.["message"]}
+                  {errors.gateway?.[i] && (
+                    <p className="absolute -bottom-5 left-20 mt-2 text-sm text-red-600">
+                      {errors.gateway?.[i].message}
                     </p>
                   )}
                 </div>

@@ -22,12 +22,12 @@ export default function ModelSerial({ ABS_URL }: any) {
     modelSerial: modelSerial ?? modelSerialGetValue,
   };
 
-  const onValid = (data: ModelForm) => {
+  const onValid = () => {
     modifySerialNumber({ ABS_URL }, modelInfoJson);
   };
 
-  const onInvalid = (errors: FieldErrors) => {
-    toast.warning(`${errors}`, {
+  const onInvalid = () => {
+    toast.warning(`설정 오류 !`, {
       position: toast.POSITION.TOP_CENTER,
     });
   };

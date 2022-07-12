@@ -1,16 +1,17 @@
-import useUpPortList from "@api/setting/upPortList";
-import updatePortSetting from "@api/setting/modifyPort";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { upPortsState } from "recoil/atom";
 import { useForm } from "react-hook-form";
+
+import useUpPortList from "@api/setting/upPortList";
+import updatePortSetting from "@api/setting/modifyPort";
 // import { yupResolver } from '@hookform/resolvers/yup';
 // import * as yup from 'yup';
 
-export default function UpPortSetting() {
+export default function UpPortSetting({ ABS_URL }: any) {
   const [checkItems, setCheckItems] = useState([{ id: "-1" }]);
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
-  const { upPortList, isLoading, isError }: any = useUpPortList();
+  const { upPortList, isLoading, isError }: any = useUpPortList(ABS_URL);
   //  console.log("upPort: ", upPortList);
 
   const upPortLength = () => {
@@ -41,10 +42,10 @@ export default function UpPortSetting() {
     const updateUpPort = {
       id: e.target.id,
       port: e.target.value,
-    }
+    };
     let i = 1;
-    upPorts?.map((el)=> el.id !==updateUpPort.id ? null : i=0);
-    if(i===1) {
+    upPorts?.map((el) => (el.id !== updateUpPort.id ? null : (i = 0)));
+    if (i === 1) {
       setUpPorts([...upPorts, updateUpPort]);
     } else {
       setUpPorts(

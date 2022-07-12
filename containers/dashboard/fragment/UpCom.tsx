@@ -1,14 +1,14 @@
+import Link from "next/link";
 import { ContextMenu, ContextMenuTrigger, MenuItem } from "react-contextmenu";
-import { cls } from "@libs/utils";
 import { AiOutlineSetting } from "react-icons/ai";
 import { VscDebugRestart } from "react-icons/vsc";
-import Link from "next/link";
 import ReactTooltip from "react-tooltip";
+import { cls } from "@libs/utils";
 import useUpPortData from "@api/dashBoard/upPort";
 // UNUSED(미설정)", "DOWN(정지)", "READY(준비)", "RUN(정상)", "ERROR(에러)
 
-export default function UpCom() {
-  const { upPortInfo, isLoading, isError }: any = useUpPortData();
+export default function UpCom({ ABS_URL }: any) {
+  const { upPortInfo, isLoading, isError }: any = useUpPortData(ABS_URL);
   // let upComData = [];
   // upComData[] = upPortInfo;
 

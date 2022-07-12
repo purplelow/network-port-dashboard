@@ -4,8 +4,8 @@ import StatusInfo from "@components/common/StatusInfo";
 import Layout from "@components/layout";
 import LowPortSetting from "./fragment/LowPortSetting";
 import UpPortSetting from "./fragment/UpPortSetting";
-import { useRecoilState } from "recoil";
-import { upPortsState } from "recoil/atom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { routerUrl, upPortsState } from "recoil/atom";
 import { downPortsState } from "recoil/atom";
 import updatePortSetting from "@api/setting/modifyPort";
 import useDownPortList from "@api/setting/downPortList";
@@ -13,41 +13,50 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const PortSetting = () => {
+  const ABS_URL = useRecoilValue(routerUrl);
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
   const [downPorts, setDownPorts] = useRecoilState(downPortsState);
-  const { downPortList, isLoading, isError }: any = useDownPortList();
-  let upPortJson = [{
-    id: "",
-    port: "",
-  }]
-  let downPortJson = [{
-    id: "",
-    name: "",
-    model: "",
-    type: "",
-    baudrate: "",
-    parity: "",
-    databits: "",
-    stopbits: "",
-    deviceId: "",
-  }]
+  const { downPortList, isLoading, isError }: any = useDownPortList(ABS_URL);
+  let upPortJson = [
+    {
+      id: "",
+      port: "",
+    },
+  ];
+  let downPortJson = [
+    {
+      id: "",
+      name: "",
+      model: "",
+      type: "",
+      baudrate: "",
+      parity: "",
+      databits: "",
+      stopbits: "",
+      deviceId: "",
+    },
+  ];
   let isUpSuccess = true;
   let isDownSuccess = true;
 
   function refreshPage() {
-    window.location.reload();
+    location.reload();
   }
 
   const upPortPut = () => {
     let i = 1;
     isUpSuccess = true;
     upPorts?.map((u) => {
-      if(u.id !== "-1") {
-        if(Number(u.port) < 1 || Number(u.port) > 65535) {
-          alert("상위 포트 설정: LISTEN PORT는 1~65535 사이 숫자를 입력하세요.");
+      if (u.id !== "-1") {
+        if (Number(u.port) < 1 || Number(u.port) > 65535) {
+          alert(
+            "상위 포트 설정: LISTEN PORT는 1~65535 사이 숫자를 입력하세요."
+          );
           isUpSuccess = false;
         } else {
-          i === 1 ? upPortJson = [{id: u.id, port: u.port}] : upPortJson = [...upPortJson, {id: u.id, port: u.port}];
+          i === 1
+            ? (upPortJson = [{ id: u.id, port: u.port }])
+            : (upPortJson = [...upPortJson, { id: u.id, port: u.port }]);
           console.log(upPortJson);
           i++;
         }
@@ -84,12 +93,15 @@ const PortSetting = () => {
           }
         });
 
-        if(Number(putArr.deviceId) < 0 || Number(putArr.deviceId) > 32767) {
-          alert("하위 시리얼 포트 설정: DEVICE ID는 0~32767 사이 숫자를 입력하세요.");
+        if (Number(putArr.deviceId) < 0 || Number(putArr.deviceId) > 32767) {
+          alert(
+            "하위 시리얼 포트 설정: DEVICE ID는 0~32767 사이 숫자를 입력하세요."
+          );
           isDownSuccess = false;
-        }
-        else {
-          i === 1 ? downPortJson = [putArr] : downPortJson = [...downPortJson, putArr];
+        } else {
+          i === 1
+            ? (downPortJson = [putArr])
+            : (downPortJson = [...downPortJson, putArr]);
           console.log(downPortJson);
         }
       }
@@ -99,16 +111,18 @@ const PortSetting = () => {
   const onClickSetting = () => {
     upPortPut();
     downPortPut();
-    if(isUpSuccess === true && isDownSuccess === true) {
+    if (isUpSuccess === true && isDownSuccess === true) {
       const putPortArr = {
         downPortList: downPortJson,
         upPortList: upPortJson,
-      }
-      updatePortSetting(putPortArr);
-      console.log(putPortArr);
-      alert("변경되었습니다.");
-    } 
-  }
+      };
+      updatePortSetting(ABS_URL, putPortArr);
+    } else {
+      toast.warning("설정 적용 오류", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
 
   return (
     <Layout title="포트 설정">
@@ -146,7 +160,7 @@ const PortSetting = () => {
           <button className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none">
             포트 리셋
           </button>
-          <UpPortSetting />
+          <UpPortSetting ABS_URL={ABS_URL} />
         </div>
 
         <div className="relative w-full rounded-md bg-white p-2 shadow-md">
@@ -157,7 +171,7 @@ const PortSetting = () => {
           <button className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none">
             포트 리셋
           </button>
-          <LowPortSetting />
+          <LowPortSetting ABS_URL={ABS_URL} />
         </div>
       </div>
     </Layout>

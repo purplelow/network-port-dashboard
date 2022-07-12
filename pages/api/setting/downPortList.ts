@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useRecoilValue } from "recoil";
-import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
 
 const DOWNPORTLIST_API_URL = process.env.NEXT_PUBLIC_GET_DOWNPORT_LIST;
@@ -24,11 +22,17 @@ interface DownPortListProps {
 }
 
 const fetcher = (url: string) =>
-  axios.get<DownPortListProps>(url).then((res) => res.data);
+  axios
+    .get<DownPortListProps>(url)
+    .then((res) => res.data)
+    .catch((err) => console.error("DownPortList Error", err.config));
 
-export default function useLowPortList() {
-  const ABS_URL = useRecoilValue(routerUrl);
-  const { data, error } = useSWR(`${ABS_URL}${DOWNPORTLIST_API_URL}`, fetcher);
+export default function useLowPortList(ABS_URL: string) {
+  const { data, error } = useSWR(`${ABS_URL}${DOWNPORTLIST_API_URL}`, fetcher, {
+    revalidateOnFocus: false,
+    revalidateIfStale: false,
+    revalidateOnReconnect: false,
+  });
   return {
     downPortList: data,
     isLoading: !error && !data,

@@ -4,7 +4,7 @@ import { ToastContainer } from "react-toastify";
 import Layout from "@components/layout";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { VscDebugRestart } from "react-icons/vsc";
-import { AiOutlineCheckCircle, AiOutlineUpload } from "react-icons/ai";
+import { AiOutlineCheckCircle } from "react-icons/ai";
 import { TbFaceIdError } from "react-icons/tb";
 import useSystemInfo from "@api/dashBoard/systemInfo";
 import FirmwareForm from "./fragment/FirmwareForm";
@@ -24,7 +24,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const SystemManage = () => {
   const ABS_URL = useRecoilValue(routerUrl);
-  const { systemInfo } = useSystemInfo();
+  const { systemInfo } = useSystemInfo(ABS_URL);
 
   const [backUpSuccess, setBackUpSuccess] = useRecoilState(backUpState);
   const [backUpFail, setBackUpFail] = useRecoilState(backUpFailState);
@@ -41,22 +41,18 @@ const SystemManage = () => {
     setModalOpen(false);
   };
 
-  // useCallback(() => {
-  //   setBackUpProp(backUpStateProp);
-  //   setRestoreSuccess(restoreStateProp);
-  // }, [backUpStateProp, restoreStateProp]);
-
-  useEffect(() => {
-    let timer = setTimeout(() => {
-      setBackUpSuccess(false);
-      setBackUpFail(false);
-      setRestoreSuccess(false);
-      setRestoreFail(false);
-    }, 2500);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [backUpSuccess, backUpFail, restoreSuccess, restoreFail]);
+  // =================customizing Alert -> toastify
+  // useEffect(() => {
+  //   let timer = setTimeout(() => {
+  //     setBackUpSuccess(false);
+  //     setBackUpFail(false);
+  //     setRestoreSuccess(false);
+  //     setRestoreFail(false);
+  //   }, 2500);
+  //   return () => {
+  //     clearTimeout(timer);
+  //   };
+  // }, [backUpSuccess, backUpFail, restoreSuccess, restoreFail]);
 
   return (
     <Layout title="시스템 관리">
@@ -89,7 +85,6 @@ const SystemManage = () => {
           </button>
 
           <button
-            // type="submit"
             onClick={() => AlertAdminReq(ABS_URL)}
             className="flex items-center space-x-2 rounded-sm bg-gray-900 px-4 py-3 text-sm text-white"
           >
@@ -106,15 +101,15 @@ const SystemManage = () => {
             <span className="relative text-sm text-gray-500">
               현재 버전 : {systemInfo?.system_info.version}
             </span>
-            <FirmwareForm />
+            <FirmwareForm ABS_URL={ABS_URL} />
           </div>
         </div>
 
         <div className="flex items-center justify-between rounded-md bg-white p-8 shadow-md">
           <span className="text-xl font-bold text-gray-700">백업</span>
           <div className="flex w-[80%] items-center justify-end space-x-4">
-            <BackUp />
-            {backUpSuccess && (
+            <BackUp ABS_URL={ABS_URL} />
+            {/* {backUpSuccess && (
               <div
                 className="absolute top-7 left-1/2 -translate-x-1/2 rounded-b  border-t-4 border-teal-500 bg-teal-100 px-3 py-3 pr-10 text-teal-900 shadow-2xl"
                 role="alert"
@@ -149,15 +144,15 @@ const SystemManage = () => {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
         </div>
 
         <div className="flex items-center justify-between rounded-md bg-white p-8 shadow-md">
           <span className="text-xl font-bold text-gray-700">복원</span>
-          <RestoreFrom />
+          <RestoreFrom ABS_URL={ABS_URL} />
 
-          {restoreSuccess && (
+          {/* {restoreSuccess && (
             <div
               className="absolute top-7 left-1/2 -translate-x-1/2 rounded-b  border-t-4 border-teal-500 bg-teal-100 px-3 py-3 pr-10 text-teal-900 shadow-2xl"
               role="alert"
@@ -190,7 +185,7 @@ const SystemManage = () => {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </Layout>

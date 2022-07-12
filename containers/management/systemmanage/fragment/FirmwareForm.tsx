@@ -2,16 +2,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineUpload } from "react-icons/ai";
-import { useRecoilValue } from "recoil";
-import { routerUrl } from "recoil/atom";
+import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 const UPLOAD_FIRMWARE_API_URL = process.env.NEXT_PUBLIC_UPLOAD_FIRMWARE;
 interface firmFile {
   file: object;
 }
-export default function FirmwareForm() {
-  const ABS_URL = useRecoilValue(routerUrl);
+export default function FirmwareForm({ ABS_URL }: any) {
   const {
     register,
     handleSubmit,
@@ -21,15 +19,15 @@ export default function FirmwareForm() {
   const [alert, setAlert] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
 
-  useEffect(() => {
-    let timer = setTimeout(() => {
-      setAlert(false);
-      setErrorAlert(false);
-    }, 2000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [alert, errorAlert]);
+  // useEffect(() => {
+  //   let timer = setTimeout(() => {
+  //     setAlert(false);
+  //     setErrorAlert(false);
+  //   }, 2000);
+  //   return () => {
+  //     clearTimeout(timer);
+  //   };
+  // }, [alert, errorAlert]);
 
   const uploadFile = (e: any) => {
     const file = e.target.files[0];
@@ -49,10 +47,16 @@ export default function FirmwareForm() {
       },
     })
       .then((res) => {
-        setAlert(true);
+        // setAlert(true);
+        toast.success("펌웨어 파일 업로드 완료.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       })
       .catch((error) => {
-        setErrorAlert(true);
+        // setErrorAlert(true);
+        toast.error("펌웨어 파일 업로드 오류 !!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       });
   };
 
@@ -87,7 +91,7 @@ export default function FirmwareForm() {
         펌웨어 버전 업데이트
       </button>
 
-      {alert && (
+      {/* {alert && (
         <div
           role="alert"
           className="absolute top-5 left-[calc(50%-160px)] w-80 shadow-2xl"
@@ -112,7 +116,7 @@ export default function FirmwareForm() {
             <p>⚠️ 선택된 파일이 없습니다</p>
           </div>
         </div>
-      )}
+      )} */}
     </form>
   );
 }

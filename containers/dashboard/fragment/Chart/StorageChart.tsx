@@ -1,12 +1,15 @@
 import dynamic from "next/dynamic";
 import useStorageUtilization from "@api/dashBoard/storageUtilization";
+import { useRecoilValue } from "recoil";
+import { routerUrl } from "recoil/atom";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export default function StorageChart() {
-  const { storageUtilization, isLoading, isError } = useStorageUtilization();
+export default function StorageChart({ ABS_URL }: any) {
+  const { storageUtilization, isLoading, isError } =
+    useStorageUtilization(ABS_URL);
   const storageSeries = storageUtilization?.summary.percent ?? 0;
   const chartState: any = {
     series: [storageSeries],
@@ -88,13 +91,11 @@ export default function StorageChart() {
   };
 
   return (
-    <>
-      <ApexChart
-        options={chartState.options}
-        series={chartState.series}
-        type="radialBar"
-        height="100%"
-      />
-    </>
+    <ApexChart
+      options={chartState.options}
+      series={chartState.series}
+      type="radialBar"
+      height="100%"
+    />
   );
 }

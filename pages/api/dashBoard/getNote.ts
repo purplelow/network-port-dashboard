@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useRecoilValue } from "recoil";
-import { routerUrl } from "recoil/atom";
 import useSWR from "swr";
 
 const GET_NOTE_APU_URL = process.env.NEXT_PUBLIC_GET_NOTE;
@@ -15,8 +13,7 @@ const fetcher = async (url: string) =>
     .then((res) => res.data)
     .catch((err) => console.error("Note data error ", err));
 
-export default function useGetNote() {
-  const ABS_URL = useRecoilValue(routerUrl);
+export default function useGetNote(ABS_URL: string) {
   const { data, error } = useSWR(`${ABS_URL}${GET_NOTE_APU_URL}`, fetcher, {
     revalidateOnFocus: false,
     revalidateIfStale: false,

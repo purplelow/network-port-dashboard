@@ -1,19 +1,26 @@
 import { useRecoilState } from "recoil";
-import { routerUrl } from "recoil/atom";
+import { mqttUrl, routerUrl } from "recoil/atom";
 import absoluteUrl from "next-absolute-url";
 import { useEffect } from "react";
 
+const DEV_ENV = process.env.NEXT_PUBLIC_DEV;
+const DEV_MQTT_ENV = process.env.NEXT_PUBLIC_DEV_MQTT;
+
 export default function urlBranch() {
-  const DEV_ENV = process.env.NEXT_PUBLIC_DEV;
   const [absUrl, setAbsUrl] = useRecoilState(routerUrl);
+  const [mqttWsUrl, setMqttWsUrl] = useRecoilState(mqttUrl);
 
   if (typeof window !== "undefined") {
     useEffect(() => {
       const { protocol, host } = absoluteUrl();
       const apiURL = `http://${host}`;
+      const wsUrl = `ws://${host}`;
 
       if (DEV_ENV) setAbsUrl(DEV_ENV);
       else setAbsUrl(apiURL);
+
+      if (DEV_MQTT_ENV) setMqttWsUrl(DEV_MQTT_ENV);
+      else setMqttWsUrl(wsUrl);
     }, []);
   }
 }

@@ -1,15 +1,39 @@
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import useMemoryUtilization from "@api/dashBoard/memoryUtilization";
+import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export default function MemoryChart() {
-  const { memoryUtilization, isLoading, isError } = useMemoryUtilization();
-  const memorySeries = memoryUtilization?.summary.percent ?? 0;
+export default function MemoryChart({ ABS_URL, client }: any) {
+  const topic = process.env.MQTT_TOPIC_MEMORY;
+  const { memoryUtilization, isLoading, isError } =
+    useMemoryUtilization(ABS_URL);
+  const { mqttData, connectStatus, currentTopic } = MqttSubScribe(
+    client,
+    topic
+  );
+
+  const defaultMemorySeries = memoryUtilization?.summary.percent ?? 0;
+  const [data, setData]: any = useState();
+  const memorySeries = data?.summary?.percent ?? 0;
+
+  useEffect(() => {
+    if (memoryUtilization) {
+      setData(memoryUtilization);
+    }
+  }, [memoryUtilization]);
+
+  useEffect(() => {
+    if (currentTopic.includes("/memory")) {
+      setData(mqttData);
+    }
+  }, [mqttData]);
+
   const chartState: any = {
-    series: [memorySeries],
+    series: [memorySeries | defaultMemorySeries],
     options: {
       chart: {
         height: "100%",
@@ -89,13 +113,11 @@ export default function MemoryChart() {
   };
 
   return (
-    <>
-      <ApexChart
-        options={chartState.options}
-        series={chartState.series}
-        type="radialBar"
-        height="100%"
-      />
-    </>
+    <ApexChart
+      options={chartState.options}
+      series={chartState.series}
+      type="radialBar"
+      height="100%"
+    />
   );
 }

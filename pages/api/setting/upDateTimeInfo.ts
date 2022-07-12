@@ -7,12 +7,12 @@ export default function upDateTimeInfo({ ABS_URL }: any, updateTimeJson: any) {
   axios
     .put(`${ABS_URL}${UPDATETIME_API_URL}`, updateTimeJson)
     .then((res) => {
-      toast.success("설정 완료.", {
+      toast.success("시간 설정 완료.", {
         position: toast.POSITION.TOP_CENTER,
       });
     })
     .catch((err) => {
-      toast.error("설정 오류 !!", {
+      toast.error("시간 설정 오류 !!", {
         position: toast.POSITION.TOP_CENTER,
       });
     });

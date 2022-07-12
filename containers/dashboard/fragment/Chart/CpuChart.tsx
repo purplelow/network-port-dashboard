@@ -1,15 +1,38 @@
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import useCpuUtilization from "@api/dashBoard/cpuUtilization";
+import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export default function CpuChart() {
-  const { cpuUtilization, isLoading, isError } = useCpuUtilization();
-  const cpuSeries = cpuUtilization?.summary.load ?? 0;
+export default function CpuChart({ ABS_URL, client }: any) {
+  const topic = process.env.MQTT_TOPIC_CPU;
+  const { cpuUtilization, isLoading, isError } = useCpuUtilization(ABS_URL);
+  const { mqttData, connectStatus, currentTopic } = MqttSubScribe(
+    client,
+    topic
+  );
+  // console.log("cpuChart : ", currentTopic);
+  const defaultCpuSeries = cpuUtilization?.summary?.load ?? 0;
+  const [data, setData]: any = useState();
+  const cpuSeries = data?.summary?.load ?? 0;
+
+  useEffect(() => {
+    if (cpuUtilization) {
+      setData(cpuUtilization);
+    }
+  }, [cpuUtilization]);
+
+  useEffect(() => {
+    if (currentTopic.includes("/cpu")) {
+      setData(mqttData);
+    }
+  }, [mqttData]);
+
   const chartState: any = {
-    series: [cpuSeries],
+    series: [cpuSeries | defaultCpuSeries],
     options: {
       chart: {
         height: "100%",
@@ -89,13 +112,11 @@ export default function CpuChart() {
   };
 
   return (
-    <>
-      <ApexChart
-        options={chartState.options}
-        series={chartState.series}
-        type="radialBar"
-        height="100%"
-      />
-    </>
+    <ApexChart
+      options={chartState.options}
+      series={chartState.series}
+      type="radialBar"
+      height="100%"
+    />
   );
 }
