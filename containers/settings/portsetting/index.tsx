@@ -49,9 +49,6 @@ const PortSetting = () => {
     upPorts?.map((u) => {
       if (u.id !== "-1") {
         if (Number(u.port) < 1 || Number(u.port) > 65535) {
-          alert(
-            "상위 포트 설정: LISTEN PORT는 1~65535 사이 숫자를 입력하세요."
-          );
           isUpSuccess = false;
         } else {
           i === 1
@@ -93,10 +90,7 @@ const PortSetting = () => {
           }
         });
 
-        if (Number(putArr.deviceId) < 0 || Number(putArr.deviceId) > 32767) {
-          alert(
-            "하위 시리얼 포트 설정: DEVICE ID는 0~32767 사이 숫자를 입력하세요."
-          );
+        if (putArr.deviceId !== "" || Number(putArr.deviceId) < 0 || Number(putArr.deviceId) > 32767) {
           isDownSuccess = false;
         } else {
           i === 1
@@ -117,6 +111,18 @@ const PortSetting = () => {
         upPortList: upPortJson,
       };
       updatePortSetting(ABS_URL, putPortArr);
+    } else if (isUpSuccess === false && isDownSuccess === true) {
+      toast.warning("설정 적용 오류: LISTEN PORT는 1~65535 사이 숫자를 입력하세요.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else if (isUpSuccess === true && isDownSuccess === false) {
+      toast.warning("설정 적용 오류: DEVICE ID는 0~32767 사이 숫자를 입력하세요.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else if (isUpSuccess === false && isDownSuccess === false) {
+      toast.warning("설정 적용 오류: LISTEN PORT는 1~65535, DEVICE ID는 0~32767 사이 숫자를 입력하세요.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
     } else {
       toast.warning("설정 적용 오류", {
         position: toast.POSITION.TOP_CENTER,
