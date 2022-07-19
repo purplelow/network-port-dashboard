@@ -9,8 +9,7 @@ import useUpPortData from "@api/dashBoard/upPort";
 
 export default function UpCom({ ABS_URL }: any) {
   const { upPortInfo, isLoading, isError }: any = useUpPortData(ABS_URL);
-  // let upComData = [];
-  // upComData[] = upPortInfo;
+  console.log("upPort Rest Data : ", upPortInfo);
 
   return (
     <>

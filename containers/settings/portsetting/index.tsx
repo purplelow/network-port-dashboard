@@ -1,19 +1,29 @@
-import type { NextPage } from "next";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { mqttUrl, routerUrl, upPortsState } from "recoil/atom";
+import { downPortsState } from "recoil/atom";
+import { ToastContainer, toast } from "react-toastify";
+
+import Layout from "@components/layout";
 import BoardTitle from "@components/common/BoardTitle";
 import StatusInfo from "@components/common/StatusInfo";
-import Layout from "@components/layout";
 import LowPortSetting from "./fragment/LowPortSetting";
 import UpPortSetting from "./fragment/UpPortSetting";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { routerUrl, upPortsState } from "recoil/atom";
-import { downPortsState } from "recoil/atom";
 import updatePortSetting from "@api/setting/modifyPort";
 import useDownPortList from "@api/setting/downPortList";
-import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
+import MqttWSReactService from "mqtt_ws";
+
+const WS_CLIID = process.env.NEXT_PUBLIC_WS_CLIID;
 
 const PortSetting = () => {
   const ABS_URL = useRecoilValue(routerUrl);
+  const ABS_WS_URL = useRecoilValue(mqttUrl);
+
+  const host = ABS_WS_URL;
+  const clientId = `${WS_CLIID}`;
+  const { client } = MqttWSReactService(host, clientId);
+
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
   const [downPorts, setDownPorts] = useRecoilState(downPortsState);
   const { downPortList, isLoading, isError }: any = useDownPortList(ABS_URL);
@@ -160,7 +170,7 @@ const PortSetting = () => {
           <button className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none">
             포트 리셋
           </button>
-          <UpPortSetting ABS_URL={ABS_URL} />
+          <UpPortSetting ABS_URL={ABS_URL} client={client} />
         </div>
 
         <div className="relative w-full rounded-md bg-white p-2 shadow-md">
@@ -171,7 +181,7 @@ const PortSetting = () => {
           <button className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none">
             포트 리셋
           </button>
-          <LowPortSetting ABS_URL={ABS_URL} />
+          <LowPortSetting ABS_URL={ABS_URL} client={client} />
         </div>
       </div>
     </Layout>

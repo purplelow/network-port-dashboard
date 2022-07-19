@@ -14,8 +14,6 @@ export default function CpuChart({ ABS_URL, client }: any) {
     client,
     topic
   );
-  // console.log("cpuChart : ", currentTopic);
-  const defaultCpuSeries = cpuUtilization?.summary?.load ?? 0;
   const [data, setData]: any = useState();
   const cpuSeries = data?.summary?.load ?? 0;
 
@@ -32,7 +30,7 @@ export default function CpuChart({ ABS_URL, client }: any) {
   }, [mqttData]);
 
   const chartState: any = {
-    series: [cpuSeries | defaultCpuSeries],
+    series: [cpuSeries],
     options: {
       chart: {
         height: "100%",

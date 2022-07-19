@@ -15,8 +15,6 @@ export default function MemoryChart({ ABS_URL, client }: any) {
     client,
     topic
   );
-
-  const defaultMemorySeries = memoryUtilization?.summary.percent ?? 0;
   const [data, setData]: any = useState();
   const memorySeries = data?.summary?.percent ?? 0;
 
@@ -33,7 +31,7 @@ export default function MemoryChart({ ABS_URL, client }: any) {
   }, [mqttData]);
 
   const chartState: any = {
-    series: [memorySeries | defaultMemorySeries],
+    series: [memorySeries],
     options: {
       chart: {
         height: "100%",

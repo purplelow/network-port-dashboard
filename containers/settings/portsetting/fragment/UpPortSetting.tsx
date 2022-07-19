@@ -8,7 +8,7 @@ import updatePortSetting from "@api/setting/modifyPort";
 // import { yupResolver } from '@hookform/resolvers/yup';
 // import * as yup from 'yup';
 
-export default function UpPortSetting({ ABS_URL }: any) {
+export default function UpPortSetting({ ABS_URL, client }: any) {
   const [checkItems, setCheckItems] = useState([{ id: "-1" }]);
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
   const { upPortList, isLoading, isError }: any = useUpPortList(ABS_URL);
