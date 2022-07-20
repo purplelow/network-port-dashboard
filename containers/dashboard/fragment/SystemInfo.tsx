@@ -24,6 +24,24 @@ export default function SystemInfo({ ABS_URL }: any) {
     modifyNote(ABS_URL, userNoteJson);
   };
 
+  const uptimeCalc = (time: any) => {
+    const min = time%60;
+    const totalhour = Math.floor(time/60);
+    const hour = totalhour%24;
+    const totalday = Math.floor(totalhour/24);
+    const day = totalday%7;
+    const week = Math.floor(totalday/7);
+
+    const uptime = week > 0
+      ? week+" weeks, "+day+" days, "+hour+" hours, "+min+" minutes"
+      : day > 0
+        ? day+" days, "+hour+" hours, "+min+" minutes"
+        : hour > 0
+          ? hour+" hours, "+min+" minutes"
+          : min+" minutes";
+    return uptime;
+  }
+
   return (
     <>
       <div className="relative h-1/2 overflow-x-auto shadow-md sm:rounded-lg">
@@ -55,7 +73,7 @@ export default function SystemInfo({ ABS_URL }: any) {
               <td className="px-3 py-4">
                 {systemInfo?.system_info.system_date}
               </td>
-              <td className="px-3 py-4">{systemInfo?.system_info.uptime}</td>
+              <td className="px-3 py-4">{uptimeCalc(systemInfo?.system_info.uptime)}</td>
             </tr>
           </tbody>
         </table>

@@ -106,7 +106,7 @@ export default function MemoryChart({ ABS_URL, client }: any) {
       stroke: {
         dashArray: 2,
       },
-      labels: ["Memorry"],
+      labels: ["Memory"],
     },
   };
 
