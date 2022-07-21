@@ -52,6 +52,16 @@ export const downPortsState = atom({
   ],
 });
 
+export const upPortsCheckList = atom({
+  key: "upPortsCheckList",
+  default: ['-1']
+})
+
+export const downPortsCheckList = atom({
+  key: "downPortsCheckList",
+  default: ['-1']
+})
+
 export const mqttUrl = atom({
   key: "mqttUrl",
   default: "ws://192.168.123.191:9001",

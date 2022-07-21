@@ -1,5 +1,5 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-import { mqttUrl, routerUrl, upPortsState } from "recoil/atom";
+import { downPortsCheckList, mqttUrl, routerUrl, upPortsCheckList, upPortsState } from "recoil/atom";
 import { downPortsState } from "recoil/atom";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -23,6 +23,8 @@ const PortSetting = () => {
 
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
   const [downPorts, setDownPorts] = useRecoilState(downPortsState);
+  const [upCheckList, setUpCheckItems] = useRecoilState(upPortsCheckList);
+  const [downCheckList, setDownCheckItems] = useRecoilState(downPortsCheckList);
   const { downPortList, isLoading, isError }: any = useDownPortList(ABS_URL);
   let upPortJson = [
     {
@@ -56,9 +58,6 @@ const PortSetting = () => {
     upPorts?.map((u) => {
       if (u.id !== "-1") {
         if (Number(u.port) < 1 || Number(u.port) > 65535) {
-          alert(
-            "상위 포트 설정: LISTEN PORT는 1~65535 사이 숫자를 입력하세요."
-          );
           isUpSuccess = false;
         } else {
           i === 1
@@ -100,10 +99,7 @@ const PortSetting = () => {
           }
         });
 
-        if (Number(putArr.deviceId) < 0 || Number(putArr.deviceId) > 32767) {
-          alert(
-            "하위 시리얼 포트 설정: DEVICE ID는 0~32767 사이 숫자를 입력하세요."
-          );
+        if (putArr.deviceId !== "" || Number(putArr.deviceId) < 0 || Number(putArr.deviceId) > 32767) {
           isDownSuccess = false;
         } else {
           i === 1
@@ -124,12 +120,54 @@ const PortSetting = () => {
         upPortList: upPortJson,
       };
       updatePortSetting(ABS_URL, putPortArr);
+    } else if (isUpSuccess === false && isDownSuccess === true) {
+      toast.warning("설정 적용 오류: LISTEN PORT는 1~65535 사이 숫자를 입력하세요.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else if (isUpSuccess === true && isDownSuccess === false) {
+      toast.warning("설정 적용 오류: DEVICE ID는 0~32767 사이 숫자를 입력하세요.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else if (isUpSuccess === false && isDownSuccess === false) {
+      toast.warning("설정 적용 오류: LISTEN PORT는 1~65535, DEVICE ID는 0~32767 사이 숫자를 입력하세요.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
     } else {
       toast.warning("설정 적용 오류", {
         position: toast.POSITION.TOP_CENTER,
       });
     }
   };
+
+  const upPortReset = () => {
+    console.log(upCheckList);
+    upCheckList?.map((id: any) => {
+      if(id !== '-1') {
+        const requestData = {
+          command: "svc_control",
+          action: "restart",
+          svc_type: "app_service",
+          svc_id: parseInt(id),
+        }
+        console.log(requestData);
+      }
+    })
+  }
+
+  const downPortReset = () => {
+    console.log(downCheckList);
+    upCheckList?.map((id: any) => {
+      if(id !== '-1') {
+        const requestData = {
+          command: "svc_control",
+          action: "restart",
+          svc_type: "sub_device",
+          svc_id: parseInt(id),
+        }
+        console.log(requestData);
+      }
+    })
+  }
 
   return (
     <Layout title="포트 설정">
@@ -164,7 +202,10 @@ const PortSetting = () => {
           <div className="relative -top-6 mr-24">
             <StatusInfo />
           </div>
-          <button className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none">
+          <button 
+            className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none"
+            onClick={upPortReset}
+          >
             포트 리셋
           </button>
           <UpPortSetting ABS_URL={ABS_URL} client={client} />
@@ -175,7 +216,10 @@ const PortSetting = () => {
           <div className="relative -top-6 mr-24">
             <StatusInfo />
           </div>
-          <button className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none">
+          <button 
+            className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none"
+            onClick={downPortReset}
+          >
             포트 리셋
           </button>
           <LowPortSetting ABS_URL={ABS_URL} client={client} />

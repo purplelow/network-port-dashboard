@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { upPortsState } from "recoil/atom";
+import { upPortsCheckList, upPortsState } from "recoil/atom";
 import { useForm } from "react-hook-form";
+import ReactTooltip from "react-tooltip";
 
 import useUpPortList from "@api/setting/upPortList";
 import updatePortSetting from "@api/setting/modifyPort";
@@ -9,7 +10,7 @@ import updatePortSetting from "@api/setting/modifyPort";
 // import * as yup from 'yup';
 
 export default function UpPortSetting({ ABS_URL, client }: any) {
-  const [checkItems, setCheckItems] = useState([{ id: "-1" }]);
+  const [checkItems, setCheckItems] = useRecoilState(upPortsCheckList);
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
   const { upPortList, isLoading, isError }: any = useUpPortList(ABS_URL);
   //  console.log("upPort: ", upPortList);
@@ -49,10 +50,9 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
       setUpPorts([...upPorts, updateUpPort]);
     } else {
       setUpPorts(
-        upPorts.map((el) =>
-          el.id === updateUpPort.id ? { ...el, port: updateUpPort.port } : el
-        )
-      );
+        upPorts?.map((el) => 
+          el.id === updateUpPort.id ? {...el, port: updateUpPort.port } : el)
+      )
     }
     console.log(upPorts);
   };
@@ -69,29 +69,14 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
 
   const handleAllCheck = (checked: boolean) => {
     if (checked) {
-      const idArray = [{ id: "-1" }];
+      const idArray = ['-1'];
       upPortList.forEach((el: any) => idArray.push(el.id));
       setCheckItems(idArray);
-      // console.log(checkItems);
     } else {
-      setCheckItems([{ id: "-1" }]);
+      setCheckItems(['-1']);
     }
+    // console.log(checkItems);
   };
-
-  // const portSchema = yup.object().shape({
-  //   port: yup
-  //     .number()
-  //     .required("상위 포트: 포트를 입력하세요.")
-  //     .positive()
-  //     .integer()
-  //     .min(1)
-  //     .max(65535),
-  // });
-
-  // const { register, handleSubmit } = useForm({
-  //   mode: "onBlur",
-  //   resolver: yupResolver(portSchema),
-  // });
 
   return (
     <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-md border-[1px] border-gray-300 shadow-md">

@@ -1,4 +1,8 @@
+import Link from "next/link";
 import { cls } from "@libs/utils";
+import { ContextMenu, ContextMenuTrigger, MenuItem } from "react-contextmenu";
+import { AiOutlineSetting } from "react-icons/ai";
+import { VscDebugRestart } from "react-icons/vsc";
 import useLowPortData from "@api/dashBoard/lowPort";
 // UNUSED(미설정)", "DOWN(정지)", "READY(준비)", "RUN(정상)", "ERROR(에러)
 
@@ -39,6 +43,7 @@ export default function LowCom({ ABS_URL }: any) {
               )}
               key={i}
             >
+              <ContextMenuTrigger id="contextmenu">
               <span className="absolute bottom-9 w-full text-center">
                 {(com.sub_device.status === "READY" && "준비") ||
                   (com.sub_device.status === "ERROR" && "에러") ||
@@ -49,10 +54,23 @@ export default function LowCom({ ABS_URL }: any) {
               <span className="absolute bottom-2 w-full text-center">
                 {com.sub_device.name}
               </span>
+              </ContextMenuTrigger>
             </li>
           );
         })}
       </ul>
+      <ContextMenu id="contextmenu">
+        <MenuItem>
+          <AiOutlineSetting />
+          <Link href="/settings/portSetting">
+            <a className="px-2.5">포트 설정</a>
+          </Link>
+        </MenuItem>
+        <MenuItem>
+          <VscDebugRestart />
+          <span>포트 리셋</span>
+        </MenuItem>
+      </ContextMenu>
     </>
   );
 }
