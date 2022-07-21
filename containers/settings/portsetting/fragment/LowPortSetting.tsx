@@ -1,10 +1,10 @@
 import useDownPortList from "@api/setting/downPortList";
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
-import { downPortsState } from "recoil/atom";
+import { downPortsCheckList, downPortsState } from "recoil/atom";
 
 export default function DownPortSetting({ ABS_URL }: any) {
-  const [checkItems, setCheckItems] = useState([{ id: "-1" }]);
+  const [checkItems, setCheckItems] = useRecoilState(downPortsCheckList);
   const [downPorts, setDownPorts] = useRecoilState(downPortsState);
   const { downPortList, isLoading, isError }: any = useDownPortList(ABS_URL);
   //  console.log("downPort: ", downPortList);
@@ -218,13 +218,13 @@ export default function DownPortSetting({ ABS_URL }: any) {
 
   const handleAllCheck = (checked: boolean) => {
     if (checked) {
-      const idArray = [{ id: "-1" }];
+      const idArray = ["-1"];
       downPortList.forEach((el: any) => idArray.push(el.id));
       setCheckItems(idArray);
-      // console.log(checkItems);
     } else {
-      setCheckItems([{ id: "-1" }]);
+      setCheckItems(["-1"]);
     }
+    // console.log(checkItems);
   };
 
   return (

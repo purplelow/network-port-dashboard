@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { upPortsState } from "recoil/atom";
+import { upPortsCheckList, upPortsState } from "recoil/atom";
 import { useForm } from "react-hook-form";
 import ReactTooltip from "react-tooltip";
 
@@ -10,7 +10,7 @@ import updatePortSetting from "@api/setting/modifyPort";
 // import * as yup from 'yup';
 
 export default function UpPortSetting({ ABS_URL, client }: any) {
-  const [checkItems, setCheckItems] = useState([{ id: "-1" }]);
+  const [checkItems, setCheckItems] = useRecoilState(upPortsCheckList);
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
   const { upPortList, isLoading, isError }: any = useUpPortList(ABS_URL);
   //  console.log("upPort: ", upPortList);
@@ -69,13 +69,13 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
 
   const handleAllCheck = (checked: boolean) => {
     if (checked) {
-      const idArray = [{ id: "-1" }];
+      const idArray = ['-1'];
       upPortList.forEach((el: any) => idArray.push(el.id));
       setCheckItems(idArray);
-      // console.log(checkItems);
     } else {
-      setCheckItems([{ id: "-1" }]);
+      setCheckItems(['-1']);
     }
+    // console.log(checkItems);
   };
 
   return (

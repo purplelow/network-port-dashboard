@@ -1,5 +1,5 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-import { mqttUrl, routerUrl, upPortsState } from "recoil/atom";
+import { downPortsCheckList, mqttUrl, routerUrl, upPortsCheckList, upPortsState } from "recoil/atom";
 import { downPortsState } from "recoil/atom";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -26,6 +26,8 @@ const PortSetting = () => {
 
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
   const [downPorts, setDownPorts] = useRecoilState(downPortsState);
+  const [upCheckList, setUpCheckItems] = useRecoilState(upPortsCheckList);
+  const [downCheckList, setDownCheckItems] = useRecoilState(downPortsCheckList);
   const { downPortList, isLoading, isError }: any = useDownPortList(ABS_URL);
   let upPortJson = [
     {
@@ -140,6 +142,36 @@ const PortSetting = () => {
     }
   };
 
+  const upPortReset = () => {
+    console.log(upCheckList);
+    upCheckList?.map((id: any) => {
+      if(id !== '-1') {
+        const requestData = {
+          command: "svc_control",
+          action: "restart",
+          svc_type: "app_service",
+          svc_id: parseInt(id),
+        }
+        console.log(requestData);
+      }
+    })
+  }
+
+  const downPortReset = () => {
+    console.log(downCheckList);
+    upCheckList?.map((id: any) => {
+      if(id !== '-1') {
+        const requestData = {
+          command: "svc_control",
+          action: "restart",
+          svc_type: "sub_device",
+          svc_id: parseInt(id),
+        }
+        console.log(requestData);
+      }
+    })
+  }
+
   return (
     <Layout title="포트 설정">
       <ToastContainer
@@ -173,7 +205,10 @@ const PortSetting = () => {
           <div className="relative -top-6 mr-24">
             <StatusInfo />
           </div>
-          <button className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none">
+          <button 
+            className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none"
+            onClick={upPortReset}
+          >
             포트 리셋
           </button>
           <UpPortSetting ABS_URL={ABS_URL} client={client} />
@@ -184,7 +219,10 @@ const PortSetting = () => {
           <div className="relative -top-6 mr-24">
             <StatusInfo />
           </div>
-          <button className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none">
+          <button 
+            className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none"
+            onClick={downPortReset}
+          >
             포트 리셋
           </button>
           <LowPortSetting ABS_URL={ABS_URL} client={client} />
