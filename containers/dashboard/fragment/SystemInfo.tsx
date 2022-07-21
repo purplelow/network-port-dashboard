@@ -5,6 +5,20 @@ import useSystemInfo from "@api/dashBoard/systemInfo";
 import { useForm } from "react-hook-form";
 import modifyNote from "@api/dashBoard/modifyNote";
 
+const elapsedTime = (uptime: any) => {
+  let days = Math.floor(uptime / (1000 * 60 * 60 * 24));
+  let hour = String(Math.floor((uptime / (1000 * 60 * 60)) % 24)).padStart(
+    2,
+    "0"
+  );
+  let minutes = String(Math.floor((uptime / (1000 * 60)) % 60)).padStart(
+    2,
+    "0"
+  );
+
+  return `${days}일 ${hour}시간 ${minutes}분`;
+};
+
 export default function SystemInfo({ ABS_URL }: any) {
   const { systemInfo, isLoading, isError } = useSystemInfo(ABS_URL);
   const { getNoteData } = useGetNote(ABS_URL);
@@ -23,24 +37,6 @@ export default function SystemInfo({ ABS_URL }: any) {
   const handleModifyNote = () => {
     modifyNote(ABS_URL, userNoteJson);
   };
-
-  const uptimeCalc = (time: any) => {
-    const min = time%60;
-    const totalhour = Math.floor(time/60);
-    const hour = totalhour%24;
-    const totalday = Math.floor(totalhour/24);
-    const day = totalday%7;
-    const week = Math.floor(totalday/7);
-
-    const uptime = week > 0
-      ? week+" weeks, "+day+" days, "+hour+" hours, "+min+" minutes"
-      : day > 0
-        ? day+" days, "+hour+" hours, "+min+" minutes"
-        : hour > 0
-          ? hour+" hours, "+min+" minutes"
-          : min+" minutes";
-    return uptime;
-  }
 
   return (
     <>
@@ -73,7 +69,9 @@ export default function SystemInfo({ ABS_URL }: any) {
               <td className="px-3 py-4">
                 {systemInfo?.system_info.system_date}
               </td>
-              <td className="px-3 py-4">{uptimeCalc(systemInfo?.system_info.uptime)}</td>
+              <td className="px-3 py-4">
+                {elapsedTime(systemInfo?.system_info.uptime)}
+              </td>
             </tr>
           </tbody>
         </table>

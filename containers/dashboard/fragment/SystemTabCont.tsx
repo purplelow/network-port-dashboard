@@ -48,7 +48,6 @@ export default function SystemTabCont({ ABS_URL }: any) {
           <table className="absolute w-full overflow-auto text-right text-sm text-gray-500">
             <thead className="bg-gray-50 text-xs uppercase text-gray-700">
               <tr>
-                <th className="py-3 pr-2"></th>
                 <th className="py-3 pr-2">TOTAL</th>
                 <th className="py-3 pr-2">USED</th>
                 <th className="py-3 pr-2">FREE</th>
@@ -59,9 +58,6 @@ export default function SystemTabCont({ ABS_URL }: any) {
             </thead>
             <tbody>
               <tr className="border-b bg-white">
-                <th className="py-4 pr-2 text-center font-medium text-gray-900">
-                  Mem
-                </th>
                 <td className="py-4 pr-2">
                   {memoryUtilization?.details.total}
                 </td>
@@ -83,20 +79,20 @@ export default function SystemTabCont({ ABS_URL }: any) {
           <table className="absolute w-full table-fixed overflow-auto text-right text-sm text-gray-500">
             <thead className="bg-gray-50 text-xs uppercase text-gray-700">
               <tr>
-                <th className="py-3 pr-2">DEVICE</th>
+                <th className="py-3 pr-2 text-center">DEVICE</th>
                 <th className="py-3 pr-2">TOTAL(KB)</th>
                 <th className="py-3 pr-2">USED(KB)</th>
-                <th className="py-3 pr-4">PERCENT(%)</th>
+                <th className="py-3 pr-2">PERCENT(%)</th>
                 <th className="py-3 pr-2">PATH</th>
               </tr>
             </thead>
             <tbody>
               {storageUtilization?.details.map((data: any, i: string) => (
                 <tr className="border-b bg-white" key={i}>
-                  <td className="h-2 py-2 pr-2">{data.device}</td>
+                  <td className="py-2 pr-2 text-center">{data.device}</td>
                   <td className="h-2 py-2 pr-2">{data.total}</td>
                   <td className="h-2 py-2 pr-2">{data.used}</td>
-                  <td className="h-2 py-2 pr-4">{data.percent}</td>
+                  <td className="h-2 py-2 pr-2">{data.percent}</td>
                   <td className="h-2 py-2 pr-2">{data.path}</td>
                 </tr>
               ))}

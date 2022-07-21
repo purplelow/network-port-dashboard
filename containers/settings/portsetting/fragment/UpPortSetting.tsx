@@ -64,7 +64,7 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
     } else {
       setCheckItems(checkItems.filter((el) => el !== id));
     }
-    // console.log(checkItems);
+    console.log("체크박스 ? : ", checkItems);
   };
 
   const handleAllCheck = (checked: boolean) => {

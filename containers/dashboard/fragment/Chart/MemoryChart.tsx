@@ -31,7 +31,7 @@ export default function MemoryChart({ ABS_URL, client }: any) {
   }, [mqttData]);
 
   const chartState: any = {
-    series: [memorySeries],
+    series: [memorySeries <= 100 ? memorySeries : 100],
     options: {
       chart: {
         height: "100%",

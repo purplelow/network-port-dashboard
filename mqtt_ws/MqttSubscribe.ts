@@ -8,7 +8,7 @@ export default function MqttSubScribe(client: any, topic: any) {
     if (client) {
       client.on("connect", () => {
         client.subscribe(topic, {
-          qos: 0,
+          qos: 1,
         });
       });
       // connection error

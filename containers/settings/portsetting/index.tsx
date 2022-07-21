@@ -18,11 +18,8 @@ const WS_CLIID = process.env.NEXT_PUBLIC_WS_CLIID;
 
 const PortSetting = () => {
   const ABS_URL = useRecoilValue(routerUrl);
-  const ABS_WS_URL = useRecoilValue(mqttUrl);
-
-  const host = ABS_WS_URL;
   const clientId = `${WS_CLIID}`;
-  const { client } = MqttWSReactService(host, clientId);
+  const { client } = MqttWSReactService(clientId);
 
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
   const [downPorts, setDownPorts] = useRecoilState(downPortsState);
