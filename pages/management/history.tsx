@@ -1,10 +1,18 @@
 import type { NextPage } from "next";
 import HistoryContainer from "../../containers/management/history";
 import urlBranch from "@libs/absoluteUrl";
+import Head from "next/head";
 
 const History: NextPage = ({ data }: any) => {
   urlBranch();
-  return <HistoryContainer />;
+  return (
+    <>
+      <Head>
+        <title>DIVA 888 - 히스토리</title>
+      </Head>
+      <HistoryContainer />
+    </>
+  );
 };
 
 export default History;

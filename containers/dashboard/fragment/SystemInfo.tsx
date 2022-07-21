@@ -5,6 +5,20 @@ import useSystemInfo from "@api/dashBoard/systemInfo";
 import { useForm } from "react-hook-form";
 import modifyNote from "@api/dashBoard/modifyNote";
 
+const elapsedTime = (uptime: any) => {
+  let days = Math.floor(uptime / (1000 * 60 * 60 * 24));
+  let hour = String(Math.floor((uptime / (1000 * 60 * 60)) % 24)).padStart(
+    2,
+    "0"
+  );
+  let minutes = String(Math.floor((uptime / (1000 * 60)) % 60)).padStart(
+    2,
+    "0"
+  );
+
+  return `${days}일 ${hour}시간 ${minutes}분`;
+};
+
 export default function SystemInfo({ ABS_URL }: any) {
   const { systemInfo, isLoading, isError } = useSystemInfo(ABS_URL);
   const { getNoteData } = useGetNote(ABS_URL);
@@ -55,7 +69,9 @@ export default function SystemInfo({ ABS_URL }: any) {
               <td className="px-3 py-4">
                 {systemInfo?.system_info.system_date}
               </td>
-              <td className="px-3 py-4">{systemInfo?.system_info.uptime}</td>
+              <td className="px-3 py-4">
+                {elapsedTime(systemInfo?.system_info.uptime)}
+              </td>
             </tr>
           </tbody>
         </table>

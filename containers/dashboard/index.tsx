@@ -22,12 +22,8 @@ const WS_CLIID = process.env.NEXT_PUBLIC_WS_CLIID;
 
 const Dashboard = () => {
   const ABS_URL = useRecoilValue(routerUrl);
-  const ABS_WS_URL = useRecoilValue(mqttUrl);
-
-  const host = ABS_WS_URL;
   const clientId = `${WS_CLIID}`;
-
-  const { client }: any = MqttWSReactService(host, clientId);
+  const { client }: any = MqttWSReactService(clientId);
 
   return (
     <Layout title="대시보드">

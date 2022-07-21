@@ -22,7 +22,7 @@ export const restoreFailState = atom({
 
 export const routerUrl = atom({
   key: "routerUrl",
-  default: "http://192.168.123.190:8080",
+  default: "http://192.168.123.191:8080",
 });
 
 export const upPortsState = atom({
@@ -54,5 +54,5 @@ export const downPortsState = atom({
 
 export const mqttUrl = atom({
   key: "mqttUrl",
-  default: "ws://192.168.123.190:9001",
+  default: "ws://192.168.123.191:9001",
 });

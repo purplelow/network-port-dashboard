@@ -153,9 +153,9 @@ export default function NetworkTabCont({ ABS_URL, client }: any) {
                 </li>
                 <li className="col-span-3 text-gray-600">
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
-                    DISCARDS
+                    PACKETS
                   </span>
-                  {networkInfo?.interfaces[0].statistics.rx_discards}
+                  {networkInfo?.interfaces[0].statistics.rx_packets}
                 </li>
                 <li className="font-bold text-gray-700"></li>
                 <li className="col-span-3 text-gray-600">
@@ -166,9 +166,9 @@ export default function NetworkTabCont({ ABS_URL, client }: any) {
                 </li>
                 <li className="col-span-3 text-gray-600">
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
-                    PACKETS
+                    DISCARDS
                   </span>
-                  {networkInfo?.interfaces[0].statistics.rx_packets}
+                  {networkInfo?.interfaces[0].statistics.rx_discards}
                 </li>
               </ul>
 
@@ -185,9 +185,9 @@ export default function NetworkTabCont({ ABS_URL, client }: any) {
                 </li>
                 <li className="col-span-3 text-gray-600">
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
-                    DISCARDS
+                    PACKETS
                   </span>
-                  {networkInfo?.interfaces[0].statistics.tx_discards}
+                  {networkInfo?.interfaces[0].statistics.tx_packets}
                 </li>
                 <li className="font-bold text-gray-700"></li>
                 <li className="col-span-3 text-gray-600">
@@ -198,9 +198,9 @@ export default function NetworkTabCont({ ABS_URL, client }: any) {
                 </li>
                 <li className="col-span-3 text-gray-600">
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
-                    PACKETS
+                    DISCARDS
                   </span>
-                  {networkInfo?.interfaces[0].statistics.tx_packets}
+                  {networkInfo?.interfaces[0].statistics.tx_discards}
                 </li>
               </ul>
             </div>
