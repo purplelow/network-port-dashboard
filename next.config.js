@@ -11,6 +11,8 @@ const nextConfig = {
     MQTT_TOPIC_CPU: process.env.MQTT_TOPIC_CPU,
     MQTT_TOPIC_MEMORY: process.env.MQTT_TOPIC_MEMORY,
     MQTT_TOPIC_NETWORK: process.env.MQTT_TOPIC_NETWORK,
+    MQTT_TOPIC_UPPORT: process.env.MQTT_TOPIC_UPPORT,
+    MQTT_PUBLISH_TOPIC_UPPORT: process.env.MQTT_PUBLISH_TOPIC_UPPORT,
   },
   // webpack5: true,
   // webpack: (config) => {

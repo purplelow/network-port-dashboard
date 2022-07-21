@@ -5,11 +5,43 @@ import { VscDebugRestart } from "react-icons/vsc";
 import ReactTooltip from "react-tooltip";
 import { cls } from "@libs/utils";
 import useUpPortData from "@api/dashBoard/upPort";
+import { useEffect, useState } from "react";
+import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 // UNUSED(미설정)", "DOWN(정지)", "READY(준비)", "RUN(정상)", "ERROR(에러)
 
-export default function UpCom({ ABS_URL }: any) {
-  const { upPortInfo, isLoading, isError }: any = useUpPortData(ABS_URL);
-  console.log("upPort Rest Data : ", upPortInfo);
+export default function UpCom({ ABS_URL, client }: any) {
+  const topic = process.env.MQTT_TOPIC_UPPORT;
+  const { upPortInfoData, isLoading, isError }: any = useUpPortData(ABS_URL);
+  const { mqttData, connectStatus, currentTopic }: any = MqttSubScribe(
+    client,
+    topic
+  );
+  const [upPortInfo, setUpPortInfo]: any = useState([]);
+
+  useEffect(() => {
+    if (upPortInfoData) {
+      setUpPortInfo(upPortInfoData);
+      console.log("Rest Data @@@@");
+    }
+  }, [upPortInfoData]);
+
+  useEffect(() => {
+    if (currentTopic.includes("/app_service")) {
+      const changePortId = mqttData.app_service.id;
+      setUpPortInfo(
+        upPortInfo.map((t: any) =>
+          t?.app_service.id === changePortId
+            ? {
+                app_service: {
+                  ...t.app_service,
+                  status: mqttData.app_service.status,
+                },
+              }
+            : t
+        )
+      );
+    }
+  }, [mqttData]);
 
   return (
     <>
@@ -17,7 +49,7 @@ export default function UpCom({ ABS_URL }: any) {
         {upPortInfo?.map((com: any, i: string) => {
           const upComCondBox = () => {
             let result;
-            switch (com.app_service.status) {
+            switch (com?.app_service?.status) {
               case "READY":
                 result = "border-[#FFAB4A] bg-upComReady text-[#FFAB4A]";
                 break;
@@ -48,21 +80,21 @@ export default function UpCom({ ABS_URL }: any) {
             >
               <ContextMenuTrigger id="contextmenu">
                 <span className="absolute bottom-9 w-full text-center">
-                  {(com.app_service.status === "READY" && "준비") ||
-                    (com.app_service.status === "ERROR" && "에러") ||
-                    (com.app_service.status === "RUN" && "정상") ||
-                    (com.app_service.status === "DOWN" && "정지") ||
-                    (com.app_service.status === "UNUSED" && "미설정")}
+                  {(com?.app_service?.status === "READY" && "준비") ||
+                    (com?.app_service?.status === "ERROR" && "에러") ||
+                    (com?.app_service?.status === "RUN" && "정상") ||
+                    (com?.app_service?.status === "DOWN" && "정지") ||
+                    (com?.app_service?.status === "UNUSED" && "미설정")}
                 </span>
                 <span className="absolute bottom-2 w-full text-center">
-                  {com.app_service.name}
+                  {com?.app_service?.name}
                 </span>
               </ContextMenuTrigger>
             </li>
           );
         })}
       </ul>
-      
+
       <ContextMenu id="contextmenu">
         <MenuItem>
           <AiOutlineSetting />

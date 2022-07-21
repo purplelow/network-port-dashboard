@@ -1,5 +1,11 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-import { downPortsCheckList, mqttUrl, routerUrl, upPortsCheckList, upPortsState } from "recoil/atom";
+import {
+  downPortsCheckList,
+  mqttUrl,
+  routerUrl,
+  upPortsCheckList,
+  upPortsState,
+} from "recoil/atom";
 import { downPortsState } from "recoil/atom";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -13,6 +19,7 @@ import useDownPortList from "@api/setting/downPortList";
 
 import "react-toastify/dist/ReactToastify.css";
 import MqttWSReactService from "mqtt_ws";
+import MqttPublish from "mqtt_ws/MqttPublish";
 
 const WS_CLIID = process.env.NEXT_PUBLIC_WS_CLIID;
 
@@ -99,7 +106,11 @@ const PortSetting = () => {
           }
         });
 
-        if (putArr.deviceId !== "" || Number(putArr.deviceId) < 0 || Number(putArr.deviceId) > 32767) {
+        if (
+          putArr.deviceId !== "" ||
+          Number(putArr.deviceId) < 0 ||
+          Number(putArr.deviceId) > 32767
+        ) {
           isDownSuccess = false;
         } else {
           i === 1
@@ -121,17 +132,26 @@ const PortSetting = () => {
       };
       updatePortSetting(ABS_URL, putPortArr);
     } else if (isUpSuccess === false && isDownSuccess === true) {
-      toast.warning("설정 적용 오류: LISTEN PORT는 1~65535 사이 숫자를 입력하세요.", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      toast.warning(
+        "설정 적용 오류: LISTEN PORT는 1~65535 사이 숫자를 입력하세요.",
+        {
+          position: toast.POSITION.TOP_CENTER,
+        }
+      );
     } else if (isUpSuccess === true && isDownSuccess === false) {
-      toast.warning("설정 적용 오류: DEVICE ID는 0~32767 사이 숫자를 입력하세요.", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      toast.warning(
+        "설정 적용 오류: DEVICE ID는 0~32767 사이 숫자를 입력하세요.",
+        {
+          position: toast.POSITION.TOP_CENTER,
+        }
+      );
     } else if (isUpSuccess === false && isDownSuccess === false) {
-      toast.warning("설정 적용 오류: LISTEN PORT는 1~65535, DEVICE ID는 0~32767 사이 숫자를 입력하세요.", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      toast.warning(
+        "설정 적용 오류: LISTEN PORT는 1~65535, DEVICE ID는 0~32767 사이 숫자를 입력하세요.",
+        {
+          position: toast.POSITION.TOP_CENTER,
+        }
+      );
     } else {
       toast.warning("설정 적용 오류", {
         position: toast.POSITION.TOP_CENTER,
@@ -140,34 +160,36 @@ const PortSetting = () => {
   };
 
   const upPortReset = () => {
+    const topic = process.env.MQTT_PUBLISH_TOPIC_UPPORT;
     console.log(upCheckList);
     upCheckList?.map((id: any) => {
-      if(id !== '-1') {
+      if (id !== "-1") {
         const requestData = {
           command: "svc_control",
           action: "restart",
           svc_type: "app_service",
           svc_id: parseInt(id),
-        }
-        console.log(requestData);
+        };
+        console.log("상위포트 리셋 버튼 ", requestData);
+        MqttPublish(client, topic, requestData);
       }
-    })
-  }
+    });
+  };
 
   const downPortReset = () => {
     console.log(downCheckList);
     upCheckList?.map((id: any) => {
-      if(id !== '-1') {
+      if (id !== "-1") {
         const requestData = {
           command: "svc_control",
           action: "restart",
           svc_type: "sub_device",
           svc_id: parseInt(id),
-        }
+        };
         console.log(requestData);
       }
-    })
-  }
+    });
+  };
 
   return (
     <Layout title="포트 설정">
@@ -202,7 +224,7 @@ const PortSetting = () => {
           <div className="relative -top-6 mr-24">
             <StatusInfo />
           </div>
-          <button 
+          <button
             className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none"
             onClick={upPortReset}
           >
@@ -216,7 +238,7 @@ const PortSetting = () => {
           <div className="relative -top-6 mr-24">
             <StatusInfo />
           </div>
-          <button 
+          <button
             className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none"
             onClick={downPortReset}
           >

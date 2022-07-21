@@ -21,9 +21,9 @@ export default function MqttSubScribe(client: any, topic: any) {
         setConnectStatus(`Reconnecting...`);
       });
       client.on("message", (topic: string, message: any) => {
-        const mqttCpuData: any = JSON.parse(message.toString());
+        const mqttWsData: any = JSON.parse(message.toString());
         // console.log("Received Message: ", mqttCpuData);
-        setMqttDate(mqttCpuData);
+        setMqttDate(mqttWsData);
         setCurrentTopic(topic);
       });
     }

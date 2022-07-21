@@ -14,7 +14,7 @@ import SystemTabCont from "./fragment/SystemTabCont";
 import UpCom from "./fragment/UpCom";
 import LowCom from "./fragment/LowCom";
 import SystemInfo from "./fragment/SystemInfo";
-import MqttWSReactService from "mqtt_ws";
+import MqttWSReactService from "mqtt_ws/index";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -51,7 +51,7 @@ const Dashboard = () => {
               TCP/IP 통신
             </span>
             <StatusInfo />
-            <UpCom ABS_URL={ABS_URL} />
+            <UpCom ABS_URL={ABS_URL} client={client} />
           </div>
 
           <div className="h-full rounded-md bg-white p-2 shadow-md">
