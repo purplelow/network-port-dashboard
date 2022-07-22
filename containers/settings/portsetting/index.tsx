@@ -170,8 +170,8 @@ const PortSetting = () => {
           svc_type: "app_service",
           svc_id: parseInt(id),
         };
-        console.log("상위포트 리셋 버튼 ", requestData);
-        MqttPublish(client, topic, requestData);
+        // console.log("상위포트 리셋 버튼 ", requestData);
+        MqttPublish(client, topic, JSON.stringify(requestData));
       }
     });
   };

@@ -21,7 +21,6 @@ export default function UpCom({ ABS_URL, client }: any) {
   useEffect(() => {
     if (upPortInfoData) {
       setUpPortInfo(upPortInfoData);
-      console.log("Rest Data @@@@");
     }
   }, [upPortInfoData]);
 

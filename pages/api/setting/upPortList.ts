@@ -28,7 +28,7 @@ export default function useUpPortList(ABS_URL: string) {
     revalidateOnReconnect: false,
   });
   return {
-    upPortList: data,
+    upPortListData: data,
     isLoading: !error && !data,
     isError: error,
   };

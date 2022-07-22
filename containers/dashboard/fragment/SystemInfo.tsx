@@ -41,8 +41,8 @@ export default function SystemInfo({ ABS_URL }: any) {
   return (
     <>
       <div className="relative h-1/2 overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-          <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-left text-sm text-gray-500">
+          <thead className="bg-gray-50 text-xs uppercase text-gray-700">
             <tr>
               <th scope="col" className="w-1/5 px-3 py-3">
                 펌웨어 버전
@@ -62,7 +62,7 @@ export default function SystemInfo({ ABS_URL }: any) {
             </tr>
           </thead>
           <tbody>
-            <tr className="h-1/2 border-b bg-white dark:border-gray-700 dark:bg-gray-800">
+            <tr className="h-1/2 border-b bg-white">
               <td className="px-3 py-4">{systemInfo?.system_info.version}</td>
               <td className="px-3 py-4">{systemInfo?.system_info.model}</td>
               <td className="px-3 py-4">{systemInfo?.system_info.serial}</td>
@@ -85,7 +85,7 @@ export default function SystemInfo({ ABS_URL }: any) {
               onChange={(e) => setUserNote(e.target.value)}
               id="message"
               // rows="4"
-              className="block w-[85%] resize-none rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+              className="block w-[85%] resize-none rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
               placeholder="메모를 작성하세요."
             ></textarea>
             <button

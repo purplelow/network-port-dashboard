@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { upPortsCheckList, upPortsState } from "recoil/atom";
 import { useForm } from "react-hook-form";
@@ -6,14 +6,50 @@ import ReactTooltip from "react-tooltip";
 
 import useUpPortList from "@api/setting/upPortList";
 import updatePortSetting from "@api/setting/modifyPort";
+import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 // import { yupResolver } from '@hookform/resolvers/yup';
 // import * as yup from 'yup';
 
 export default function UpPortSetting({ ABS_URL, client }: any) {
+  const topic = process.env.MQTT_TOPIC_UPPORT;
+  const { mqttData, connectStatus, currentTopic }: any = MqttSubScribe(
+    client,
+    topic
+  );
   const [checkItems, setCheckItems] = useRecoilState(upPortsCheckList);
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
-  const { upPortList, isLoading, isError }: any = useUpPortList(ABS_URL);
-  //  console.log("upPort: ", upPortList);
+  const { upPortListData, isLoading, isError }: any = useUpPortList(ABS_URL);
+  const [upPortList, setUpPortList]: any = useState([]);
+  console.log("구독 상태 ? : ", connectStatus);
+  useEffect(() => {
+    if (upPortListData) {
+      setUpPortList(upPortListData);
+    }
+  }, [upPortListData]);
+  // console.log("전체 mqtt subscribe @@@@@@@@@@@@@@ ", mqttData);
+
+  useEffect(() => {
+    if (currentTopic.includes("/app_service/")) {
+      // console.log(
+      //   "@@@@@@ 포트리셋 MQTT DATA ? : ",
+      //   currentTopic,
+      //   mqttData.app_service.id,
+      //   mqttData.app_service.status
+      // );
+      const changePortId = mqttData.app_service.id;
+      setUpPortList(
+        upPortList.map((t: any) =>
+          t?.id === changePortId
+            ? {
+                ...t,
+                status: mqttData.app_service.status,
+              }
+            : t
+        )
+      );
+      // console.log("포트리셋 후 Data ? : @@@@@@", upPortList);
+    }
+  }, [mqttData, currentTopic]);
 
   const upPortLength = () => {
     let i = 0;
@@ -50,9 +86,10 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
       setUpPorts([...upPorts, updateUpPort]);
     } else {
       setUpPorts(
-        upPorts?.map((el) => 
-          el.id === updateUpPort.id ? {...el, port: updateUpPort.port } : el)
-      )
+        upPorts?.map((el) =>
+          el.id === updateUpPort.id ? { ...el, port: updateUpPort.port } : el
+        )
+      );
     }
     console.log(upPorts);
   };
@@ -69,11 +106,11 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
 
   const handleAllCheck = (checked: boolean) => {
     if (checked) {
-      const idArray = ['-1'];
+      const idArray = ["-1"];
       upPortList.forEach((el: any) => idArray.push(el.id));
       setCheckItems(idArray);
     } else {
-      setCheckItems(['-1']);
+      setCheckItems(["-1"]);
     }
     // console.log(checkItems);
   };
