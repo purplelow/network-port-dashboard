@@ -159,9 +159,8 @@ const PortSetting = () => {
     }
   };
 
+  const topic = process.env.MQTT_PUBLISH_TOPIC_PORT;
   const upPortReset = () => {
-    const topic = process.env.MQTT_PUBLISH_TOPIC_UPPORT;
-    console.log(upCheckList);
     upCheckList?.map((id: any) => {
       if (id !== "-1") {
         const requestData = {
@@ -170,15 +169,13 @@ const PortSetting = () => {
           svc_type: "app_service",
           svc_id: parseInt(id),
         };
-        // console.log("상위포트 리셋 버튼 ", requestData);
         MqttPublish(client, topic, JSON.stringify(requestData));
       }
     });
   };
 
   const downPortReset = () => {
-    console.log(downCheckList);
-    upCheckList?.map((id: any) => {
+    downCheckList?.map((id: any) => {
       if (id !== "-1") {
         const requestData = {
           command: "svc_control",
@@ -186,7 +183,7 @@ const PortSetting = () => {
           svc_type: "sub_device",
           svc_id: parseInt(id),
         };
-        console.log(requestData);
+        MqttPublish(client, topic, JSON.stringify(requestData));
       }
     });
   };

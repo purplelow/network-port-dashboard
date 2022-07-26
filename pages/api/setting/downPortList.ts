@@ -34,7 +34,7 @@ export default function useLowPortList(ABS_URL: string) {
     revalidateOnReconnect: false,
   });
   return {
-    downPortList: data,
+    downPortListData: data,
     isLoading: !error && !data,
     isError: error,
   };

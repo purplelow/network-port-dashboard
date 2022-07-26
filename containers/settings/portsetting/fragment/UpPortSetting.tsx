@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { upPortsCheckList, upPortsState } from "recoil/atom";
+import {
+  mqttPortDataRender,
+  upPortsCheckList,
+  upPortsState,
+} from "recoil/atom";
 import { useForm } from "react-hook-form";
 import ReactTooltip from "react-tooltip";
 
@@ -16,40 +20,39 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
     client,
     topic
   );
+  const [wsPortData, setWsPortData] = useRecoilState(mqttPortDataRender);
+
   const [checkItems, setCheckItems] = useRecoilState(upPortsCheckList);
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
   const { upPortListData, isLoading, isError }: any = useUpPortList(ABS_URL);
   const [upPortList, setUpPortList]: any = useState([]);
-  console.log("구독 상태 ? : ", connectStatus);
+
   useEffect(() => {
     if (upPortListData) {
       setUpPortList(upPortListData);
     }
   }, [upPortListData]);
-  // console.log("전체 mqtt subscribe @@@@@@@@@@@@@@ ", mqttData);
 
+  // console.log(
+  //   "@@@@@@@@@@@@ 포트 리셋 mqtt data : ",
+  //   wsPortData.app_service?.id,
+  //   wsPortData.app_service?.status
+  // );
   useEffect(() => {
     if (currentTopic.includes("/app_service/")) {
-      // console.log(
-      //   "@@@@@@ 포트리셋 MQTT DATA ? : ",
-      //   currentTopic,
-      //   mqttData.app_service.id,
-      //   mqttData.app_service.status
-      // );
-      const changePortId = mqttData.app_service.id;
+      const changePortId = mqttData.app_service?.id;
       setUpPortList(
         upPortList.map((t: any) =>
           t?.id === changePortId
             ? {
                 ...t,
-                status: mqttData.app_service.status,
+                status: mqttData.app_service?.status,
               }
             : t
         )
       );
-      // console.log("포트리셋 후 Data ? : @@@@@@", upPortList);
     }
-  }, [mqttData, currentTopic]);
+  }, [mqttData]);
 
   const upPortLength = () => {
     let i = 0;

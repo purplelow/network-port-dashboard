@@ -30,7 +30,7 @@ export default function useLowPortData(ABS_URL: string) {
     revalidateOnReconnect: false,
   });
   return {
-    lowPortInfo: data,
+    lowPortInfoData: data,
     isLoading: !error && !data,
     isError: error,
   };

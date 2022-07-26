@@ -1,24 +1,14 @@
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { mqttPortDataRender } from "recoil/atom";
 
 export default function MqttSubScribe(client: any, topic: any) {
-  const [mqttData, setMqttDate] = useState({});
+  const [mqttData, setMqttData]: any = useState({});
   const [connectStatus, setConnectStatus] = useState("Connecting...");
   const [currentTopic, setCurrentTopic] = useState("");
-  if (client) {
-    client.subscribe(
-      topic,
-      {
-        qos: 1,
-      },
-      (error: any) => {
-        if (error) {
-          console.log("Subscribe to topics error", error);
-          return;
-        }
-      }
-    );
-    console.log("Subscribe ! currentTopic : ", topic);
-  }
+
+  const [wsPortData, setWsPortData] = useRecoilState(mqttPortDataRender);
+
   useEffect(() => {
     if (client) {
       client.on("connect", () => {
@@ -33,14 +23,36 @@ export default function MqttSubScribe(client: any, topic: any) {
       client.on("reconnect", () => {
         setConnectStatus(`Reconnecting...`);
       });
+
+      client.subscribe(
+        topic,
+        {
+          qos: 1,
+        },
+        (error: any) => {
+          if (error) {
+            console.log("Subscribe to topics error", error);
+            return;
+          }
+        }
+      );
       client.on("message", (topic: string, message: any) => {
-        const mqttWsData: any = JSON.parse(message.toString());
-        // console.log("Received Message: ", mqttCpuData);
-        setMqttDate(mqttWsData);
-        setCurrentTopic(topic);
+        // const payload = { topic, message: JSON.parse(message.toString()) };
+        const mqttWsData = JSON.parse(message.toString());
+        setMqttData(() => mqttWsData);
+        setWsPortData(() => mqttWsData);
+        setCurrentTopic(() => topic);
+
+        // console.log(
+        //   "하위 포트 설정 mqttData : ",
+        //   mqttWsData.sub_device?.id,
+        //   mqttWsData.sub_device?.status
+        // );
       });
     }
   }, [client]);
+  // console.log("setWsPortData: @@@@@", mqttData);
+  // console.log("mqttData???????", topic, "currentTopic", currentTopic);
 
   return {
     mqttData: mqttData,

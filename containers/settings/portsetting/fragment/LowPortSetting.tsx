@@ -1,13 +1,43 @@
 import useDownPortList from "@api/setting/downPortList";
-import React, { useState } from "react";
+import MqttSubScribe from "mqtt_ws/MqttSubscribe";
+import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { downPortsCheckList, downPortsState } from "recoil/atom";
 
-export default function DownPortSetting({ ABS_URL }: any) {
+export default function DownPortSetting({ ABS_URL, client }: any) {
+  const topic = process.env.MQTT_TOPIC_DOWNPORT;
+  const { mqttData, connectStatus, currentTopic } = MqttSubScribe(
+    client,
+    topic
+  );
   const [checkItems, setCheckItems] = useRecoilState(downPortsCheckList);
   const [downPorts, setDownPorts] = useRecoilState(downPortsState);
-  const { downPortList, isLoading, isError }: any = useDownPortList(ABS_URL);
-  //  console.log("downPort: ", downPortList);
+  const { downPortListData, isLoading, isError }: any =
+    useDownPortList(ABS_URL);
+
+  const [downPortList, setDownPortList]: any = useState([]);
+
+  useEffect(() => {
+    if (downPortListData) {
+      setDownPortList(downPortListData);
+    }
+  }, [downPortListData]);
+
+  useEffect(() => {
+    if (currentTopic.includes("/sub_device/")) {
+      const changePortId = mqttData.sub_device?.id;
+      setDownPortList(
+        downPortList.map((t: any) =>
+          t?.id === changePortId
+            ? {
+                ...t,
+                status: mqttData.sub_device?.status,
+              }
+            : t
+        )
+      );
+    }
+  }, [mqttData]);
 
   const downPortLength = () => {
     let i = 0;

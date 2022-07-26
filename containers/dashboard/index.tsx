@@ -59,7 +59,7 @@ const Dashboard = () => {
             <span className="block pl-2 text-sm text-gray-400">
               시리얼 통신
             </span>
-            <LowCom ABS_URL={ABS_URL} />
+            <LowCom ABS_URL={ABS_URL} client={client} />
           </div>
         </div>
 

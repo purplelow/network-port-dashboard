@@ -12,7 +12,8 @@ const nextConfig = {
     MQTT_TOPIC_MEMORY: process.env.MQTT_TOPIC_MEMORY,
     MQTT_TOPIC_NETWORK: process.env.MQTT_TOPIC_NETWORK,
     MQTT_TOPIC_UPPORT: process.env.MQTT_TOPIC_UPPORT,
-    MQTT_PUBLISH_TOPIC_UPPORT: process.env.MQTT_PUBLISH_TOPIC_UPPORT,
+    MQTT_TOPIC_DOWNPORT: process.env.MQTT_TOPIC_DOWNPORT,
+    MQTT_PUBLISH_TOPIC_PORT: process.env.MQTT_PUBLISH_TOPIC_PORT,
   },
   // webpack5: true,
   // webpack: (config) => {
