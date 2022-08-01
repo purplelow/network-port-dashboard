@@ -6,15 +6,12 @@ import { useForm } from "react-hook-form";
 import modifyNote from "@api/dashBoard/modifyNote";
 
 const elapsedTime = (uptime: any) => {
-  let days = Math.floor(uptime / (1000 * 60 * 60 * 24));
-  let hour = String(Math.floor((uptime / (1000 * 60 * 60)) % 24)).padStart(
+  let days = Math.floor(uptime / (100 * 60 * 60 * 24));
+  let hour = String(Math.floor((uptime / (100 * 60 * 60)) % 24)).padStart(
     2,
     "0"
   );
-  let minutes = String(Math.floor((uptime / (1000 * 60)) % 60)).padStart(
-    2,
-    "0"
-  );
+  let minutes = String(Math.floor((uptime / (100 * 60)) % 60)).padStart(2, "0");
 
   return `${days}일 ${hour}시간 ${minutes}분`;
 };

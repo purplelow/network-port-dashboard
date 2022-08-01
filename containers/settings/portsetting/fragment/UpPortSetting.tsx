@@ -1,26 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import {
-  mqttPortDataRender,
-  upPortsCheckList,
-  upPortsState,
-} from "recoil/atom";
+import { upPortsCheckList, upPortsState } from "recoil/atom";
 import { useForm } from "react-hook-form";
 import ReactTooltip from "react-tooltip";
 
 import useUpPortList from "@api/setting/upPortList";
 import updatePortSetting from "@api/setting/modifyPort";
 import MqttSubScribe from "mqtt_ws/MqttSubscribe";
+import MqttMessage from "mqtt_ws/MqttMessage";
 // import { yupResolver } from '@hookform/resolvers/yup';
 // import * as yup from 'yup';
 
 export default function UpPortSetting({ ABS_URL, client }: any) {
   const topic = process.env.MQTT_TOPIC_UPPORT;
-  const { mqttData, connectStatus, currentTopic }: any = MqttSubScribe(
-    client,
-    topic
-  );
-  const [wsPortData, setWsPortData] = useRecoilState(mqttPortDataRender);
+  MqttSubScribe(client, topic);
+  const {
+    mqttData,
+    currentTopic,
+    portRD_a,
+    portRD_b,
+    portRD_c,
+    portRD_d,
+    portRD_e,
+    portRD_f,
+    portRD_g,
+    portRD_h,
+  }: any = MqttMessage(client);
+  // const [wsPortData, setWsPortData] = useRecoilState(mqttPortDataRender);
 
   const [checkItems, setCheckItems] = useRecoilState(upPortsCheckList);
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
@@ -33,26 +39,121 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
     }
   }, [upPortListData]);
 
-  // console.log(
-  //   "@@@@@@@@@@@@ 포트 리셋 mqtt data : ",
-  //   wsPortData.app_service?.id,
-  //   wsPortData.app_service?.status
-  // );
   useEffect(() => {
-    if (currentTopic.includes("/app_service/")) {
-      const changePortId = mqttData.app_service?.id;
-      setUpPortList(
+    if (portRD_a.app_service) {
+      const changePortId = portRD_a?.app_service?.id;
+      setUpPortList((upPortList: any) =>
         upPortList.map((t: any) =>
           t?.id === changePortId
             ? {
                 ...t,
-                status: mqttData.app_service?.status,
+                status: portRD_a.app_service?.status,
               }
             : t
         )
       );
     }
-  }, [mqttData]);
+    if (portRD_b.app_service) {
+      const changePortId = portRD_b?.app_service?.id;
+      setUpPortList((upPortList: any) =>
+        upPortList.map((t: any) =>
+          t?.id === changePortId
+            ? {
+                ...t,
+                status: portRD_b.app_service?.status,
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_c.app_service) {
+      const changePortId = portRD_c?.app_service?.id;
+      setUpPortList((upPortList: any) =>
+        upPortList.map((t: any) =>
+          t?.id === changePortId
+            ? {
+                ...t,
+                status: portRD_c.app_service?.status,
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_d.app_service) {
+      const changePortId = portRD_d?.app_service?.id;
+      setUpPortList((upPortList: any) =>
+        upPortList.map((t: any) =>
+          t?.id === changePortId
+            ? {
+                ...t,
+                status: portRD_d.app_service?.status,
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_e.app_service) {
+      const changePortId = portRD_e?.app_service?.id;
+      setUpPortList((upPortList: any) =>
+        upPortList.map((t: any) =>
+          t?.id === changePortId
+            ? {
+                ...t,
+                status: portRD_e.app_service?.status,
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_f.app_service) {
+      const changePortId = portRD_f?.app_service?.id;
+      setUpPortList((upPortList: any) =>
+        upPortList.map((t: any) =>
+          t?.id === changePortId
+            ? {
+                ...t,
+                status: portRD_f.app_service?.status,
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_g.app_service) {
+      const changePortId = portRD_g?.app_service?.id;
+      setUpPortList((upPortList: any) =>
+        upPortList.map((t: any) =>
+          t?.id === changePortId
+            ? {
+                ...t,
+                status: portRD_g.app_service?.status,
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_h.app_service) {
+      const changePortId = portRD_h?.app_service?.id;
+      setUpPortList((upPortList: any) =>
+        upPortList.map((t: any) =>
+          t?.id === changePortId
+            ? {
+                ...t,
+                status: portRD_h.app_service?.status,
+              }
+            : t
+        )
+      );
+    }
+  }, [
+    portRD_a,
+    portRD_b,
+    portRD_c,
+    portRD_d,
+    portRD_e,
+    portRD_f,
+    portRD_g,
+    portRD_h,
+  ]);
 
   const upPortLength = () => {
     let i = 0;
@@ -94,7 +195,7 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
         )
       );
     }
-    console.log(upPorts);
+    // console.log(upPorts);
   };
 
   //checkbox
@@ -104,7 +205,7 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
     } else {
       setCheckItems(checkItems.filter((el) => el !== id));
     }
-    console.log("체크박스 ? : ", checkItems);
+    // console.log("체크박스 ? : ", checkItems);
   };
 
   const handleAllCheck = (checked: boolean) => {

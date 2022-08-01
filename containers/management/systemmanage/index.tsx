@@ -26,11 +26,11 @@ const SystemManage = () => {
   const ABS_URL = useRecoilValue(routerUrl);
   const { systemInfo } = useSystemInfo(ABS_URL);
 
-  const [backUpSuccess, setBackUpSuccess] = useRecoilState(backUpState);
-  const [backUpFail, setBackUpFail] = useRecoilState(backUpFailState);
+  // const [backUpSuccess, setBackUpSuccess] = useRecoilState(backUpState);
+  // const [backUpFail, setBackUpFail] = useRecoilState(backUpFailState);
 
-  const [restoreSuccess, setRestoreSuccess] = useRecoilState(restoreState);
-  const [restoreFail, setRestoreFail] = useRecoilState(restoreFailState);
+  // const [restoreSuccess, setRestoreSuccess] = useRecoilState(restoreState);
+  // const [restoreFail, setRestoreFail] = useRecoilState(restoreFailState);
 
   const [modalOpen, setModalOpen] = useState(false);
 

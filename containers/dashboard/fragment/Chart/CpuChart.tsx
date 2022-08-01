@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import useCpuUtilization from "@api/dashBoard/cpuUtilization";
 import MqttSubScribe from "mqtt_ws/MqttSubscribe";
+import MqttMessage from "mqtt_ws/MqttMessage";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -9,11 +10,9 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 
 export default function CpuChart({ ABS_URL, client }: any) {
   const topic = process.env.MQTT_TOPIC_CPU;
+  MqttSubScribe(client, topic);
   const { cpuUtilization, isLoading, isError } = useCpuUtilization(ABS_URL);
-  const { mqttData, connectStatus, currentTopic } = MqttSubScribe(
-    client,
-    topic
-  );
+  const { mqttData, currentTopic } = MqttMessage(client);
   const [data, setData]: any = useState();
   const cpuSeries = data?.summary?.load ?? 0;
 

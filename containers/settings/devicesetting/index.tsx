@@ -8,9 +8,14 @@ import TimeDateInfo from "./fragment/TimeDate";
 import NetworkSetting from "./fragment/NetworkSetting";
 
 import "react-toastify/dist/ReactToastify.css";
+import MqttWSReactService from "mqtt_ws";
+
+const WS_CLIID = process.env.NEXT_PUBLIC_WS_CLIID;
 
 const DeviceSetting = () => {
   const ABS_URL = useRecoilValue(routerUrl);
+  const clientId = `${WS_CLIID}`;
+  const { client } = MqttWSReactService(clientId);
   return (
     <Layout title="장비 기본설정">
       <ToastContainer
@@ -28,7 +33,7 @@ const DeviceSetting = () => {
 
         <TimeDateInfo ABS_URL={ABS_URL} />
 
-        <NetworkSetting ABS_URL={ABS_URL} />
+        <NetworkSetting ABS_URL={ABS_URL} client={client} />
       </div>
     </Layout>
   );

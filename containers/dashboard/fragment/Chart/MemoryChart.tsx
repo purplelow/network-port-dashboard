@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import useMemoryUtilization from "@api/dashBoard/memoryUtilization";
 import MqttSubScribe from "mqtt_ws/MqttSubscribe";
+import MqttMessage from "mqtt_ws/MqttMessage";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -9,12 +10,10 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 
 export default function MemoryChart({ ABS_URL, client }: any) {
   const topic = process.env.MQTT_TOPIC_MEMORY;
+  MqttSubScribe(client, topic);
   const { memoryUtilization, isLoading, isError } =
     useMemoryUtilization(ABS_URL);
-  const { mqttData, connectStatus, currentTopic } = MqttSubScribe(
-    client,
-    topic
-  );
+  const { mqttData, currentTopic } = MqttMessage(client);
   const [data, setData]: any = useState();
   const memorySeries = data?.summary?.percent ?? 0;
 

@@ -1,15 +1,26 @@
 import useDownPortList from "@api/setting/downPortList";
+import MqttMessage from "mqtt_ws/MqttMessage";
 import MqttSubScribe from "mqtt_ws/MqttSubscribe";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { downPortsCheckList, downPortsState } from "recoil/atom";
 
 export default function DownPortSetting({ ABS_URL, client }: any) {
   const topic = process.env.MQTT_TOPIC_DOWNPORT;
-  const { mqttData, connectStatus, currentTopic } = MqttSubScribe(
-    client,
-    topic
-  );
+  MqttSubScribe(client, topic);
+  const {
+    mqttData,
+    currentTopic,
+    portRD_a,
+    portRD_b,
+    portRD_c,
+    portRD_d,
+    portRD_e,
+    portRD_f,
+    portRD_g,
+    portRD_h,
+  }: any = MqttMessage(client);
+
   const [checkItems, setCheckItems] = useRecoilState(downPortsCheckList);
   const [downPorts, setDownPorts] = useRecoilState(downPortsState);
   const { downPortListData, isLoading, isError }: any =
@@ -22,22 +33,121 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       setDownPortList(downPortListData);
     }
   }, [downPortListData]);
-
   useEffect(() => {
-    if (currentTopic.includes("/sub_device/")) {
-      const changePortId = mqttData.sub_device?.id;
-      setDownPortList(
+    if (portRD_a.sub_device) {
+      const changePortId = portRD_a?.sub_device?.id;
+      setDownPortList((downPortList: any) =>
         downPortList.map((t: any) =>
           t?.id === changePortId
             ? {
                 ...t,
-                status: mqttData.sub_device?.status,
+                status: portRD_a.sub_device?.status,
               }
             : t
         )
       );
     }
-  }, [mqttData]);
+    if (portRD_b.sub_device) {
+      const changePortId = portRD_b?.sub_device?.id;
+      setDownPortList((downPortList: any) =>
+        downPortList.map((t: any) =>
+          t?.id === changePortId
+            ? {
+                ...t,
+                status: portRD_b.sub_device?.status,
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_c.sub_device) {
+      const changePortId = portRD_c?.sub_device?.id;
+      setDownPortList((downPortList: any) =>
+        downPortList.map((t: any) =>
+          t?.id === changePortId
+            ? {
+                ...t,
+                status: portRD_c.sub_device?.status,
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_d.sub_device) {
+      const changePortId = portRD_d?.sub_device?.id;
+      setDownPortList((downPortList: any) =>
+        downPortList.map((t: any) =>
+          t?.id === changePortId
+            ? {
+                ...t,
+                status: portRD_d.sub_device?.status,
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_e.sub_device) {
+      const changePortId = portRD_e?.sub_device?.id;
+      setDownPortList((downPortList: any) =>
+        downPortList.map((t: any) =>
+          t?.id === changePortId
+            ? {
+                ...t,
+                status: portRD_e.sub_device?.status,
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_f.sub_device) {
+      const changePortId = portRD_f?.sub_device?.id;
+      setDownPortList((downPortList: any) =>
+        downPortList.map((t: any) =>
+          t?.id === changePortId
+            ? {
+                ...t,
+                status: portRD_f.sub_device?.status,
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_g.sub_device) {
+      const changePortId = portRD_g?.sub_device?.id;
+      setDownPortList((downPortList: any) =>
+        downPortList.map((t: any) =>
+          t?.id === changePortId
+            ? {
+                ...t,
+                status: portRD_g.sub_device?.status,
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_h.sub_device) {
+      const changePortId = portRD_h?.sub_device?.id;
+      setDownPortList((downPortList: any) =>
+        downPortList.map((t: any) =>
+          t?.id === changePortId
+            ? {
+                ...t,
+                status: portRD_h.sub_device?.status,
+              }
+            : t
+        )
+      );
+    }
+  }, [
+    portRD_a,
+    portRD_b,
+    portRD_c,
+    portRD_d,
+    portRD_e,
+    portRD_f,
+    portRD_g,
+    portRD_h,
+  ]);
 
   const downPortLength = () => {
     let i = 0;
@@ -331,7 +441,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
                   ? "border-b bg-[#FFACAC] bg-opacity-20 hover:bg-[#FFACAC] hover:bg-opacity-25"
                   : "border-b bg-white hover:bg-gray-50"
               }
-              key={i}
+              key={com.id}
             >
               <td className="w-4 px-4">
                 <div className="flex items-center">
@@ -351,6 +461,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
               </td>
               <td className="px-2 py-1.5 text-center">
                 <span className={statusColor(com.status)}></span>
+                {/* {console.log("com.status", com)} */}
               </td>
               <td className="px-2 py-1.5 text-right">{com.deviceName}</td>
               <td className="px-2 py-1.5 text-center">
