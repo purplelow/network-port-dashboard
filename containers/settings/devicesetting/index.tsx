@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 const DeviceSetting = () => {
   const ABS_URL = useRecoilValue(routerUrl);
   return (
-    <Layout title="장비 기본설정">
+    <Layout title="장비 기본 설정">
       <ToastContainer
         autoClose={3000}
         hideProgressBar={false}
