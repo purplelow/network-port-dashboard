@@ -1,4 +1,9 @@
-export default function MqttPublish(client: any, topic: any, payload: any) {
+export default function MqttPublish(
+  client: any,
+  topic: any,
+  responseTopic: string,
+  payload: any
+) {
   if (client) {
     console.log("Mqtt Publish Start...");
     client.publish(
@@ -7,7 +12,7 @@ export default function MqttPublish(client: any, topic: any, payload: any) {
       {
         qos: 1,
         properties: {
-          responseTopic: "control/webapp/response",
+          responseTopic: responseTopic,
         },
       },
       (error: any) => {

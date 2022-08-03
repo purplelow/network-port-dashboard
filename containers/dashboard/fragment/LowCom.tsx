@@ -213,11 +213,11 @@ export default function LowCom({ ABS_URL, client }: any) {
           };
           return (
             <li
+              key={i}
               className={cls(
                 "relative h-full w-[12%] border-[1px] bg-[center_top_1rem] bg-no-repeat text-sm",
                 upComCondBox()
               )}
-              key={com.id}
             >
               {/* <ContextMenuTrigger id="contextmenu"> */}
               <span className="absolute bottom-9 w-full text-center">

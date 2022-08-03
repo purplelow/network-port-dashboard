@@ -23,38 +23,37 @@ import MqttPublish from "mqtt_ws/MqttPublish";
 import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 import { useEffect, useState } from "react";
 
-const WS_CLIID = process.env.NEXT_PUBLIC_WS_CLIID;
-
 const PortSetting = () => {
-  const ABS_URL = useRecoilValue(routerUrl);
+  const WS_CLIID = process.env.NEXT_PUBLIC_WS_CLIID;
+  const topic = process.env.MQTT_PUBLISH_TOPIC_PORT;
   const clientId = `${WS_CLIID}`;
+  const [resTopicUuid, setResTopicUuid] = useState("");
+  const responseTopic = `control/${resTopicUuid}/response`;
+  const ABS_URL = useRecoilValue(routerUrl);
   const { client } = MqttWSReactService(clientId);
 
-  // ResponseTopic subscribe & receive
-  // const [currentTopic, setCurrentTopic] = useState("");
-  // const [mqttResponseData, setMqttResponseData]: any = useState(null);
-  const responseTopic = "control/webapp/response";
-  MqttSubScribe(client, responseTopic);
-  // useEffect(() => {
-  //   if (client) {
-  //     client.on("message", (topic: string, message: any) => {
-  //       const mqttWsData = JSON.parse(message.toString());
-  //       setMqttResponseData(mqttWsData);
-  //       setCurrentTopic(topic);
-  //     });
-  //   }
-  //   if (currentTopic.includes("control/webapp/response")) {
-  //     console.log(
-  //       "@@@@@@@@@@ 포트리셋 response data : ",
-  //       mqttResponseData,
-  //       mqttResponseData.message,
-  //       mqttResponseData.orig_request.svc_id
-  //     );
-  //   }
-  // }, [client, mqttResponseData]);
+  useEffect(() => {
+    const resTopicUuid = () => {
+      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+        /[xy]/g,
+        function (c) {
+          var r = (Math.random() * 16) | 0,
+            v = c == "x" ? r : (r & 0x3) | 0x8;
+          return v.toString(16);
+        }
+      );
+    };
+    setResTopicUuid(resTopicUuid());
+  }, []);
 
-  const topic = process.env.MQTT_PUBLISH_TOPIC_PORT;
-  const upPortReset = () => {
+  MqttSubScribe(client, responseTopic);
+
+  const upPortReset = async () => {
+    if (upCheckList.length === 1) {
+      toast.warning("리셋할 포트를 선택하세요.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
     upCheckList?.map((id: any) => {
       if (id !== "-1") {
         const requestData = {
@@ -63,12 +62,17 @@ const PortSetting = () => {
           svc_type: "app_service",
           svc_id: parseInt(id),
         };
-        MqttPublish(client, topic, JSON.stringify(requestData));
+        MqttPublish(client, topic, responseTopic, JSON.stringify(requestData));
       }
+      setUpCheckItems(["-1"]);
     });
   };
-
   const downPortReset = () => {
+    if (downCheckList.length === 1) {
+      toast.warning("리셋할 포트를 선택하세요.", {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+    }
     downCheckList?.map((id: any) => {
       if (id !== "-1") {
         const requestData = {
@@ -77,11 +81,9 @@ const PortSetting = () => {
           svc_type: "sub_device",
           svc_id: parseInt(id),
         };
-        MqttPublish(client, topic, JSON.stringify(requestData));
+        MqttPublish(client, topic, responseTopic, JSON.stringify(requestData));
       }
-      if (!id) {
-        // console.log("리셋할 포트를 선택하세요.");
-      }
+      setDownCheckItems(["-1"]);
     });
   };
 
@@ -89,7 +91,9 @@ const PortSetting = () => {
   const [downPorts, setDownPorts] = useRecoilState(downPortsState);
   const [upCheckList, setUpCheckItems] = useRecoilState(upPortsCheckList);
   const [downCheckList, setDownCheckItems] = useRecoilState(downPortsCheckList);
-  const { downPortList, isLoading, isError }: any = useDownPortList(ABS_URL);
+  const { downPortListData, isLoading, isError }: any =
+    useDownPortList(ABS_URL);
+
   let upPortJson = [
     {
       id: "",
@@ -150,7 +154,7 @@ const PortSetting = () => {
           stopbits: u.stopbits,
           deviceId: u.deviceId,
         };
-        downPortList?.map((com: any, i: string) => {
+        downPortListData?.map((com: any, i: string) => {
           if (com.id === u.id) {
             if (putArr.name === "") putArr.name = com.name;
             if (putArr.model === "") putArr.model = com.model;
@@ -164,7 +168,7 @@ const PortSetting = () => {
         });
 
         if (
-          putArr.deviceId !== "" ||
+          putArr.deviceId === "" ||
           Number(putArr.deviceId) < 0 ||
           Number(putArr.deviceId) > 32767
         ) {
@@ -189,22 +193,16 @@ const PortSetting = () => {
       };
       updatePortSetting(ABS_URL, putPortArr);
     } else if (isUpSuccess === false && isDownSuccess === true) {
-      toast.warning(
-        "설정 적용 오류: LISTEN PORT는 1~65535 사이 숫자를 입력하세요.",
-        {
-          position: toast.POSITION.TOP_CENTER,
-        }
-      );
+      toast.warning("LISTEN PORT는 1~65535 사이 숫자를 입력하세요.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
     } else if (isUpSuccess === true && isDownSuccess === false) {
-      toast.warning(
-        "설정 적용 오류: DEVICE ID는 0~32767 사이 숫자를 입력하세요.",
-        {
-          position: toast.POSITION.TOP_CENTER,
-        }
-      );
+      toast.warning("DEVICE ID는 0~32767 사이 숫자를 입력하세요.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
     } else if (isUpSuccess === false && isDownSuccess === false) {
       toast.warning(
-        "설정 적용 오류: LISTEN PORT는 1~65535, DEVICE ID는 0~32767 사이 숫자를 입력하세요.",
+        "LISTEN PORT는 1~65535, DEVICE ID는 0~32767 사이 숫자를 입력하세요.",
         {
           position: toast.POSITION.TOP_CENTER,
         }

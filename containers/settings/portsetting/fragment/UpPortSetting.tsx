@@ -2,12 +2,12 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { upPortsCheckList, upPortsState } from "recoil/atom";
 import { useForm } from "react-hook-form";
-import ReactTooltip from "react-tooltip";
 
 import useUpPortList from "@api/setting/upPortList";
 import updatePortSetting from "@api/setting/modifyPort";
 import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 import MqttMessage from "mqtt_ws/MqttMessage";
+import { toast } from "react-toastify";
 // import { yupResolver } from '@hookform/resolvers/yup';
 // import * as yup from 'yup';
 
@@ -25,6 +25,15 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
     portRD_f,
     portRD_g,
     portRD_h,
+
+    portResD_a,
+    portResD_b,
+    portResD_c,
+    portResD_d,
+    portResD_e,
+    portResD_f,
+    portResD_g,
+    portResD_h,
   }: any = MqttMessage(client);
   // const [wsPortData, setWsPortData] = useRecoilState(mqttPortDataRender);
 
@@ -144,6 +153,17 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
         )
       );
     }
+
+    // if (mqttData.message === "Success" && mqttData.orig_request?.svc_id === 2) {
+    //   toast.success(`2번 포트 리셋 성공`, {
+    //     position: toast.POSITION.TOP_CENTER,
+    //   });
+    // }
+    // if (mqttData.message === "Success" && mqttData.orig_request?.svc_id === 3) {
+    //   toast.success(`3번 포트 리셋 성공`, {
+    //     position: toast.POSITION.TOP_CENTER,
+    //   });
+    // }
   }, [
     portRD_a,
     portRD_b,
@@ -154,6 +174,95 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
     portRD_g,
     portRD_h,
   ]);
+
+  useEffect(() => {
+    if (
+      portResD_a.message === "Success" &&
+      portResD_a.orig_request?.svc_id === 1
+    ) {
+      const portId = portResD_a.orig_request?.svc_id;
+      toast.success(`${portId}번 포트 리셋`, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  }, [portResD_a]);
+  useEffect(() => {
+    if (
+      portResD_b.message === "Success" &&
+      portResD_b.orig_request?.svc_id === 2
+    ) {
+      const portId = portResD_b.orig_request?.svc_id;
+      toast.success(`${portId}번 포트 리셋`, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  }, [portResD_b]);
+  useEffect(() => {
+    if (
+      portResD_c.message === "Success" &&
+      portResD_c.orig_request?.svc_id === 3
+    ) {
+      const portId = portResD_c.orig_request?.svc_id;
+      toast.success(`${portId}번 포트 리셋`, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  }, [portResD_c]);
+  useEffect(() => {
+    if (
+      portResD_d.message === "Success" &&
+      portResD_d.orig_request?.svc_id === 4
+    ) {
+      const portId = portResD_d.orig_request?.svc_id;
+      toast.success(`${portId}번 포트 리셋`, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  }, [portResD_d]);
+  useEffect(() => {
+    if (
+      portResD_e.message === "Success" &&
+      portResD_e.orig_request?.svc_id === 5
+    ) {
+      const portId = portResD_e.orig_request?.svc_id;
+      toast.success(`${portId}번 포트 리셋`, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  }, [portResD_e]);
+  useEffect(() => {
+    if (
+      portResD_f.message === "Success" &&
+      portResD_f.orig_request?.svc_id === 6
+    ) {
+      const portId = portResD_f.orig_request?.svc_id;
+      toast.success(`${portId}번 포트 리셋`, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  }, [portResD_f]);
+  useEffect(() => {
+    if (
+      portResD_g.message === "Success" &&
+      portResD_g.orig_request?.svc_id === 7
+    ) {
+      const portId = portResD_g.orig_request?.svc_id;
+      toast.success(`${portId}번 포트 리셋`, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  }, [portResD_g]);
+  useEffect(() => {
+    if (
+      portResD_h.message === "Success" &&
+      portResD_h.orig_request?.svc_id === 8
+    ) {
+      const portId = portResD_h.orig_request?.svc_id;
+      toast.success(`${portId}번 포트 리셋`, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  }, [portResD_h]);
 
   const upPortLength = () => {
     let i = 0;
