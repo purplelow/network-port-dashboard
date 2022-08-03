@@ -7,6 +7,8 @@ import useNetworkInfo from "@api/dashBoard/networkInfo";
 import updateNetwork from "@api/setting/updateNetwork";
 import BoardTitle from "@components/common/BoardTitle";
 import { cls } from "@libs/utils";
+import MqttSubScribe from "mqtt_ws/MqttSubscribe";
+import MqttMessage from "mqtt_ws/MqttMessage";
 
 // interface NeworkForm {
 //   gateway: string;
@@ -15,26 +17,44 @@ import { cls } from "@libs/utils";
 //   netmask: string;
 // }
 
-export default function NetworkSetting({ ABS_URL }: any) {
+export default function NetworkSetting({ ABS_URL, client }: any) {
+  const topic = process.env.MQTT_TOPIC_NETWORK;
+  MqttSubScribe(client, topic);
+  const { mqttData, currentTopic } = MqttMessage(client);
+
+  const { networkInfoData } = useNetworkInfo(ABS_URL);
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
-  const { networkInfoData } = useNetworkInfo(ABS_URL);
   const networkData = networkInfoData?.interfaces;
+
+  const [networkInfo, setNetworkInfo]: any = useState(null);
+
+  useEffect(() => {
+    if (networkInfoData) {
+      setNetworkInfo(networkInfoData);
+    }
+  }, [networkInfoData]);
+
+  useEffect(() => {
+    if (currentTopic.includes("/network")) {
+      setNetworkInfo(mqttData);
+    }
+  }, [mqttData]);
 
   const statusImgA = () => {
     let result;
     if (
-      networkInfoData?.interfaces[0].admin_status === 1 &&
-      networkInfoData?.interfaces[0].oper_status === 1
+      networkInfo?.interfaces[0].admin_status === 1 &&
+      networkInfo?.interfaces[0].oper_status === 1
     ) {
       result = "bg-lanConnected";
     } else if (
-      networkInfoData?.interfaces[0].admin_status === 1 &&
-      networkInfoData?.interfaces[0].oper_status === 2
+      networkInfo?.interfaces[0].admin_status === 1 &&
+      networkInfo?.interfaces[0].oper_status === 2
     ) {
       result = "bg-lanDisconnected";
     } else {
@@ -45,13 +65,13 @@ export default function NetworkSetting({ ABS_URL }: any) {
   const statusImgB = () => {
     let result;
     if (
-      networkInfoData?.interfaces[1].admin_status === 1 &&
-      networkInfoData?.interfaces[1].oper_status === 1
+      networkInfo?.interfaces[1].admin_status === 1 &&
+      networkInfo?.interfaces[1].oper_status === 1
     ) {
       result = "bg-lanConnected";
     } else if (
-      networkInfoData?.interfaces[1].admin_status === 1 &&
-      networkInfoData?.interfaces[1].oper_status === 2
+      networkInfo?.interfaces[1].admin_status === 1 &&
+      networkInfo?.interfaces[1].oper_status === 2
     ) {
       result = "bg-lanDisconnected";
     } else {
@@ -172,7 +192,7 @@ export default function NetworkSetting({ ABS_URL }: any) {
     // const neworkInfoJson = {
     //   networkInfos: data,
     // };
-    console.log("결과 JSON {} : ", data);
+    // console.log("결과 JSON {} : ", data);
     updateNetwork({ ABS_URL }, data);
   };
 

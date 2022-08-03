@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { constSelector, useRecoilState, useRecoilValue } from "recoil";
 import {
   downPortsCheckList,
   mqttUrl,
@@ -20,6 +20,8 @@ import useDownPortList from "@api/setting/downPortList";
 import "react-toastify/dist/ReactToastify.css";
 import MqttWSReactService from "mqtt_ws";
 import MqttPublish from "mqtt_ws/MqttPublish";
+import MqttSubScribe from "mqtt_ws/MqttSubscribe";
+import { useEffect, useState } from "react";
 
 const WS_CLIID = process.env.NEXT_PUBLIC_WS_CLIID;
 
@@ -27,6 +29,61 @@ const PortSetting = () => {
   const ABS_URL = useRecoilValue(routerUrl);
   const clientId = `${WS_CLIID}`;
   const { client } = MqttWSReactService(clientId);
+
+  // ResponseTopic subscribe & receive
+  // const [currentTopic, setCurrentTopic] = useState("");
+  // const [mqttResponseData, setMqttResponseData]: any = useState(null);
+  const responseTopic = "control/webapp/response";
+  MqttSubScribe(client, responseTopic);
+  // useEffect(() => {
+  //   if (client) {
+  //     client.on("message", (topic: string, message: any) => {
+  //       const mqttWsData = JSON.parse(message.toString());
+  //       setMqttResponseData(mqttWsData);
+  //       setCurrentTopic(topic);
+  //     });
+  //   }
+  //   if (currentTopic.includes("control/webapp/response")) {
+  //     console.log(
+  //       "@@@@@@@@@@ 포트리셋 response data : ",
+  //       mqttResponseData,
+  //       mqttResponseData.message,
+  //       mqttResponseData.orig_request.svc_id
+  //     );
+  //   }
+  // }, [client, mqttResponseData]);
+
+  const topic = process.env.MQTT_PUBLISH_TOPIC_PORT;
+  const upPortReset = () => {
+    upCheckList?.map((id: any) => {
+      if (id !== "-1") {
+        const requestData = {
+          command: "svc_control",
+          action: "restart",
+          svc_type: "app_service",
+          svc_id: parseInt(id),
+        };
+        MqttPublish(client, topic, JSON.stringify(requestData));
+      }
+    });
+  };
+
+  const downPortReset = () => {
+    downCheckList?.map((id: any) => {
+      if (id !== "-1") {
+        const requestData = {
+          command: "svc_control",
+          action: "restart",
+          svc_type: "sub_device",
+          svc_id: parseInt(id),
+        };
+        MqttPublish(client, topic, JSON.stringify(requestData));
+      }
+      if (!id) {
+        // console.log("리셋할 포트를 선택하세요.");
+      }
+    });
+  };
 
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
   const [downPorts, setDownPorts] = useRecoilState(downPortsState);
@@ -70,7 +127,7 @@ const PortSetting = () => {
           i === 1
             ? (upPortJson = [{ id: u.id, port: u.port }])
             : (upPortJson = [...upPortJson, { id: u.id, port: u.port }]);
-          console.log(upPortJson);
+          // console.log(upPortJson);
           i++;
         }
       }
@@ -116,7 +173,7 @@ const PortSetting = () => {
           i === 1
             ? (downPortJson = [putArr])
             : (downPortJson = [...downPortJson, putArr]);
-          console.log(downPortJson);
+          // console.log(downPortJson);
         }
       }
     });
@@ -157,35 +214,6 @@ const PortSetting = () => {
         position: toast.POSITION.TOP_CENTER,
       });
     }
-  };
-
-  const topic = process.env.MQTT_PUBLISH_TOPIC_PORT;
-  const upPortReset = () => {
-    upCheckList?.map((id: any) => {
-      if (id !== "-1") {
-        const requestData = {
-          command: "svc_control",
-          action: "restart",
-          svc_type: "app_service",
-          svc_id: parseInt(id),
-        };
-        MqttPublish(client, topic, JSON.stringify(requestData));
-      }
-    });
-  };
-
-  const downPortReset = () => {
-    downCheckList?.map((id: any) => {
-      if (id !== "-1") {
-        const requestData = {
-          command: "svc_control",
-          action: "restart",
-          svc_type: "sub_device",
-          svc_id: parseInt(id),
-        };
-        MqttPublish(client, topic, JSON.stringify(requestData));
-      }
-    });
   };
 
   return (

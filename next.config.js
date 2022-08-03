@@ -6,7 +6,6 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     BASE_URL: process.env.BASE_URL,
-    // Mqtt WS Subscribe
     MQTT_TOPIC: process.env.MQTT_TOPIC,
     MQTT_TOPIC_CPU: process.env.MQTT_TOPIC_CPU,
     MQTT_TOPIC_MEMORY: process.env.MQTT_TOPIC_MEMORY,

@@ -3,17 +3,16 @@ import { useEffect, useState } from "react";
 import { cls } from "@libs/utils";
 import useNetworkInfo from "@api/dashBoard/networkInfo";
 import MqttSubScribe from "mqtt_ws/MqttSubscribe";
+import MqttMessage from "mqtt_ws/MqttMessage";
 // interface TabProp {
 //   tabIndex: number;
 // }
 
 export default function NetworkTabCont({ ABS_URL, client }: any) {
   const topic = process.env.MQTT_TOPIC_NETWORK;
+  MqttSubScribe(client, topic);
   const { networkInfoData, isLoading, isError } = useNetworkInfo(ABS_URL);
-  const { mqttData, connectStatus, currentTopic } = MqttSubScribe(
-    client,
-    topic
-  );
+  const { mqttData, currentTopic } = MqttMessage(client);
   const [networkInfo, setNetworkInfo]: any = useState(null);
 
   useEffect(() => {

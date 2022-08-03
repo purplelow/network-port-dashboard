@@ -5,17 +5,27 @@ import { VscDebugRestart } from "react-icons/vsc";
 import ReactTooltip from "react-tooltip";
 import { cls } from "@libs/utils";
 import useUpPortData from "@api/dashBoard/upPort";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import MqttSubScribe from "mqtt_ws/MqttSubscribe";
+import MqttMessage from "mqtt_ws/MqttMessage";
 // UNUSED(미설정)", "DOWN(정지)", "READY(준비)", "RUN(정상)", "ERROR(에러)
 
 export default function UpCom({ ABS_URL, client }: any) {
   const topic = process.env.MQTT_TOPIC_UPPORT;
+  MqttSubScribe(client, topic);
+  const {
+    mqttData,
+    currentTopic,
+    portRD_a,
+    portRD_b,
+    portRD_c,
+    portRD_d,
+    portRD_e,
+    portRD_f,
+    portRD_g,
+    portRD_h,
+  }: any = MqttMessage(client);
   const { upPortInfoData, isLoading, isError }: any = useUpPortData(ABS_URL);
-  const { mqttData, connectStatus, currentTopic }: any = MqttSubScribe(
-    client,
-    topic
-  );
   const [upPortInfo, setUpPortInfo]: any = useState([]);
 
   useEffect(() => {
@@ -24,23 +34,155 @@ export default function UpCom({ ABS_URL, client }: any) {
     }
   }, [upPortInfoData]);
 
+  // useEffect(() => {
+  //   if (currentTopic.includes("/app_service")) {
+  //     const changePortId = mqttData.app_service.id;
+  //     setUpPortInfo(
+  //       upPortInfo.map((t: any) =>
+  //         t?.app_service.id === changePortId
+  //           ? {
+  //               app_service: {
+  //                 ...t.app_service,
+  //                 status: mqttData.app_service.status,
+  //               },
+  //             }
+  //           : t
+  //       )
+  //     );
+  //   }
+  // }, [mqttData]);
+
   useEffect(() => {
-    if (currentTopic.includes("/app_service")) {
-      const changePortId = mqttData.app_service.id;
-      setUpPortInfo(
+    if (portRD_a.app_service) {
+      const changePortId = portRD_a?.app_service?.id;
+      setUpPortInfo((upPortInfo: any) =>
         upPortInfo.map((t: any) =>
           t?.app_service.id === changePortId
             ? {
                 app_service: {
                   ...t.app_service,
-                  status: mqttData.app_service.status,
+                  status: portRD_a.app_service.status,
                 },
               }
             : t
         )
       );
     }
-  }, [mqttData]);
+    if (portRD_b.app_service) {
+      const changePortId = portRD_b?.app_service?.id;
+      setUpPortInfo((upPortInfo: any) =>
+        upPortInfo.map((t: any) =>
+          t?.app_service.id === changePortId
+            ? {
+                app_service: {
+                  ...t.app_service,
+                  status: portRD_b.app_service?.status,
+                },
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_c.app_service) {
+      const changePortId = portRD_c?.app_service?.id;
+      setUpPortInfo((upPortInfo: any) =>
+        upPortInfo.map((t: any) =>
+          t?.app_service.id === changePortId
+            ? {
+                app_service: {
+                  ...t.app_service,
+                  status: portRD_c.app_service?.status,
+                },
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_d.app_service) {
+      const changePortId = portRD_d?.app_service?.id;
+      setUpPortInfo((upPortInfo: any) =>
+        upPortInfo.map((t: any) =>
+          t?.app_service.id === changePortId
+            ? {
+                app_service: {
+                  ...t.app_service,
+                  status: portRD_d.app_service?.status,
+                },
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_e.app_service) {
+      const changePortId = portRD_e?.app_service?.id;
+      setUpPortInfo((upPortInfo: any) =>
+        upPortInfo.map((t: any) =>
+          t?.app_service.id === changePortId
+            ? {
+                app_service: {
+                  ...t.app_service,
+                  status: portRD_e.app_service?.status,
+                },
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_f.app_service) {
+      const changePortId = portRD_f?.app_service?.id;
+      setUpPortInfo((upPortInfo: any) =>
+        upPortInfo.map((t: any) =>
+          t?.app_service.id === changePortId
+            ? {
+                app_service: {
+                  ...t.app_service,
+                  status: portRD_f.app_service?.status,
+                },
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_g.app_service) {
+      const changePortId = portRD_g?.app_service?.id;
+      setUpPortInfo((upPortInfo: any) =>
+        upPortInfo.map((t: any) =>
+          t?.app_service.id === changePortId
+            ? {
+                app_service: {
+                  ...t.app_service,
+                  status: portRD_g.app_service?.status,
+                },
+              }
+            : t
+        )
+      );
+    }
+    if (portRD_h.app_service) {
+      const changePortId = portRD_h?.app_service?.id;
+      setUpPortInfo((upPortInfo: any) =>
+        upPortInfo.map((t: any) =>
+          t?.app_service.id === changePortId
+            ? {
+                app_service: {
+                  ...t.app_service,
+                  status: portRD_h.app_service?.status,
+                },
+              }
+            : t
+        )
+      );
+    }
+  }, [
+    portRD_a,
+    portRD_b,
+    portRD_c,
+    portRD_d,
+    portRD_e,
+    portRD_f,
+    portRD_g,
+    portRD_h,
+  ]);
 
   return (
     <>
@@ -94,7 +236,7 @@ export default function UpCom({ ABS_URL, client }: any) {
         })}
       </ul>
 
-      <ContextMenu id="contextmenu">
+      {/* <ContextMenu id="contextmenu">
         <MenuItem>
           <AiOutlineSetting />
           <Link href="/settings/portSetting">
@@ -105,7 +247,7 @@ export default function UpCom({ ABS_URL, client }: any) {
           <VscDebugRestart />
           <span>포트 리셋</span>
         </MenuItem>
-      </ContextMenu>
+      </ContextMenu> */}
     </>
   );
 }
