@@ -304,9 +304,7 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
         )
       );
     }
-    // console.log(upPorts);
   };
-
   //checkbox
   const handleSingleCheck = (checked: boolean, id: any, key: any) => {
     if (checked) {
@@ -314,7 +312,6 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
     } else {
       setCheckItems(checkItems.filter((el) => el !== id));
     }
-    // console.log("체크박스 ? : ", checkItems);
   };
 
   const handleAllCheck = (checked: boolean) => {
@@ -325,7 +322,6 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
     } else {
       setCheckItems(["-1"]);
     }
-    // console.log(checkItems);
   };
 
   return (

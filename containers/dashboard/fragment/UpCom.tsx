@@ -27,6 +27,7 @@ export default function UpCom({ ABS_URL, client }: any) {
   }: any = MqttMessage(client);
   const { upPortInfoData, isLoading, isError }: any = useUpPortData(ABS_URL);
   const [upPortInfo, setUpPortInfo]: any = useState([]);
+  const [tooltip, showTooltip] = useState(true);
 
   useEffect(() => {
     if (upPortInfoData) {
@@ -213,24 +214,46 @@ export default function UpCom({ ABS_URL, client }: any) {
           };
           return (
             <li
+              key={i}
               className={cls(
                 "relative h-full w-[12%] border-[1px] bg-[center_top_1rem] bg-no-repeat text-sm",
                 upComCondBox()
               )}
-              key={i}
+              data-for={`upTooltip_${i}`}
+              data-tip="upTooltip"
+              data-delay-hide="500"
+              onMouseEnter={() => showTooltip(true)}
+              onMouseLeave={() => {
+                showTooltip(false);
+                setTimeout(() => showTooltip(true), 50000);
+              }}
             >
-              <ContextMenuTrigger id="contextmenu">
-                <span className="absolute bottom-9 w-full text-center">
-                  {(com?.app_service?.status === "READY" && "준비") ||
-                    (com?.app_service?.status === "ERROR" && "에러") ||
-                    (com?.app_service?.status === "RUN" && "정상") ||
-                    (com?.app_service?.status === "DOWN" && "정지") ||
-                    (com?.app_service?.status === "UNUSED" && "미설정")}
-                </span>
-                <span className="absolute bottom-2 w-full text-center">
-                  {com?.app_service?.name}
-                </span>
-              </ContextMenuTrigger>
+              {/* <ContextMenuTrigger id="contextmenu"> */}
+              <span className="absolute bottom-9 w-full text-center">
+                {(com?.app_service?.status === "READY" && "준비") ||
+                  (com?.app_service?.status === "ERROR" && "에러") ||
+                  (com?.app_service?.status === "RUN" && "정상") ||
+                  (com?.app_service?.status === "DOWN" && "정지") ||
+                  (com?.app_service?.status === "UNUSED" && "미설정")}
+              </span>
+              <span className="absolute bottom-2 w-full text-center">
+                {com?.app_service?.name}
+              </span>
+              {/* </ContextMenuTrigger> */}
+
+              {tooltip && (
+                <ReactTooltip
+                  id={`upTooltip_${i}`}
+                  aria-haspopup="true"
+                  role="example"
+                  delayHide={500}
+                >
+                  <ul>
+                    <li>{`NAME : ${com?.app_service?.name}`}</li>
+                    <li>{`LOCAL PORT : ${com?.app_service?.port}`}</li>
+                  </ul>
+                </ReactTooltip>
+              )}
             </li>
           );
         })}

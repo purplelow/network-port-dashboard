@@ -21,6 +21,11 @@ const History = () => {
   const [logViewData, setLogViewData] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // const reg = new RegExp(/(_|"|\/)/, "gi");
+  // useEffect(() => {
+  //   setCurrentFimeName(currentFileName?.replace(reg, ""));
+  // }, [currentFileName]);
+
   useEffect(() => {
     setCurrentFimeName(logFilelist?.filenames.toString().split(",")[0]);
   }, [logFilelist]);
@@ -66,8 +71,8 @@ const History = () => {
               className=" w-1/3 rounded-sm border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-none focus:border-2 focus:border-gray-700"
             >
               {logFilelist?.filenames.map((item: string, i: any) => (
-                <option value={item} key={i}>
-                  {item}
+                <option value={item.toString()} key={i}>
+                  {item.toString()}
                 </option>
               ))}
             </select>

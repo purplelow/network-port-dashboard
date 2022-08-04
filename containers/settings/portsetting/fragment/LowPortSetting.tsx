@@ -345,7 +345,6 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       }
     }
   };
-
   //checkbox
   const handleSingleCheck = (checked: boolean, id: any) => {
     if (checked) {
@@ -353,7 +352,6 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
     } else {
       setCheckItems(checkItems.filter((el) => el !== id));
     }
-    // console.log(checkItems);
   };
 
   const handleAllCheck = (checked: boolean) => {
@@ -364,7 +362,6 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
     } else {
       setCheckItems(["-1"]);
     }
-    // console.log(checkItems);
   };
 
   return (
@@ -461,7 +458,6 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
               </td>
               <td className="px-2 py-1.5 text-center">
                 <span className={statusColor(com.status)}></span>
-                {/* {console.log("com.status", com)} */}
               </td>
               <td className="px-2 py-1.5 text-right">{com.deviceName}</td>
               <td className="px-2 py-1.5 text-center">

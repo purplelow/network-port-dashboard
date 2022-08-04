@@ -10,7 +10,6 @@ export default function updateNetwork({ ABS_URL }: any, neworkInfoJson: any) {
       toast.success("네트워크 설정이 적용 되었습니다.", {
         position: toast.POSITION.BOTTOM_CENTER,
       });
-      // console.log("네트워크 정보 response :: ", res.data);
     })
     .catch((err) => {
       toast.error("설정 오류 !!", {

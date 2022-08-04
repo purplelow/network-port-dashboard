@@ -7,6 +7,7 @@ import useLowPortData from "@api/dashBoard/lowPort";
 import { useEffect, useLayoutEffect, useState } from "react";
 import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 import MqttMessage from "mqtt_ws/MqttMessage";
+import ReactTooltip from "react-tooltip";
 // UNUSED(미설정)", "DOWN(정지)", "READY(준비)", "RUN(정상)", "ERROR(에러)
 
 export default function LowCom({ ABS_URL, client }: any) {
@@ -27,6 +28,8 @@ export default function LowCom({ ABS_URL, client }: any) {
   const { lowPortInfoData, isLoading, isError }: any = useLowPortData(ABS_URL);
 
   const [lowPortInfo, setLowPortInfo]: any = useState([]);
+
+  const [tooltip, showTooltip] = useState(true);
 
   useEffect(() => {
     if (lowPortInfoData) {
@@ -218,6 +221,14 @@ export default function LowCom({ ABS_URL, client }: any) {
                 "relative h-full w-[12%] border-[1px] bg-[center_top_1rem] bg-no-repeat text-sm",
                 upComCondBox()
               )}
+              data-for={`downTooltip_${i}`}
+              data-tip="downTooltip"
+              data-delay-hide="500"
+              onMouseEnter={() => showTooltip(true)}
+              onMouseLeave={() => {
+                showTooltip(false);
+                setTimeout(() => showTooltip(true), 500);
+              }}
             >
               {/* <ContextMenuTrigger id="contextmenu"> */}
               <span className="absolute bottom-9 w-full text-center">
@@ -231,6 +242,23 @@ export default function LowCom({ ABS_URL, client }: any) {
                 {com.sub_device.name}
               </span>
               {/* </ContextMenuTrigger> */}
+
+              {tooltip && (
+                <ReactTooltip
+                  id={`downTooltip_${i}`}
+                  aria-haspopup="true"
+                  role="example"
+                  delayHide={500}
+                >
+                  <ul>
+                    <li>{`NAME : ${com?.sub_device?.name ?? ""}`}</li>
+                    <li>{`MODEL : ${com?.sub_device?.model ?? ""}`}</li>
+                    <li>{`TYPE : ${com?.sub_device?.type ?? ""}`}</li>
+                    <li>{`SECS-I DEVICE ID : ${com?.sub_device?.id ?? ""}`}</li>
+                    <li>{`BAUD RATE : ${com?.sub_device?.baudrate ?? ""}`}</li>
+                  </ul>
+                </ReactTooltip>
+              )}
             </li>
           );
         })}

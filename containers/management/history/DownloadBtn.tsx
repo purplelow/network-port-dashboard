@@ -17,9 +17,9 @@ export default function DonwloadButton({ ABS_URL, fileName }: any) {
         const link = document.createElement("a");
         link.href = fileObjectUrl;
 
-        const reg = new RegExp(/(_|"|\/)/, "gi");
-        const replaceFileName = fileName.replace(reg, "");
-        link.download = replaceFileName;
+        // const reg = new RegExp(/(_|"|\/)/, "gi");
+        // const replaceFileName = fileName.replace(reg, "");
+        link.download = fileName;
         document.body.appendChild(link);
         link.click();
         setTimeout((_) => {

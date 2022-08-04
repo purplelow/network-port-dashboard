@@ -115,9 +115,11 @@ const PortSetting = () => {
   ];
   let isUpSuccess = true;
   let isDownSuccess = true;
+  let isUp = true;
+  let isDown = true;
 
   function refreshPage() {
-    location.reload();
+    window.location.reload();
   }
 
   const upPortPut = () => {
@@ -131,11 +133,12 @@ const PortSetting = () => {
           i === 1
             ? (upPortJson = [{ id: u.id, port: u.port }])
             : (upPortJson = [...upPortJson, { id: u.id, port: u.port }]);
-          // console.log(upPortJson);
           i++;
         }
       }
     });
+    if (upPortJson[0].id === "") isUp = false;
+    else isUp = true;
   };
 
   const downPortPut = () => {
@@ -177,21 +180,28 @@ const PortSetting = () => {
           i === 1
             ? (downPortJson = [putArr])
             : (downPortJson = [...downPortJson, putArr]);
-          // console.log(downPortJson);
+          i++;
         }
       }
     });
+    if (downPortJson[0].id === "") isDown = false;
+    else isDown = true;
   };
 
   const onClickSetting = () => {
     upPortPut();
     downPortPut();
-    if (isUpSuccess === true && isDownSuccess === true) {
+    if (isUp === false && isDown === false) {
+      toast.warning("변경 사항이 없습니다.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else if (isUpSuccess === true && isDownSuccess === true) {
       const putPortArr = {
         downPortList: downPortJson,
         upPortList: upPortJson,
       };
       updatePortSetting(ABS_URL, putPortArr);
+      // setDownPorts(downPorts);
     } else if (isUpSuccess === false && isDownSuccess === true) {
       toast.warning("LISTEN PORT는 1~65535 사이 숫자를 입력하세요.", {
         position: toast.POSITION.TOP_CENTER,

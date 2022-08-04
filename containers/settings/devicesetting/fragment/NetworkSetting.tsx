@@ -192,7 +192,6 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
     // const neworkInfoJson = {
     //   networkInfos: data,
     // };
-    // console.log("결과 JSON {} : ", data);
     updateNetwork({ ABS_URL }, data);
   };
 

@@ -7,6 +7,7 @@ export default function updatePortSetting(ABS_URL: string, portJson: any) {
   axios
     .put(`${ABS_URL}${MODIFYPORT_API_URL}`, portJson)
     .then((res) => {
+      window.location.replace("/settings/portSetting");
       toast.success("설정이 적용 되었습니다", {
         position: toast.POSITION.TOP_CENTER,
       });
