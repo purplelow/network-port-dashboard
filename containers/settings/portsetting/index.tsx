@@ -3,6 +3,7 @@ import {
   downPortsCheckList,
   mqttUrl,
   routerUrl,
+  upPortRecoilData,
   upPortsCheckList,
   upPortsState,
 } from "recoil/atom";
@@ -88,7 +89,7 @@ const PortSetting = () => {
   };
 
   const [upPorts, setUpPorts] = useRecoilState(upPortsState);
-  const [downPorts, setDownPorts] = useRecoilState(downPortsState);
+  const [downPorts, setDownPorts]: any = useRecoilState(downPortsState);
   const [upCheckList, setUpCheckItems] = useRecoilState(upPortsCheckList);
   const [downCheckList, setDownCheckItems] = useRecoilState(downPortsCheckList);
   const { downPortListData, isLoading, isError }: any =
@@ -122,9 +123,12 @@ const PortSetting = () => {
     window.location.reload();
   }
 
+  const [upPortList, setUpPortList]: any = useRecoilState(upPortRecoilData);
+  let validPort = false;
+  // const [validPort, setValidPort] = useState(false);
   const upPortPut = () => {
     let i = 1;
-    isUpSuccess = true;
+    // console.log(upPorts, upPortList);
     upPorts?.map((u) => {
       if (u.id !== "-1") {
         if (Number(u.port) < 1 || Number(u.port) > 65535) {
@@ -133,18 +137,37 @@ const PortSetting = () => {
           i === 1
             ? (upPortJson = [{ id: u.id, port: u.port }])
             : (upPortJson = [...upPortJson, { id: u.id, port: u.port }]);
+          isUpSuccess = true;
           i++;
         }
+
+        // if (upPortJson[0].id === "") isUp = false;
+        // if (
+        //   upPortJson.some((el: any) => el.port === u.port && el.id === u.id) ===
+        //   true
+        // ) {
+        //   isUp = false;
+        // }
       }
     });
+
+    // upPortJson.map((u) => {
+    //   const vapo = upPortList.some(
+    //     (el: any) => el.id !== u.id && el.port === u.port
+    //   );
+    //   vapo ? (validPort = true) : (validPort = false);
+    //   console.log("vapo @@@@@@@ ", vapo);
+    //   console.log("validPort", validPort);
+    // });
     if (upPortJson[0].id === "") isUp = false;
-    else isUp = true;
+
+    // console.log("validPort", upPortJson, upPortList, validPort);
   };
 
   const downPortPut = () => {
     let i = 1;
     isDownSuccess = true;
-    downPorts?.map((u) => {
+    downPorts?.map((u: any) => {
       if (u.id !== "-1") {
         let putArr = {
           id: u.id,
@@ -157,24 +180,8 @@ const PortSetting = () => {
           stopbits: u.stopbits,
           deviceId: u.deviceId,
         };
-        downPortListData?.map((com: any, i: string) => {
-          if (com.id === u.id) {
-            if (putArr.name === "") putArr.name = com.name;
-            if (putArr.model === "") putArr.model = com.model;
-            if (putArr.type === "") putArr.type = com.type;
-            if (putArr.baudrate === "") putArr.baudrate = com.baudrate;
-            if (putArr.parity === "") putArr.parity = com.parity;
-            if (putArr.databits === "") putArr.databits = com.databits;
-            if (putArr.stopbits === "") putArr.stopbits = com.stopbits;
-            if (putArr.deviceId === "") putArr.deviceId = com.deviceId;
-          }
-        });
 
-        if (
-          putArr.deviceId === "" ||
-          Number(putArr.deviceId) < 0 ||
-          Number(putArr.deviceId) > 32767
-        ) {
+        if (Number(putArr.deviceId) < 0 || Number(putArr.deviceId) > 32767) {
           isDownSuccess = false;
         } else {
           i === 1
@@ -195,11 +202,16 @@ const PortSetting = () => {
       toast.warning("변경 사항이 없습니다.", {
         position: toast.POSITION.TOP_CENTER,
       });
+    } else if (validPort === true) {
+      toast.warning("LISTEN PORT는 중복될 수 없습니다.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
     } else if (isUpSuccess === true && isDownSuccess === true) {
       const putPortArr = {
         downPortList: downPortJson,
         upPortList: upPortJson,
       };
+      console.log("api putPortArr ?@?@?@?:", putPortArr);
       updatePortSetting(ABS_URL, putPortArr);
       // setDownPorts(downPorts);
     } else if (isUpSuccess === false && isDownSuccess === true) {

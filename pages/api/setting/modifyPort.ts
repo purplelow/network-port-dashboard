@@ -6,8 +6,9 @@ const MODIFYPORT_API_URL = process.env.NEXT_PUBLIC_MODIFY_PORT;
 export default function updatePortSetting(ABS_URL: string, portJson: any) {
   axios
     .put(`${ABS_URL}${MODIFYPORT_API_URL}`, portJson)
+    // .put(`11`, portJson)
     .then((res) => {
-      window.location.replace("/settings/portSetting");
+      // window.location.replace("/settings/portSetting");
       toast.success("설정이 적용 되었습니다", {
         position: toast.POSITION.TOP_CENTER,
       });

@@ -76,7 +76,7 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
         onSubmit={handleSubmit(onValid)}
         className="fixed top-1/2 left-1/2 z-30 h-auto w-auto -translate-x-1/2 -translate-y-1/2 rounded-md bg-white py-10 px-4 shadow-2xl"
       >
-        <div className="w-full pb-4 text-center text-xl font-medium text-slate-700">
+        <div className="w-full pb-4 text-center text-xl font-bold text-slate-700">
           {header}
         </div>
         <div className="mb-7 flex items-center pr-10">
