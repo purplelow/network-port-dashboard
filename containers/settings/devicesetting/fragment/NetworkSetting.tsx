@@ -192,7 +192,6 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
     // const neworkInfoJson = {
     //   networkInfos: data,
     // };
-    // console.log("결과 JSON {} : ", data);
     updateNetwork({ ABS_URL }, data);
   };
 
@@ -230,7 +229,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
           <li className="flex items-center justify-between space-x-4 bg-blue-50 px-10 py-4">
             <div className="flex w-[20%] items-center space-x-8">
               <span className="font-bold">
-                {networkInfoData?.interfaces[0].name}
+                {networkInfoData?.interfaces[0].name ?? "-"}
               </span>
               <span
                 className={cls(
@@ -269,7 +268,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                   // required: "ip 주소를 입력해 주세요.",
                 })}
                 defaultValue={
-                  networkInfoData?.interfaces[0].addresses[0].address
+                  networkInfoData?.interfaces[0].addresses[0].address ?? "-"
                 }
                 id="ipaddressA"
                 placeholder="IP 주소를 입력해 주세요."
@@ -313,7 +312,9 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                   onChange: (e) => setNetmask(e.target.value),
                   // required: "netmask를 입력해 주세요.",
                 })}
-                defaultValue={networkInfoData?.interfaces[0].addresses[0].mask}
+                defaultValue={
+                  networkInfoData?.interfaces[0].addresses[0].mask ?? "-"
+                }
                 id="netmaskA"
                 placeholder="NETMASK를를 입력해 주세요."
                 type="text"
@@ -357,7 +358,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                   // required: "gateway를 입력해 주세요.",
                 })}
                 defaultValue={
-                  networkInfoData?.interfaces[0].addresses[0].gateway
+                  networkInfoData?.interfaces[0].addresses[0].gateway ?? "-"
                 }
                 id="gatewayA"
                 placeholder="GATEWAY를 입력해 주세요."
@@ -389,7 +390,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
           <li className="flex items-center justify-between space-x-4 bg-blue-50 px-10 py-4">
             <div className="flex w-[20%] items-center space-x-8">
               <span className="font-bold">
-                {networkInfoData?.interfaces[1].name}
+                {networkInfoData?.interfaces[1].name ?? "-"}
               </span>
               <span
                 className={cls(
@@ -422,7 +423,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                   disabled: true,
                 })}
                 defaultValue={
-                  networkInfoData?.interfaces[1].addresses[0].address
+                  networkInfoData?.interfaces[1].addresses[0].address ?? "-"
                 }
                 id="ipaddressB"
                 placeholder="IP 주소를 입력해 주세요."
@@ -441,7 +442,9 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                 {...register(`netmaskB`, {
                   disabled: true,
                 })}
-                defaultValue={networkInfoData?.interfaces[1].addresses[0].mask}
+                defaultValue={
+                  networkInfoData?.interfaces[1].addresses[0].mask ?? "-"
+                }
                 id="netmaskB"
                 placeholder="NETMASK를를 입력해 주세요."
                 type="text"
@@ -460,7 +463,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                   disabled: true,
                 })}
                 defaultValue={
-                  networkInfoData?.interfaces[1].addresses[0].gateway
+                  networkInfoData?.interfaces[1].addresses[0].gateway ?? "-"
                 }
                 id="gatewayB"
                 placeholder="GATEWAY를 입력해 주세요."

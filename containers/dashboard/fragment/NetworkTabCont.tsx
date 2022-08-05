@@ -111,7 +111,7 @@ export default function NetworkTabCont({ ABS_URL, client }: any) {
                   statusImgA()
                 )}
               >
-                {networkInfo?.interfaces[0].name}
+                {networkInfo?.interfaces[0].name ?? "-"}
               </h5>
               <span>{bpsSpeedA ? `${bpsSpeedA}Mbps` : ""}</span>
             </div>
@@ -123,19 +123,19 @@ export default function NetworkTabCont({ ABS_URL, client }: any) {
               >
                 <li className="font-bold text-gray-700">IP</li>
                 <li className="col-span-2 pl-1 text-gray-600">
-                  {networkInfo?.interfaces[0].addresses[0].address}
+                  {networkInfo?.interfaces[0].addresses[0].address ?? "-"}
                 </li>
                 <li className="font-bold text-gray-700">NETMASK</li>
                 <li className="col-span-2 pl-1 text-gray-600">
-                  {networkInfo?.interfaces[0].addresses[0].mask}
+                  {networkInfo?.interfaces[0].addresses[0].mask ?? "-"}
                 </li>
                 <li className="font-bold text-gray-700">MAC</li>
                 <li className="col-span-2 pl-1 text-gray-600">
-                  {networkInfo?.interfaces[0].mac_address}
+                  {networkInfo?.interfaces[0].mac_address ?? "-"}
                 </li>
                 <li className="font-bold text-gray-700">GATEWAY</li>
                 <li className="col-span-2 pl-1 text-gray-600">
-                  {networkInfo?.interfaces[0].addresses[0].gateway}
+                  {networkInfo?.interfaces[0].addresses[0].gateway ?? "-"}
                 </li>
               </ul>
 
@@ -148,26 +148,26 @@ export default function NetworkTabCont({ ABS_URL, client }: any) {
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                     BYTES
                   </span>
-                  {networkInfo?.interfaces[0].statistics.rx_bytes}
+                  {networkInfo?.interfaces[0].statistics.rx_bytes ?? "-"}
                 </li>
                 <li className="col-span-3 text-gray-600">
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                     PACKETS
                   </span>
-                  {networkInfo?.interfaces[0].statistics.rx_packets}
+                  {networkInfo?.interfaces[0].statistics.rx_packets ?? "-"}
                 </li>
                 <li className="font-bold text-gray-700"></li>
                 <li className="col-span-3 text-gray-600">
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                     ERRORS
                   </span>
-                  {networkInfo?.interfaces[0].statistics.rx_errors}
+                  {networkInfo?.interfaces[0].statistics.rx_errors ?? "-"}
                 </li>
                 <li className="col-span-3 text-gray-600">
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                     DISCARDS
                   </span>
-                  {networkInfo?.interfaces[0].statistics.rx_discards}
+                  {networkInfo?.interfaces[0].statistics.rx_discards ?? "-"}
                 </li>
               </ul>
 
@@ -180,26 +180,26 @@ export default function NetworkTabCont({ ABS_URL, client }: any) {
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                     BYTES
                   </span>
-                  {networkInfo?.interfaces[0].statistics.tx_bytes}
+                  {networkInfo?.interfaces[0].statistics.tx_bytes ?? "-"}
                 </li>
                 <li className="col-span-3 text-gray-600">
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                     PACKETS
                   </span>
-                  {networkInfo?.interfaces[0].statistics.tx_packets}
+                  {networkInfo?.interfaces[0].statistics.tx_packets ?? "-"}
                 </li>
                 <li className="font-bold text-gray-700"></li>
                 <li className="col-span-3 text-gray-600">
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                     ERRORS
                   </span>
-                  {networkInfo?.interfaces[0].statistics.tx_errors}
+                  {networkInfo?.interfaces[0].statistics.tx_errors ?? "-"}
                 </li>
                 <li className="col-span-3 text-gray-600">
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                     DISCARDS
                   </span>
-                  {networkInfo?.interfaces[0].statistics.tx_discards}
+                  {networkInfo?.interfaces[0].statistics.tx_discards ?? "-"}
                 </li>
               </ul>
             </div>
@@ -213,7 +213,7 @@ export default function NetworkTabCont({ ABS_URL, client }: any) {
                   statusImgB()
                 )}
               >
-                {networkInfo?.interfaces[1].name}
+                {networkInfo?.interfaces[1].name ?? "-"}
               </h5>
               <span>{bpsSpeedB ? `${bpsSpeedB}Mbps` : ""}</span>
             </div>
@@ -225,19 +225,19 @@ export default function NetworkTabCont({ ABS_URL, client }: any) {
               >
                 <li className="font-bold text-gray-700">IP</li>
                 <li className="col-span-2 pl-1 text-gray-600">
-                  {networkInfo?.interfaces[1].addresses[0].address}
+                  {networkInfo?.interfaces[1].addresses[0].address ?? "-"}
                 </li>
                 <li className="font-bold text-gray-700">NETMASK</li>
                 <li className="col-span-2 pl-1 text-gray-600">
-                  {networkInfo?.interfaces[1].addresses[0].mask}
+                  {networkInfo?.interfaces[1].addresses[0].mask ?? "-"}
                 </li>
                 <li className="font-bold text-gray-700">MAC</li>
                 <li className="col-span-2 pl-1 text-gray-600">
-                  {networkInfo?.interfaces[1].mac_address}
+                  {networkInfo?.interfaces[1].mac_address ?? "-"}
                 </li>
                 <li className="font-bold text-gray-700">GATEWAY</li>
                 <li className="col-span-2 pl-1 text-gray-600">
-                  {networkInfo?.interfaces[1].addresses[0].gateway}
+                  {networkInfo?.interfaces[1].addresses[0].gateway ?? "-"}
                 </li>
               </ul>
 
@@ -250,26 +250,26 @@ export default function NetworkTabCont({ ABS_URL, client }: any) {
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                     BYTES
                   </span>
-                  {networkInfo?.interfaces[1].statistics.rx_bytes}
+                  {networkInfo?.interfaces[1].statistics.rx_bytes ?? "-"}
                 </li>
                 <li className="col-span-3 text-gray-600">
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                     PACKETS
                   </span>
-                  {networkInfo?.interfaces[1].statistics.rx_packets}
+                  {networkInfo?.interfaces[1].statistics.rx_packets ?? "-"}
                 </li>
                 <li className="font-bold text-gray-700"></li>
                 <li className="col-span-3 text-gray-600">
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                     ERRORS
                   </span>
-                  {networkInfo?.interfaces[1].statistics.rx_errors}
+                  {networkInfo?.interfaces[1].statistics.rx_errors ?? "-"}
                 </li>
                 <li className="col-span-3 text-gray-600">
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                     DISCARDS
                   </span>
-                  {networkInfo?.interfaces[1].statistics.rx_discards}
+                  {networkInfo?.interfaces[1].statistics.rx_discards ?? "-"}
                 </li>
               </ul>
 
@@ -282,26 +282,26 @@ export default function NetworkTabCont({ ABS_URL, client }: any) {
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                     BYTES
                   </span>
-                  {networkInfo?.interfaces[1].statistics.tx_bytes}
+                  {networkInfo?.interfaces[1].statistics.tx_bytes ?? "-"}
                 </li>
                 <li className="col-span-3 text-gray-600">
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                     PACKETS
                   </span>
-                  {networkInfo?.interfaces[1].statistics.tx_packets}
+                  {networkInfo?.interfaces[1].statistics.tx_packets ?? "-"}
                 </li>
                 <li className="font-bold text-gray-700"></li>
                 <li className="col-span-3 text-gray-600">
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                     ERRORS
                   </span>
-                  {networkInfo?.interfaces[1].statistics.tx_errors}
+                  {networkInfo?.interfaces[1].statistics.tx_errors ?? "-"}
                 </li>
                 <li className="col-span-3 text-gray-600">
                   <span className="mr-1 inline-block w-[75px] rounded-full bg-gray-500 p-1 text-center text-xs text-white">
                     DISCARDS
                   </span>
-                  {networkInfo?.interfaces[1].statistics.tx_discards}
+                  {networkInfo?.interfaces[1].statistics.tx_discards ?? "-"}
                 </li>
               </ul>
             </div>

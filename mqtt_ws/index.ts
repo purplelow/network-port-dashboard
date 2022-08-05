@@ -10,10 +10,10 @@ export default function MqttWSReactService(clientId: string) {
 
   const options: object = {
     keepalive: 600,
-    clientId: clientId,
+    clientId: `${clientId} + ${Math.random().toString(16).substr(2, 8)}`,
     protocolId: "MQTT",
     protocolVersion: 5,
-    clean: false,
+    clean: true,
     reconnectPeriod: 0,
     // connectTimout: 30 * 1000,
     qos: 1,

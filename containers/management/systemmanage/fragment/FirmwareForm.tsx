@@ -19,6 +19,13 @@ export default function FirmwareForm({ ABS_URL }: any) {
   const [alert, setAlert] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
 
+  useEffect(() => {
+    errors.files &&
+      toast.warning("파일을 업로드하세요.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+  }, [errors.files]);
+
   // useEffect(() => {
   //   let timer = setTimeout(() => {
   //     setAlert(false);
@@ -37,6 +44,7 @@ export default function FirmwareForm({ ABS_URL }: any) {
   const onSubmit = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
+
     axios({
       method: "POST",
       url: `${ABS_URL}${UPLOAD_FIRMWARE_API_URL}`,
@@ -72,7 +80,7 @@ export default function FirmwareForm({ ABS_URL }: any) {
         <AiOutlineUpload />
       </label>
       <input
-        {...register("files")}
+        {...register("files", { required: true })}
         accept=".jar"
         id="firmFileUp"
         type="file"

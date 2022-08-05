@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineUpload } from "react-icons/ai";
 import { toast } from "react-toastify";
@@ -11,8 +11,19 @@ const RESTORE_API_URL = process.env.NEXT_PUBLIC_RESTORE;
 export default function RestoreFrom({ ABS_URL }: any) {
   // const [restoreSuccess, setRestoreSuccess] = useRecoilState(restoreState);
   // const [restoreFail, setRestoreFail] = useRecoilState(restoreFailState);
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [selectedFile, setSelectedFile] = useState<any | Blob>();
+
+  useEffect(() => {
+    errors.files &&
+      toast.warning("파일을 업로드하세요.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+  }, [errors.files]);
 
   const uploadFile = (e: any) => {
     const file = e.target.files[0];
@@ -56,7 +67,7 @@ export default function RestoreFrom({ ABS_URL }: any) {
         <AiOutlineUpload />
       </label>
       <input
-        {...register("files")}
+        {...register("files", { required: true })}
         id="backUpFileUp"
         type="file"
         onChange={uploadFile}

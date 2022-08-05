@@ -47,7 +47,7 @@ const fetcher = async (url: string) =>
 
 export default function useNetworkInfo(ABS_URL: string) {
   const { data, error } = useSWR(`${ABS_URL}${NETWORKINFO_API_URL}`, fetcher, {
-    revalidateOnFocus: false,
+    revalidateOnFocus: true,
     revalidateIfStale: false,
     revalidateOnReconnect: false,
     // refreshInterval: 3000,

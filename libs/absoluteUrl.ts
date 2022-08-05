@@ -14,7 +14,7 @@ export default function urlBranch() {
     useEffect(() => {
       const { protocol, host } = absoluteUrl();
       const apiURL = `http://${host}`;
-      const wsUrl = host.substring(0, host.indexOf(":")) + ":9001";
+      const wsUrl = host + ":9001";
 
       if (DEV_ENV) setAbsUrl(DEV_ENV);
       else setAbsUrl(apiURL);

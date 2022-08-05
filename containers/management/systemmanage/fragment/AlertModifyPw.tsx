@@ -74,13 +74,13 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
       ></div>
       <form
         onSubmit={handleSubmit(onValid)}
-        className="fixed top-1/2 left-1/2 z-30 h-auto w-auto -translate-x-1/2 -translate-y-1/2 rounded-md bg-white p-10 shadow-2xl"
+        className="fixed top-1/2 left-1/2 z-30 h-auto w-auto -translate-x-1/2 -translate-y-1/2 rounded-md bg-white py-10 px-4 shadow-2xl"
       >
-        <div className="w-full pb-4 text-center text-xl font-medium text-slate-700">
+        <div className="w-full pb-4 text-center text-xl font-bold text-slate-700">
           {header}
         </div>
-        <div className="mb-7 flex items-center">
-          <div className="w-1/3 min-w-[120px]">
+        <div className="mb-7 flex items-center pr-10">
+          <div className="w-1/3 min-w-[140px]">
             <label
               className="block pr-4 text-right text-sm font-medium text-gray-900"
               htmlFor="asisPw"
@@ -108,14 +108,15 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
               onKeyDown={(e) => checkCapsLock(e)}
             />
             {errors.asisPw && (
-              <p className="absolute -bottom-5 text-sm italic text-red-500">
+              <p className="absolute -bottom-4 min-w-[220px] text-xs italic text-red-500">
                 {errors.asisPw.message}
               </p>
             )}
           </div>
         </div>
-        <div className="mb-7 flex items-center">
-          <div className="w-1/3 min-w-[120px]">
+
+        <div className="mb-7 flex items-center pr-10">
+          <div className="w-1/3 min-w-[140px]">
             <label
               className="block pr-4 text-right text-sm font-medium text-gray-900"
               htmlFor="tobePw"
@@ -148,15 +149,15 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
               onKeyDown={(e) => checkCapsLock(e)}
             />
             {errors.tobePw && (
-              <p className="absolute -bottom-5 text-sm italic text-red-500">
+              <p className="absolute -bottom-4 min-w-[220px] text-xs italic text-red-500">
                 {errors.tobePw.message}
               </p>
             )}
           </div>
         </div>
 
-        <div className="mb-4 flex items-center">
-          <div className="w-1/3 min-w-[120px]">
+        <div className="mb-6 flex items-center pr-10">
+          <div className="w-1/3 min-w-[140px]">
             <label
               className="block  pr-4 text-right text-sm font-medium text-gray-900"
               htmlFor="tobePwCheck"
@@ -182,7 +183,7 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
               onKeyDown={(e) => checkCapsLock(e)}
             />
             {errors.tobePwCheck && (
-              <p className="absolute -bottom-5 text-sm italic text-red-500">
+              <p className="absolute -bottom-4 min-w-[220px] text-xs italic text-red-500">
                 {errors.tobePwCheck.message}
               </p>
             )}

@@ -37,19 +37,7 @@ export const upPortsState = atom({
 
 export const downPortsState = atom({
   key: "downPortsState",
-  default: [
-    {
-      id: "-1",
-      name: "",
-      model: "",
-      type: "",
-      baudrate: "",
-      parity: "",
-      databits: "",
-      stopbits: "",
-      deviceId: "",
-    },
-  ],
+  default: [],
 });
 
 export const upPortsCheckList = atom({
@@ -80,3 +68,13 @@ export const mqttUrl = atom({
 //     return { reId, reStatus };
 //   },
 // });
+
+// export const mqttClient = atom({
+//   key: "mqttClient",
+//   default: {},
+// });
+
+export const upPortRecoilData = atom({
+  key: "upPortRecoilData",
+  default: [],
+});
