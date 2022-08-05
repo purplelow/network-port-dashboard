@@ -129,7 +129,7 @@ const PortSetting = () => {
   const upPortPut = () => {
     let i = 1;
     // console.log(upPorts, upPortList);
-    upPorts?.map((u) => {
+    upPorts?.map((u: any) => {
       if (u.id !== "-1") {
         if (Number(u.port) < 1 || Number(u.port) > 65535) {
           isUpSuccess = false;
@@ -168,27 +168,41 @@ const PortSetting = () => {
     let i = 1;
     isDownSuccess = true;
     downPorts?.map((u: any) => {
-      if (u.id !== "-1") {
-        let putArr = {
-          id: u.id,
-          name: u.name,
-          model: u.model,
-          type: u.type,
-          baudrate: u.baudrate,
-          parity: u.parity,
-          databits: u.databits,
-          stopbits: u.stopbits,
-          deviceId: u.deviceId,
-        };
+      let putArr = {
+        id: u.id,
+        name: u.name,
+        model: u.model,
+        type: u.type,
+        baudrate: u.baudrate,
+        parity: u.parity,
+        databits: u.databits,
+        stopbits: u.stopbits,
+        deviceId: u.deviceId,
+      };
+      // downPortListData?.map((com: any, i: string) => {
+      //   if (com.id === u.id) {
+      //     if (putArr.name === "") putArr.name = com.name;
+      //     if (putArr.model === "") putArr.model = com.model;
+      //     if (putArr.type === "") putArr.type = com.type;
+      //     if (putArr.baudrate === "") putArr.baudrate = com.baudrate;
+      //     if (putArr.parity === "") putArr.parity = com.parity;
+      //     if (putArr.databits === "") putArr.databits = com.databits;
+      //     if (putArr.stopbits === "") putArr.stopbits = com.stopbits;
+      //     if (putArr.deviceId === "") putArr.deviceId = com.deviceId;
+      //   }
+      // });
 
-        if (Number(putArr.deviceId) < 0 || Number(putArr.deviceId) > 32767) {
-          isDownSuccess = false;
-        } else {
-          i === 1
-            ? (downPortJson = [putArr])
-            : (downPortJson = [...downPortJson, putArr]);
-          i++;
-        }
+      if (
+        putArr.deviceId === "" ||
+        Number(putArr.deviceId) < 0 ||
+        Number(putArr.deviceId) > 32767
+      ) {
+        isDownSuccess = false;
+      } else {
+        i === 1
+          ? (downPortJson = [putArr])
+          : (downPortJson = [...downPortJson, putArr]);
+        i++;
       }
     });
     if (downPortJson[0].id === "") isDown = false;

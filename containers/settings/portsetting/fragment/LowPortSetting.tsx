@@ -180,13 +180,6 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
         const updateDownPort = {
           id: e.target.id,
           name: e.target.value,
-          model: "",
-          type: "",
-          baudrate: "",
-          parity: "",
-          databits: "",
-          stopbits: "",
-          deviceId: "",
         };
         setDownPorts([updateDownPort]);
       } else {
@@ -200,14 +193,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       if (i === 1) {
         const updateDownPort = {
           id: e.target.id,
-          name: "",
           model: e.target.value,
-          type: "",
-          baudrate: "",
-          parity: "",
-          databits: "",
-          stopbits: "",
-          deviceId: "",
         };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
@@ -221,14 +207,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       if (i === 1) {
         const updateDownPort = {
           id: e.target.id,
-          name: "",
-          model: "",
           type: e.target.value,
-          baudrate: "",
-          parity: "",
-          databits: "",
-          stopbits: "",
-          deviceId: "",
         };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
@@ -242,14 +221,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       if (i === 1) {
         const updateDownPort = {
           id: e.target.id,
-          name: "",
-          model: "",
-          type: "",
           baudrate: e.target.value,
-          parity: "",
-          databits: "",
-          stopbits: "",
-          deviceId: "",
         };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
@@ -263,14 +235,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       if (i === 1) {
         const updateDownPort = {
           id: e.target.id,
-          name: "",
-          model: "",
-          type: "",
-          baudrate: "",
           parity: e.target.value,
-          databits: "",
-          stopbits: "",
-          deviceId: "",
         };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
@@ -284,14 +249,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       if (i === 1) {
         const updateDownPort = {
           id: e.target.id,
-          name: "",
-          model: "",
-          type: "",
-          baudrate: "",
-          parity: "",
           databits: e.target.value,
-          stopbits: "",
-          deviceId: "",
         };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
@@ -305,14 +263,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       if (i === 1) {
         const updateDownPort = {
           id: e.target.id,
-          name: "",
-          model: "",
-          type: "",
-          baudrate: "",
-          parity: "",
-          databits: "",
           stopbits: e.target.value,
-          deviceId: "",
         };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
@@ -326,13 +277,6 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       if (i === 1) {
         const updateDownPort = {
           id: e.target.id,
-          name: "",
-          model: "",
-          type: "",
-          baudrate: "",
-          parity: "",
-          databits: "",
-          stopbits: "",
           deviceId: e.target.value,
         };
         setDownPorts([...downPorts, updateDownPort]);
