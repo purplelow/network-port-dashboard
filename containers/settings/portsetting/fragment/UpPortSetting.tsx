@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { upPortRecoilData, upPortsCheckList, upPortsState } from "recoil/atom";
+import { upPortRecoilData, upPortsCheckList, upPortsState, portSettingValueChanged } from "recoil/atom";
 import { useForm } from "react-hook-form";
 
 import useUpPortList from "@api/setting/upPortList";
@@ -42,6 +42,7 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
   const { upPortListData, isLoading, isError }: any = useUpPortList(ABS_URL);
   // const [upPortList, setUpPortList]: any = useState([]);
   const [upPortList, setUpPortList]: any = useRecoilState(upPortRecoilData);
+  const [isChanged, setIsChanged] = useRecoilState(portSettingValueChanged);
 
   useEffect(() => {
     if (upPortListData) {
@@ -290,6 +291,7 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
 
   // 설정 적용(상위 포트 설정)
   const onChangePort = (e: any) => {
+    setIsChanged(true);
     const updateUpPort = {
       id: e.target.id,
       port: (e.target.value).trim(),
@@ -412,11 +414,13 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
                     min="1"
                     max="65535"
                     className={
-                      upPorts.some(
+                      isChanged === true
+                      ? upPorts.some(
                         (el: any) => el.id === com.id && el.port !== com.port
                       )
                         ? "rounded-sm border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
                         : "rounded-sm border-[1px] border-gray-300 py-1 text-center"
+                      : "rounded-sm border-[1px] border-gray-300 py-1 text-center"
                     }
                     defaultValue={com.port}
                     onChange={onChangePort}

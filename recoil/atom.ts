@@ -50,6 +50,11 @@ export const mqttUrl = atom({
   default: "",
 });
 
+export const portSettingValueChanged = atom({
+  key: "portSettingValueChanged",
+  default: false,
+})
+
 // export const mqttPortDataRender = atom({
 //   key: "mqttPortDataRender",
 //   default: { app_service: { id: "", status: "" } },

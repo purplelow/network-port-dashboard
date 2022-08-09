@@ -2,6 +2,7 @@ import { constSelector, useRecoilState, useRecoilValue } from "recoil";
 import {
   downPortsCheckList,
   mqttUrl,
+  portSettingValueChanged,
   routerUrl,
   upPortRecoilData,
   upPortsCheckList,
@@ -93,6 +94,7 @@ const PortSetting = () => {
   const [downPorts, setDownPorts]: any = useRecoilState(downPortsState);
   const [upCheckList, setUpCheckItems] = useRecoilState(upPortsCheckList);
   const [downCheckList, setDownCheckItems] = useRecoilState(downPortsCheckList);
+  const [isChanged, setIsChanged] = useRecoilState(portSettingValueChanged);
   const { upPortListData, isUpLoading, isUpError }: any =
     useUpPortList(ABS_URL);
   const { downPortListData, isDownLoading, isDownError }: any =
@@ -240,6 +242,7 @@ const PortSetting = () => {
       };
       console.log("api putPortArr ?@?@?@?:", putPortArr);
       updatePortSetting(ABS_URL, putPortArr);
+      setIsChanged(false);
       // setDownPorts(downPorts);
     } else if (isUpSuccess === false && isDownSuccess === true) {
       toast.warning("LISTEN PORT는 1~65535 사이 숫자를 입력하세요.", {
