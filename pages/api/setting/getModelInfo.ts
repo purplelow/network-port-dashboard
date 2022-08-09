@@ -22,10 +22,11 @@ export default function useModelInfo({ ABS_URL }: any) {
       revalidateOnFocus: false,
       revalidateIfStale: false,
       revalidateOnReconnect: false,
+      revalidateOnMount: true,
     }
   );
   return {
-    modelInfo: data,
+    modelInfoData: data,
     isLoading: !error && !data,
     isError: error,
   };

@@ -12,6 +12,12 @@ import { toast } from "react-toastify";
 // import * as yup from 'yup';
 
 export default function UpPortSetting({ ABS_URL, client }: any) {
+  const {
+    register,
+    watch,
+    getValues,
+    formState: { errors },
+  }: any = useForm();
   const topic = process.env.MQTT_TOPIC_UPPORT;
   MqttSubScribe(client, topic);
   const {
@@ -38,7 +44,7 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
   // const [wsPortData, setWsPortData] = useRecoilState(mqttPortDataRender);
 
   const [checkItems, setCheckItems] = useRecoilState(upPortsCheckList);
-  const [upPorts, setUpPorts] = useRecoilState(upPortsState);
+  const [upPorts, setUpPorts]: any = useRecoilState(upPortsState);
   const { upPortListData, isLoading, isError }: any = useUpPortList(ABS_URL);
   // const [upPortList, setUpPortList]: any = useState([]);
   const [upPortList, setUpPortList]: any = useRecoilState(upPortRecoilData);
@@ -295,17 +301,18 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
       port: e.target.value,
     };
     let i = 1;
-    upPorts?.map((el) => (el.id !== updateUpPort.id ? null : (i = 0)));
+    upPorts?.map((el: any) => (el.id !== updateUpPort.id ? null : (i = 0)));
     if (i === 1) {
       setUpPorts([...upPorts, updateUpPort]);
     } else {
       setUpPorts(
-        upPorts?.map((el) =>
+        upPorts?.map((el: any) =>
           el.id === updateUpPort.id ? { ...el, port: updateUpPort.port } : el
         )
       );
     }
   };
+  // console.log("upPort ? :", upPorts);
   //checkbox
   const handleSingleCheck = (checked: boolean, id: any, key: any) => {
     if (checked) {
@@ -324,7 +331,7 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
       setCheckItems(["-1"]);
     }
   };
-
+  const [asisPort, setAsisPort] = useState([]);
   return (
     <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-sm border-[1px] border-gray-300 shadow-md">
       {/* <button onClick={upPortPut}>test</button> */}
@@ -406,21 +413,43 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
                 <td className="px-6 py-1.5 text-right">{com.deviceName}</td>
                 <td className="px-6 py-1.5 text-center">
                   <input
-                    name="port"
+                    {...register(`port${com.id}`, {
+                      required: "포트를 입력하세요.",
+                      onChange: (e: any) => {
+                        onChangePort(e);
+                        // setAsisPort(...asisPort, getValues(`port${com.id}`)]);
+                      },
+                      // validate: {
+                      //   duplicatePort: (value: any) => {
+                      //     const [asis] = getValues(`port${com.id}`);
+                      //     console.log("???", asis);
+                      //     const valPort = asis.some(
+                      //       (el: any) => el.port === value
+                      //     );
+                      //     return valPort && "포트는 중복될 수 없습니다.";
+                      //   },
+                      // },
+                    })}
+                    // name="port"
                     id={com.id}
                     type="number"
                     min="1"
                     max="65535"
                     className={
                       upPorts.some(
-                        (el) => el.id === com.id && el.port !== com.port
+                        (el: any) => el.id === com.id && el.port !== com.port
                       )
                         ? "rounded-sm border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
                         : "rounded-sm border-[1px] border-gray-300 py-1 text-center"
                     }
                     defaultValue={com.port}
-                    onChange={onChangePort}
+                    // onChange={onChangePort}
                   />
+                  {/* {errors.port[com.id] && (
+                    <p className="absolute -bottom-4 min-w-[220px] text-xs italic text-red-500">
+                      {errors.port[com.id].message}
+                    </p>
+                  )} */}
                 </td>
                 <td className="px-6 py-1.5 text-right">{com.t3}</td>
                 <td className="px-6 py-1.5 text-right">{com.t5}</td>

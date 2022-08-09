@@ -4,6 +4,7 @@ import useGetNote from "@api/dashBoard/getNote";
 import useSystemInfo from "@api/dashBoard/systemInfo";
 import { useForm } from "react-hook-form";
 import modifyNote from "@api/dashBoard/modifyNote";
+import axios from "axios";
 
 const elapsedTime = (uptime: any) => {
   let days = Math.floor(uptime / (100 * 60 * 60 * 24));
@@ -15,20 +16,30 @@ const elapsedTime = (uptime: any) => {
 
   return `${days}일 ${hour}시간 ${minutes}분`;
 };
-
+const SYSTEMINFO_API_URL = process.env.NEXT_PUBLIC_SYSTEM_INFO;
 export default function SystemInfo({ ABS_URL }: any) {
-  const { systemInfo, isLoading, isError } = useSystemInfo(ABS_URL);
-  const { getNoteData } = useGetNote(ABS_URL);
   const { register, handleSubmit } = useForm();
-  const [userNote, setUserNote] = useState(getNoteData?.deviceNote);
-  let userNoteValue = getNoteData?.deviceNote;
-
+  const { systemInfoData, isLoading, isError } = useSystemInfo(ABS_URL);
+  const [systemInfo, setSystemInfo]: any = useState();
+  const { getNoteData } = useGetNote(ABS_URL);
+  const userNoteValue = getNoteData?.deviceNote.replaceAll(
+    /(\r\n|\n|\\r\\n|\\n)/g,
+    "\n"
+  );
+  const [userNote, setUserNote] = useState(userNoteValue);
   useEffect(() => {
     setUserNote(userNoteValue);
   }, [userNoteValue]);
 
-  let userNoteJson = {
-    deviceNote: userNote ?? getNoteData?.deviceNote,
+  useEffect(() => {
+    axios(`${ABS_URL}${SYSTEMINFO_API_URL}`, {
+      method: "GET",
+    });
+    if (systemInfoData) setSystemInfo(systemInfoData);
+  }, [systemInfoData]);
+
+  const userNoteJson = {
+    deviceNote: userNote ?? userNoteValue,
   };
 
   const handleModifyNote = () => {
@@ -81,8 +92,7 @@ export default function SystemInfo({ ABS_URL }: any) {
               value={userNote}
               onChange={(e) => setUserNote(e.target.value)}
               id="message"
-              // rows="4"
-              className="block w-[85%] resize-none rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
+              className="block w-[85%] resize-none whitespace-pre-wrap rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
               placeholder="메모를 작성하세요."
             ></textarea>
             <button

@@ -123,11 +123,15 @@ export default function NetworkTabCont({ ABS_URL, client }: any) {
               >
                 <li className="font-bold text-gray-700">IP</li>
                 <li className="col-span-2 pl-1 text-gray-600">
-                  {networkInfo?.interfaces[0].addresses[0].address ?? "-"}
+                  {(networkInfo?.interfaces[0].addresses[0] &&
+                    networkInfo?.interfaces[0].addresses[0].address) ??
+                    "-"}
                 </li>
                 <li className="font-bold text-gray-700">NETMASK</li>
                 <li className="col-span-2 pl-1 text-gray-600">
-                  {networkInfo?.interfaces[0].addresses[0].mask ?? "-"}
+                  {(networkInfo?.interfaces[0].addresses[0] &&
+                    networkInfo?.interfaces[0].addresses[0].mask) ??
+                    "-"}
                 </li>
                 <li className="font-bold text-gray-700">MAC</li>
                 <li className="col-span-2 pl-1 text-gray-600">
@@ -135,7 +139,9 @@ export default function NetworkTabCont({ ABS_URL, client }: any) {
                 </li>
                 <li className="font-bold text-gray-700">GATEWAY</li>
                 <li className="col-span-2 pl-1 text-gray-600">
-                  {networkInfo?.interfaces[0].addresses[0].gateway ?? "-"}
+                  {(networkInfo?.interfaces[0].addresses[0] &&
+                    networkInfo?.interfaces[0].addresses[0].gateway) ??
+                    "-"}
                 </li>
               </ul>
 
@@ -225,11 +231,15 @@ export default function NetworkTabCont({ ABS_URL, client }: any) {
               >
                 <li className="font-bold text-gray-700">IP</li>
                 <li className="col-span-2 pl-1 text-gray-600">
-                  {networkInfo?.interfaces[1].addresses[0].address ?? "-"}
+                  {(networkInfo?.interfaces[1].addresses[0] &&
+                    networkInfo?.interfaces[1].addresses[0].address) ??
+                    "-"}
                 </li>
                 <li className="font-bold text-gray-700">NETMASK</li>
                 <li className="col-span-2 pl-1 text-gray-600">
-                  {networkInfo?.interfaces[1].addresses[0].mask ?? "-"}
+                  {(networkInfo?.interfaces[1].addresses[0] &&
+                    networkInfo?.interfaces[1].addresses[0].mask) ??
+                    "-"}
                 </li>
                 <li className="font-bold text-gray-700">MAC</li>
                 <li className="col-span-2 pl-1 text-gray-600">
@@ -237,7 +247,9 @@ export default function NetworkTabCont({ ABS_URL, client }: any) {
                 </li>
                 <li className="font-bold text-gray-700">GATEWAY</li>
                 <li className="col-span-2 pl-1 text-gray-600">
-                  {networkInfo?.interfaces[1].addresses[0].gateway ?? "-"}
+                  {(networkInfo?.interfaces[1].addresses[0] &&
+                    networkInfo?.interfaces[1].addresses[0].gateway) ??
+                    "-"}
                 </li>
               </ul>
 

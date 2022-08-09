@@ -21,12 +21,14 @@ const fetcher = async (url: string) =>
 
 export default function useSystemInfo(ABS_URL: string) {
   const { data, error } = useSWR(`${ABS_URL}${SYSTEMINFO_API_URL}`, fetcher, {
-    revalidateOnFocus: false,
+    revalidateOnFocus: true,
     revalidateIfStale: false,
     revalidateOnReconnect: false,
+    revalidateOnMount: true,
   });
+
   return {
-    systemInfo: data,
+    systemInfoData: data,
     isLoading: !error && !data,
     isError: error,
   };

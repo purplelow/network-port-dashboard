@@ -180,13 +180,6 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
         const updateDownPort = {
           id: e.target.id,
           name: e.target.value,
-          model: "",
-          type: "",
-          baudrate: "",
-          parity: "",
-          databits: "",
-          stopbits: "",
-          deviceId: "",
         };
         setDownPorts([updateDownPort]);
       } else {
@@ -200,14 +193,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       if (i === 1) {
         const updateDownPort = {
           id: e.target.id,
-          name: "",
           model: e.target.value,
-          type: "",
-          baudrate: "",
-          parity: "",
-          databits: "",
-          stopbits: "",
-          deviceId: "",
         };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
@@ -221,14 +207,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       if (i === 1) {
         const updateDownPort = {
           id: e.target.id,
-          name: "",
-          model: "",
           type: e.target.value,
-          baudrate: "",
-          parity: "",
-          databits: "",
-          stopbits: "",
-          deviceId: "",
         };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
@@ -242,14 +221,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       if (i === 1) {
         const updateDownPort = {
           id: e.target.id,
-          name: "",
-          model: "",
-          type: "",
           baudrate: e.target.value,
-          parity: "",
-          databits: "",
-          stopbits: "",
-          deviceId: "",
         };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
@@ -263,14 +235,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       if (i === 1) {
         const updateDownPort = {
           id: e.target.id,
-          name: "",
-          model: "",
-          type: "",
-          baudrate: "",
           parity: e.target.value,
-          databits: "",
-          stopbits: "",
-          deviceId: "",
         };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
@@ -284,14 +249,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       if (i === 1) {
         const updateDownPort = {
           id: e.target.id,
-          name: "",
-          model: "",
-          type: "",
-          baudrate: "",
-          parity: "",
           databits: e.target.value,
-          stopbits: "",
-          deviceId: "",
         };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
@@ -305,14 +263,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       if (i === 1) {
         const updateDownPort = {
           id: e.target.id,
-          name: "",
-          model: "",
-          type: "",
-          baudrate: "",
-          parity: "",
-          databits: "",
           stopbits: e.target.value,
-          deviceId: "",
         };
         setDownPorts([...downPorts, updateDownPort]);
       } else {
@@ -326,13 +277,6 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       if (i === 1) {
         const updateDownPort = {
           id: e.target.id,
-          name: "",
-          model: "",
-          type: "",
-          baudrate: "",
-          parity: "",
-          databits: "",
-          stopbits: "",
           deviceId: e.target.value,
         };
         setDownPorts([...downPorts, updateDownPort]);
@@ -466,9 +410,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
                   className={
                     downPorts.some(
                       (el: any) =>
-                        el.id === com.id &&
-                        el.name !== "" &&
-                        el.name !== com.name
+                        el.id === com.id && el.name && el.name !== com.name
                     )
                       ? "rounded-sm border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
                       : "rounded-sm border-[1px] border-gray-300 py-1 text-center"
@@ -485,9 +427,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
                   className={
                     downPorts.some(
                       (el: any) =>
-                        el.id === com.id &&
-                        el.model !== "" &&
-                        el.model !== com.model
+                        el.id === com.id && el.model && el.model !== com.model
                     )
                       ? "rounded-sm border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
                       : "rounded-sm border-[1px] border-gray-300 py-1 text-center"
@@ -504,9 +444,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
                   className={
                     downPorts.some(
                       (el: any) =>
-                        el.id === com.id &&
-                        el.type !== "" &&
-                        el.type !== com.type
+                        el.id === com.id && el.type && el.type !== com.type
                     )
                       ? "rounded-sm border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
                       : "rounded-sm border-[1px] border-gray-300 py-1 text-center"
@@ -523,7 +461,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
                     downPorts.some(
                       (el: any) =>
                         el.id === com.id &&
-                        el.baudrate !== "" &&
+                        el.baudrate &&
                         el.baudrate !== com.baudrate
                     )
                       ? "rounded-sm border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
@@ -550,7 +488,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
                     downPorts.some(
                       (el: any) =>
                         el.id === com.id &&
-                        el.parity !== "" &&
+                        el.parity &&
                         el.parity !== com.parity
                     )
                       ? "rounded-sm border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
@@ -574,7 +512,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
                     downPorts.some(
                       (el: any) =>
                         el.id === com.id &&
-                        el.databits !== "" &&
+                        el.databits &&
                         el.databits !== com.databits
                     )
                       ? "rounded-sm border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
@@ -597,7 +535,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
                     downPorts.some(
                       (el: any) =>
                         el.id === com.id &&
-                        el.stopbits !== "" &&
+                        el.stopbits &&
                         el.stopbits !== com.stopbits
                     )
                       ? "rounded-sm border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
@@ -622,7 +560,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
                     downPorts.some(
                       (el: any) =>
                         el.id === com.id &&
-                        el.deviceId !== "" &&
+                        el.deviceId &&
                         el.deviceId !== com.deviceId
                     )
                       ? "rounded-sm border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"

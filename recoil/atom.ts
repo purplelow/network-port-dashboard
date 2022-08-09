@@ -27,12 +27,7 @@ export const routerUrl = atom({
 
 export const upPortsState = atom({
   key: "upPortsState",
-  default: [
-    {
-      id: "-1",
-      port: "",
-    },
-  ],
+  default: [],
 });
 
 export const downPortsState = atom({

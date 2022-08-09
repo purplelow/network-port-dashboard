@@ -88,7 +88,7 @@ const PortSetting = () => {
     });
   };
 
-  const [upPorts, setUpPorts] = useRecoilState(upPortsState);
+  const [upPorts, setUpPorts]: any = useRecoilState(upPortsState);
   const [downPorts, setDownPorts]: any = useRecoilState(downPortsState);
   const [upCheckList, setUpCheckItems] = useRecoilState(upPortsCheckList);
   const [downCheckList, setDownCheckItems] = useRecoilState(downPortsCheckList);
@@ -128,37 +128,40 @@ const PortSetting = () => {
   // const [validPort, setValidPort] = useState(false);
   const upPortPut = () => {
     let i = 1;
-    // console.log(upPorts, upPortList);
-    upPorts?.map((u) => {
-      if (u.id !== "-1") {
-        if (Number(u.port) < 1 || Number(u.port) > 65535) {
-          isUpSuccess = false;
-        } else {
-          i === 1
-            ? (upPortJson = [{ id: u.id, port: u.port }])
-            : (upPortJson = [...upPortJson, { id: u.id, port: u.port }]);
-          isUpSuccess = true;
-          i++;
-        }
-
-        // if (upPortJson[0].id === "") isUp = false;
-        // if (
-        //   upPortJson.some((el: any) => el.port === u.port && el.id === u.id) ===
-        //   true
-        // ) {
-        //   isUp = false;
-        // }
+    upPorts?.map((u: any) => {
+      // if (u.id !== "-1") {
+      if (Number(u.port) < 1 || Number(u.port) > 65535) {
+        isUpSuccess = false;
+      } else {
+        i === 1
+          ? (upPortJson = [{ id: u.id, port: u.port }])
+          : (upPortJson = [...upPortJson, { id: u.id, port: u.port }]);
+        isUpSuccess = true;
+        i++;
       }
+      // if (upPortJson[0].id === "") isUp = false;
+      // if (
+      //   upPortJson.some((el: any) => el.port === u.port && el.id === u.id) ===
+      //   true
+      // ) {
+      //   isUp = false;
+      // }
     });
 
-    // upPortJson.map((u) => {
-    //   const vapo = upPortList.some(
-    //     (el: any) => el.id !== u.id && el.port === u.port
-    //   );
-    //   vapo ? (validPort = true) : (validPort = false);
-    //   console.log("vapo @@@@@@@ ", vapo);
-    //   console.log("validPort", validPort);
-    // });
+    upPortJson.map((u) => {
+      const vapo = upPortList.some(
+        (el: any) => el.id !== u.id && el.port === u.port
+      );
+      // vapo ? (validPort = true) : (validPort = false);
+      if (vapo === true) {
+        validPort = true;
+      } else {
+        validPort = false;
+      }
+      // console.log("vapo @@@@@@@ ", vapo);
+      // console.log("validPort", validPort);
+    });
+
     if (upPortJson[0].id === "") isUp = false;
 
     // console.log("validPort", upPortJson, upPortList, validPort);
@@ -168,27 +171,29 @@ const PortSetting = () => {
     let i = 1;
     isDownSuccess = true;
     downPorts?.map((u: any) => {
-      if (u.id !== "-1") {
-        let putArr = {
-          id: u.id,
-          name: u.name,
-          model: u.model,
-          type: u.type,
-          baudrate: u.baudrate,
-          parity: u.parity,
-          databits: u.databits,
-          stopbits: u.stopbits,
-          deviceId: u.deviceId,
-        };
+      let putArr = {
+        id: u.id,
+        name: u.name,
+        model: u.model,
+        type: u.type,
+        baudrate: u.baudrate,
+        parity: u.parity,
+        databits: u.databits,
+        stopbits: u.stopbits,
+        deviceId: u.deviceId,
+      };
 
-        if (Number(putArr.deviceId) < 0 || Number(putArr.deviceId) > 32767) {
-          isDownSuccess = false;
-        } else {
-          i === 1
-            ? (downPortJson = [putArr])
-            : (downPortJson = [...downPortJson, putArr]);
-          i++;
-        }
+      if (
+        putArr.deviceId === "" ||
+        Number(putArr.deviceId) < 0 ||
+        Number(putArr.deviceId) > 32767
+      ) {
+        isDownSuccess = false;
+      } else {
+        i === 1
+          ? (downPortJson = [putArr])
+          : (downPortJson = [...downPortJson, putArr]);
+        i++;
       }
     });
     if (downPortJson[0].id === "") isDown = false;
@@ -211,7 +216,6 @@ const PortSetting = () => {
         downPortList: downPortJson,
         upPortList: upPortJson,
       };
-      console.log("api putPortArr ?@?@?@?:", putPortArr);
       updatePortSetting(ABS_URL, putPortArr);
       // setDownPorts(downPorts);
     } else if (isUpSuccess === false && isDownSuccess === true) {
