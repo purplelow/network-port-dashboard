@@ -38,7 +38,7 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
   // const [wsPortData, setWsPortData] = useRecoilState(mqttPortDataRender);
 
   const [checkItems, setCheckItems] = useRecoilState(upPortsCheckList);
-  const [upPorts, setUpPorts] = useRecoilState(upPortsState);
+  const [upPorts, setUpPorts]: any = useRecoilState(upPortsState);
   const { upPortListData, isLoading, isError }: any = useUpPortList(ABS_URL);
   // const [upPortList, setUpPortList]: any = useState([]);
   const [upPortList, setUpPortList]: any = useRecoilState(upPortRecoilData);
@@ -292,16 +292,16 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
   const onChangePort = (e: any) => {
     const updateUpPort = {
       id: e.target.id,
-      port: e.target.value,
+      port: (e.target.value).trim(),
     };
     let i = 1;
-    upPorts?.map((el) => (el.id !== updateUpPort.id ? null : (i = 0)));
+    upPorts?.map((el: any) => (el.id !== e.target.id ? null : (i = 0)));
     if (i === 1) {
       setUpPorts([...upPorts, updateUpPort]);
     } else {
       setUpPorts(
-        upPorts?.map((el) =>
-          el.id === updateUpPort.id ? { ...el, port: updateUpPort.port } : el
+        upPorts?.map((el: any) =>
+          el.id === e.target.id ? { ...el, port: e.target.value.trim() } : el
         )
       );
     }
@@ -413,7 +413,7 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
                     max="65535"
                     className={
                       upPorts.some(
-                        (el) => el.id === com.id && el.port !== com.port
+                        (el: any) => el.id === com.id && el.port !== com.port
                       )
                         ? "rounded-sm border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
                         : "rounded-sm border-[1px] border-gray-300 py-1 text-center"

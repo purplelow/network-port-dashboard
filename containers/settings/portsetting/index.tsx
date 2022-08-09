@@ -118,6 +118,8 @@ const PortSetting = () => {
   let isDownSuccess = true;
   let isUp = true;
   let isDown = true;
+  let isUpDup = false;
+  let isDownDup = false;
 
   function refreshPage() {
     window.location.reload();
@@ -130,25 +132,23 @@ const PortSetting = () => {
     let i = 1;
     // console.log(upPorts, upPortList);
     upPorts?.map((u: any) => {
-      if (u.id !== "-1") {
-        if (Number(u.port) < 1 || Number(u.port) > 65535) {
-          isUpSuccess = false;
-        } else {
-          i === 1
-            ? (upPortJson = [{ id: u.id, port: u.port }])
-            : (upPortJson = [...upPortJson, { id: u.id, port: u.port }]);
-          isUpSuccess = true;
-          i++;
-        }
-
-        // if (upPortJson[0].id === "") isUp = false;
-        // if (
-        //   upPortJson.some((el: any) => el.port === u.port && el.id === u.id) ===
-        //   true
-        // ) {
-        //   isUp = false;
-        // }
+      if (Number(u.port) < 1 || Number(u.port) > 65535) {
+        isUpSuccess = false;
+      } else {
+        i === 1
+          ? (upPortJson = [{ id: u.id, port: u.port }])
+          : (upPortJson = [...upPortJson, { id: u.id, port: u.port }]);
+        isUpSuccess = true;
+        i++;
       }
+
+      // if (upPortJson[0].id === "") isUp = false;
+      // if (
+      //   upPortJson.some((el: any) => el.port === u.port && el.id === u.id) ===
+      //   true
+      // ) {
+      //   isUp = false;
+      // }
     });
 
     // upPortJson.map((u) => {
@@ -179,18 +179,6 @@ const PortSetting = () => {
         stopbits: u.stopbits,
         deviceId: u.deviceId,
       };
-      // downPortListData?.map((com: any, i: string) => {
-      //   if (com.id === u.id) {
-      //     if (putArr.name === "") putArr.name = com.name;
-      //     if (putArr.model === "") putArr.model = com.model;
-      //     if (putArr.type === "") putArr.type = com.type;
-      //     if (putArr.baudrate === "") putArr.baudrate = com.baudrate;
-      //     if (putArr.parity === "") putArr.parity = com.parity;
-      //     if (putArr.databits === "") putArr.databits = com.databits;
-      //     if (putArr.stopbits === "") putArr.stopbits = com.stopbits;
-      //     if (putArr.deviceId === "") putArr.deviceId = com.deviceId;
-      //   }
-      // });
 
       if (
         putArr.deviceId === "" ||
@@ -213,9 +201,15 @@ const PortSetting = () => {
     upPortPut();
     downPortPut();
     if (isUp === false && isDown === false) {
-      toast.warning("변경 사항이 없습니다.", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      if (isDownSuccess === false) {
+        toast.warning("DEVICE ID는 0~32767 사이 숫자를 입력하세요.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      } else {
+        toast.warning("변경 사항이 없습니다.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
     } else if (validPort === true) {
       toast.warning("LISTEN PORT는 중복될 수 없습니다.", {
         position: toast.POSITION.TOP_CENTER,
