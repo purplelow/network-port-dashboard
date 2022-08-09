@@ -205,6 +205,10 @@ const PortSetting = () => {
         toast.warning("DEVICE ID는 0~32767 사이 숫자를 입력하세요.", {
           position: toast.POSITION.TOP_CENTER,
         });
+      } else if (isUpSuccess === false) {
+        toast.warning("LISTEN PORT는 1~65535 사이 숫자를 입력하세요.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       } else {
         toast.warning("변경 사항이 없습니다.", {
           position: toast.POSITION.TOP_CENTER,
