@@ -23,6 +23,7 @@ import MqttWSReactService from "mqtt_ws";
 import MqttPublish from "mqtt_ws/MqttPublish";
 import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 import { useEffect, useState } from "react";
+import useUpPortList from "@api/setting/upPortList";
 
 const PortSetting = () => {
   const WS_CLIID = process.env.NEXT_PUBLIC_WS_CLIID;
@@ -92,7 +93,9 @@ const PortSetting = () => {
   const [downPorts, setDownPorts]: any = useRecoilState(downPortsState);
   const [upCheckList, setUpCheckItems] = useRecoilState(upPortsCheckList);
   const [downCheckList, setDownCheckItems] = useRecoilState(downPortsCheckList);
-  const { downPortListData, isLoading, isError }: any =
+  const { upPortListData, isUpLoading, isUpError }: any =
+    useUpPortList(ABS_URL);
+  const { downPortListData, isDownLoading, isDownError }: any =
     useDownPortList(ABS_URL);
 
   let upPortJson = [
@@ -118,15 +121,14 @@ const PortSetting = () => {
   let isDownSuccess = true;
   let isUp = true;
   let isDown = true;
-  let isUpDup = false;
-  let isDownDup = false;
+  let validPort = false;
+  let validDeviceId = false;
 
   function refreshPage() {
     window.location.reload();
   }
 
   const [upPortList, setUpPortList]: any = useRecoilState(upPortRecoilData);
-  let validPort = false;
   // const [validPort, setValidPort] = useState(false);
   const upPortPut = () => {
     let i = 1;
@@ -141,7 +143,6 @@ const PortSetting = () => {
         isUpSuccess = true;
         i++;
       }
-
       // if (upPortJson[0].id === "") isUp = false;
       // if (
       //   upPortJson.some((el: any) => el.port === u.port && el.id === u.id) ===
@@ -150,6 +151,20 @@ const PortSetting = () => {
       //   isUp = false;
       // }
     });
+    let portList: any = [];
+    upPortListData?.map((list: any) => {
+      let portData = list.port;
+      upPorts?.map((u: any) => {
+        list.id === u.id
+          ? portData = u.port
+          : null;
+      });
+      portList = [...portList, portData];
+    });
+    const portListSet = new Set(portList);
+    portList.length !== portListSet.size ? validPort = true : validPort = false;
+    console.log("portList, portListSet, result", portList, portListSet, validPort);
+
 
     // upPortJson.map((u) => {
     //   const vapo = upPortList.some(
