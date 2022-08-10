@@ -273,7 +273,6 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
 
   const upPortLength = () => {
     let i = 0;
-    // const length = upPortList.length;
     upPortList?.map(() => (i += 1));
     return i;
   };
@@ -312,7 +311,7 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
       );
     }
   };
-  // console.log("upPort ? :", upPorts);
+
   //checkbox
   const handleSingleCheck = (checked: boolean, id: any, key: any) => {
     if (checked) {
@@ -331,10 +330,9 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
       setCheckItems(["-1"]);
     }
   };
-  const [asisPort, setAsisPort] = useState([]);
+
   return (
     <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-sm border-[1px] border-gray-300 shadow-md">
-      {/* <button onClick={upPortPut}>test</button> */}
       <form>
         <table className="w-full text-left text-sm text-gray-500">
           <thead className="bg-blue-100 text-xs uppercase text-gray-700">

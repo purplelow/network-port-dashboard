@@ -129,7 +129,6 @@ const PortSetting = () => {
   const upPortPut = () => {
     let i = 1;
     upPorts?.map((u: any) => {
-      // if (u.id !== "-1") {
       if (Number(u.port) < 1 || Number(u.port) > 65535) {
         isUpSuccess = false;
       } else {
@@ -139,32 +138,9 @@ const PortSetting = () => {
         isUpSuccess = true;
         i++;
       }
-      // if (upPortJson[0].id === "") isUp = false;
-      // if (
-      //   upPortJson.some((el: any) => el.port === u.port && el.id === u.id) ===
-      //   true
-      // ) {
-      //   isUp = false;
-      // }
-    });
-
-    upPortJson.map((u) => {
-      const vapo = upPortList.some(
-        (el: any) => el.id !== u.id && el.port === u.port
-      );
-      // vapo ? (validPort = true) : (validPort = false);
-      if (vapo === true) {
-        validPort = true;
-      } else {
-        validPort = false;
-      }
-      // console.log("vapo @@@@@@@ ", vapo);
-      // console.log("validPort", validPort);
     });
 
     if (upPortJson[0].id === "") isUp = false;
-
-    // console.log("validPort", upPortJson, upPortList, validPort);
   };
 
   const downPortPut = () => {
