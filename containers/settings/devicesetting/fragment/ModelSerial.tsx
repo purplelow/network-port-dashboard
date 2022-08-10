@@ -100,7 +100,7 @@ export default function ModelSerial({ ABS_URL }: any) {
             <button
               type="submit"
               onClick={() => {
-                setValue("serialnumber", modelSerial);
+                setValue("serialnumber", modelSerial ?? modelSerialGetValue);
               }}
               className="rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-10 text-sm font-medium text-white hover:bg-blue-800 "
             >

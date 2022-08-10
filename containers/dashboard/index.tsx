@@ -78,7 +78,7 @@ const Dashboard = () => {
                     <MemoryChart ABS_URL={ABS_URL} client={client} />
                   </div>
                   <div className="flex h-full w-1/4 items-end">
-                    <StorageChart ABS_URL={ABS_URL} />
+                    <StorageChart ABS_URL={ABS_URL} client={client} />
                   </div>
                   <div className="flex h-full w-1/4 items-end">
                     <HDDChart ABS_URL={ABS_URL} />

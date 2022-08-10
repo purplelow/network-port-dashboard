@@ -5,7 +5,8 @@ const UPDATE_NETWORK_API_URL = process.env.NEXT_PUBLIC_UPDATE_NETWORK;
 
 export default function updateNetwork({ ABS_URL }: any, neworkInfoJson: any) {
   axios
-    .put(`${ABS_URL}${UPDATE_NETWORK_API_URL}`, neworkInfoJson)
+    // .put(`${ABS_URL}${UPDATE_NETWORK_API_URL}`, neworkInfoJson)
+    .put(`123`, neworkInfoJson)
     .then((res) => {
       toast.success("네트워크 설정이 적용 되었습니다.", {
         position: toast.POSITION.BOTTOM_CENTER,
