@@ -222,6 +222,8 @@ const PortSetting = () => {
         downPortList: downPortJson,
         upPortList: upPortJson,
       };
+      setUpPorts([]);
+      setDownPorts([]);
       updatePortSetting(ABS_URL, putPortArr);
       setIsChanged(false);
       // setDownPorts(downPorts);
