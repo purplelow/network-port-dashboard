@@ -422,12 +422,10 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
                       required: "포트를 입력하세요.",
                       onChange: (e: any) => {
                         onChangePort(e);
-                        // setAsisPort(...asisPort, getValues(`port${com.id}`)]);
                       },
                       // validate: {
                       //   duplicatePort: (value: any) => {
                       //     const [asis] = getValues(`port${com.id}`);
-                      //     console.log("???", asis);
                       //     const valPort = asis.some(
                       //       (el: any) => el.port === value
                       //     );

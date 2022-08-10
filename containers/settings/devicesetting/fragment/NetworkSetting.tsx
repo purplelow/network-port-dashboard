@@ -10,6 +10,7 @@ import { cls } from "@libs/utils";
 import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 import MqttMessage from "mqtt_ws/MqttMessage";
 import { AiOutlineConsoleSql } from "react-icons/ai";
+import getNetworkInfo from "@api/setting/getNetworkInfo";
 
 // interface NeworkForm {
 //   gateway: string;
@@ -19,11 +20,6 @@ import { AiOutlineConsoleSql } from "react-icons/ai";
 // }
 
 export default function NetworkSetting({ ABS_URL, client }: any) {
-  const topic = process.env.MQTT_TOPIC_NETWORK;
-  MqttSubScribe(client, topic);
-  const { mqttData, currentTopic } = MqttMessage(client);
-
-  const { networkInfoData } = useNetworkInfo(ABS_URL);
   const {
     register,
     handleSubmit,
@@ -32,8 +28,11 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
     setValue,
     formState: { errors },
   } = useForm();
-  const networkData = networkInfoData?.interfaces;
-
+  const topic = process.env.MQTT_TOPIC_NETWORK;
+  MqttSubScribe(client, topic);
+  const { mqttData, currentTopic } = MqttMessage(client);
+  // const { networkInfoData } = useNetworkInfo(ABS_URL);
+  const { networkInfoData } = getNetworkInfo(ABS_URL);
   const [networkInfo, setNetworkInfo]: any = useState(null);
 
   useEffect(() => {
@@ -82,14 +81,17 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
     }
     return result;
   };
+  const defaultName = networkInfoData?.interfaces[0].name;
+  const defaultAddress = networkInfoData?.interfaces[0].addresses[0].address;
+  const defaultMask = networkInfoData?.interfaces[0].addresses[0].mask;
+  const defaultGateway = networkInfoData?.interfaces[0].addresses[0].gateway;
 
-  const defaultName = networkInfo?.interfaces[0].name;
-  const defaultAddress = networkInfo?.interfaces[0].addresses[0].address;
-  const defaultMask = networkInfo?.interfaces[0].addresses[0].mask;
-  const defaultGateway = networkInfo?.interfaces[0].addresses[0].gateway;
+  const defaultAddress_B = networkInfoData?.interfaces[1].addresses[0].address;
+  const defaultMask_B = networkInfoData?.interfaces[1].addresses[0].mask;
+  const defaultGateway_B = networkInfoData?.interfaces[1].addresses[0].gateway;
 
   const [data, setData]: any = useState({
-    networkInfos: [
+    interfaces: [
       {
         name: defaultName,
         ipaddress: defaultAddress,
@@ -103,7 +105,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
   const [gateway, setGateway] = useState(defaultGateway);
   useEffect(() => {
     setData({
-      networkInfos: [
+      interfaces: [
         {
           name: defaultName,
           ipaddress: ipaddress ?? defaultAddress,
@@ -113,7 +115,6 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
       ],
     });
   }, [networkInfo]);
-  // console.log("data : ", data);
 
   // const setJSONData = (e: any) => {
   //   // let i = e.target.id;
@@ -182,7 +183,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
   // };
 
   // const neworkInfoJson = {
-  //   networkInfos: [
+  //   interfaces: [
   //     {
   //       name: defaultName,
   //       ipaddress: ipaddress ?? defaultAddress,
@@ -194,7 +195,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
 
   const onValid = () => {
     // const neworkInfoJson = {
-    //   networkInfos: data,
+    //   interfaces: data,
     // };
     updateNetwork({ ABS_URL }, data);
   };
@@ -273,9 +274,11 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                   // required: "ip 주소를 입력해 주세요.",
                 })}
                 defaultValue={
-                  (networkInfo?.interfaces[0].addresses[0] &&
-                    networkInfo?.interfaces[0].addresses[0].address) ??
-                  "-"
+                  defaultAddress
+                    ? defaultAddress
+                    : (networkInfo?.interfaces[0].addresses[0] &&
+                        networkInfo?.interfaces[0].addresses[0].address) ??
+                      "-"
                 }
                 id="ipaddressA"
                 placeholder="IP 주소를 입력해 주세요."
@@ -320,9 +323,11 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                   // required: "netmask를 입력해 주세요.",
                 })}
                 defaultValue={
-                  (networkInfo?.interfaces[0].addresses[0] &&
-                    networkInfo?.interfaces[0].addresses[0].mask) ??
-                  "-"
+                  defaultMask
+                    ? defaultMask
+                    : (networkInfo?.interfaces[0].addresses[0] &&
+                        networkInfo?.interfaces[0].addresses[0].mask) ??
+                      "-"
                 }
                 id="netmaskA"
                 placeholder="NETMASK를를 입력해 주세요."
@@ -367,9 +372,11 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                   // required: "gateway를 입력해 주세요.",
                 })}
                 defaultValue={
-                  (networkInfo?.interfaces[0].addresses[0] &&
-                    networkInfo?.interfaces[0].addresses[0].gateway) ??
-                  "-"
+                  defaultGateway
+                    ? defaultGateway
+                    : (networkInfo?.interfaces[0].addresses[0] &&
+                        networkInfo?.interfaces[0].addresses[0].gateway) ??
+                      "-"
                 }
                 id="gatewayA"
                 placeholder="GATEWAY를 입력해 주세요."
@@ -434,9 +441,11 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                   disabled: true,
                 })}
                 defaultValue={
-                  (networkInfo?.interfaces[1].addresses[0] &&
-                    networkInfo?.interfaces[1].addresses[0].address) ??
-                  "-"
+                  defaultAddress_B
+                    ? defaultAddress_B
+                    : (networkInfo?.interfaces[1].addresses[0] &&
+                        networkInfo?.interfaces[1].addresses[0].address) ??
+                      "-"
                 }
                 id="ipaddressB"
                 placeholder="IP 주소를 입력해 주세요."
@@ -456,9 +465,11 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                   disabled: true,
                 })}
                 defaultValue={
-                  (networkInfo?.interfaces[1].addresses[0] &&
-                    networkInfo?.interfaces[1].addresses[0].mask) ??
-                  "-"
+                  defaultMask_B
+                    ? defaultMask_B
+                    : (networkInfo?.interfaces[1].addresses[0] &&
+                        networkInfo?.interfaces[1].addresses[0].mask) ??
+                      "-"
                 }
                 id="netmaskB"
                 placeholder="NETMASK를를 입력해 주세요."
@@ -478,9 +489,11 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                   disabled: true,
                 })}
                 defaultValue={
-                  (networkInfo?.interfaces[1].addresses[0] &&
-                    networkInfo?.interfaces[1].addresses[0].gateway) ??
-                  "-"
+                  defaultGateway_B
+                    ? defaultGateway_B
+                    : (networkInfo?.interfaces[1].addresses[0] &&
+                        networkInfo?.interfaces[1].addresses[0].gateway) ??
+                      "-"
                 }
                 id="gatewayB"
                 placeholder="GATEWAY를 입력해 주세요."
@@ -551,7 +564,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                       onChange: setJSONData,
                       required: "ip 주소를 입력해 주세요.",
                     })}
-                    defaultValue={networkData.addresses[0].address ?? ""}
+                    defaultValue={networkData.address ?? ""}
                     id={`${i}`}
                     placeholder="IP 주소를 입력해 주세요."
                     type="text"
@@ -585,7 +598,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                       onChange: setJSONData,
                       required: "netmask를 입력해 주세요.",
                     })}
-                    defaultValue={networkData.addresses[0].mask ?? ""}
+                    defaultValue={networkData.mask ?? ""}
                     id={`${i}`}
                     placeholder="NETMASK를를 입력해 주세요."
                     type="text"
@@ -617,7 +630,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                       onChange: setJSONData,
                       required: "gateway를 입력해 주세요.",
                     })}
-                    defaultValue={networkData.addresses[0].gateway ?? ""}
+                    defaultValue={networkData.gateway ?? ""}
                     id={`${i}`}
                     placeholder="GATEWAY를 입력해 주세요."
                     type="text"

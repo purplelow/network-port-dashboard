@@ -164,12 +164,6 @@ const PortSetting = () => {
     portList.length !== portListSet.size
       ? (validPort = true)
       : (validPort = false);
-    console.log(
-      "portList, portListSet, result",
-      portList,
-      portListSet,
-      validPort
-    );
 
     if (upPortJson[0].id === "") isUp = false;
   };
