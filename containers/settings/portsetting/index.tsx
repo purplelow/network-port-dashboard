@@ -144,13 +144,6 @@ const PortSetting = () => {
         isUpSuccess = true;
         i++;
       }
-      // if (upPortJson[0].id === "") isUp = false;
-      // if (
-      //   upPortJson.some((el: any) => el.port === u.port && el.id === u.id) ===
-      //   true
-      // ) {
-      //   isUp = false;
-      // }
     });
     let portList: any = [];
     upPortListData?.map((list: any) => {
