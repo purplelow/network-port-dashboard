@@ -12,6 +12,12 @@ import { toast } from "react-toastify";
 // import * as yup from 'yup';
 
 export default function UpPortSetting({ ABS_URL, client }: any) {
+  const {
+    register,
+    watch,
+    getValues,
+    formState: { errors },
+  }: any = useForm();
   const topic = process.env.MQTT_TOPIC_UPPORT;
   MqttSubScribe(client, topic);
   const {
@@ -268,7 +274,6 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
 
   const upPortLength = () => {
     let i = 0;
-    // const length = upPortList.length;
     upPortList?.map(() => (i += 1));
     return i;
   };
@@ -308,6 +313,7 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
       );
     }
   };
+
   //checkbox
   const handleSingleCheck = (checked: boolean, id: any, key: any) => {
     if (checked) {
@@ -329,7 +335,6 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
 
   return (
     <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-sm border-[1px] border-gray-300 shadow-md">
-      {/* <button onClick={upPortPut}>test</button> */}
       <form>
         <table className="w-full text-left text-sm text-gray-500">
           <thead className="bg-blue-100 text-xs uppercase text-gray-700">
@@ -408,7 +413,24 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
                 <td className="px-6 py-1.5 text-right">{com.deviceName}</td>
                 <td className="px-6 py-1.5 text-center">
                   <input
-                    name="port"
+                    {...register(`port${com.id}`, {
+                      required: "포트를 입력하세요.",
+                      onChange: (e: any) => {
+                        onChangePort(e);
+                        // setAsisPort(...asisPort, getValues(`port${com.id}`)]);
+                      },
+                      // validate: {
+                      //   duplicatePort: (value: any) => {
+                      //     const [asis] = getValues(`port${com.id}`);
+                      //     console.log("???", asis);
+                      //     const valPort = asis.some(
+                      //       (el: any) => el.port === value
+                      //     );
+                      //     return valPort && "포트는 중복될 수 없습니다.";
+                      //   },
+                      // },
+                    })}
+                    // name="port"
                     id={com.id}
                     type="number"
                     min="1"
@@ -423,8 +445,13 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
                       : "rounded-sm border-[1px] border-gray-300 py-1 text-center"
                     }
                     defaultValue={com.port}
-                    onChange={onChangePort}
+                    // onChange={onChangePort}
                   />
+                  {/* {errors.port[com.id] && (
+                    <p className="absolute -bottom-4 min-w-[220px] text-xs italic text-red-500">
+                      {errors.port[com.id].message}
+                    </p>
+                  )} */}
                 </td>
                 <td className="px-6 py-1.5 text-right">{com.t3}</td>
                 <td className="px-6 py-1.5 text-right">{com.t5}</td>

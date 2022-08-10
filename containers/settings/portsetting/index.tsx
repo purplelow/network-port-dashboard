@@ -90,7 +90,7 @@ const PortSetting = () => {
     });
   };
 
-  const [upPorts, setUpPorts] = useRecoilState(upPortsState);
+  const [upPorts, setUpPorts]: any = useRecoilState(upPortsState);
   const [downPorts, setDownPorts]: any = useRecoilState(downPortsState);
   const [upCheckList, setUpCheckItems] = useRecoilState(upPortsCheckList);
   const [downCheckList, setDownCheckItems] = useRecoilState(downPortsCheckList);
@@ -134,7 +134,6 @@ const PortSetting = () => {
   // const [validPort, setValidPort] = useState(false);
   const upPortPut = () => {
     let i = 1;
-    // console.log(upPorts, upPortList);
     upPorts?.map((u: any) => {
       if (Number(u.port) < 1 || Number(u.port) > 65535) {
         isUpSuccess = false;
@@ -145,13 +144,6 @@ const PortSetting = () => {
         isUpSuccess = true;
         i++;
       }
-      // if (upPortJson[0].id === "") isUp = false;
-      // if (
-      //   upPortJson.some((el: any) => el.port === u.port && el.id === u.id) ===
-      //   true
-      // ) {
-      //   isUp = false;
-      // }
     });
     let portList: any = [];
     upPortListData?.map((list: any) => {
@@ -168,17 +160,7 @@ const PortSetting = () => {
     console.log("portList, portListSet, result", portList, portListSet, validPort);
 
 
-    // upPortJson.map((u) => {
-    //   const vapo = upPortList.some(
-    //     (el: any) => el.id !== u.id && el.port === u.port
-    //   );
-    //   vapo ? (validPort = true) : (validPort = false);
-    //   console.log("vapo @@@@@@@ ", vapo);
-    //   console.log("validPort", validPort);
-    // });
     if (upPortJson[0].id === "") isUp = false;
-
-    // console.log("validPort", upPortJson, upPortList, validPort);
   };
 
   const downPortPut = () => {
@@ -240,7 +222,6 @@ const PortSetting = () => {
         downPortList: downPortJson,
         upPortList: upPortJson,
       };
-      console.log("api putPortArr ?@?@?@?:", putPortArr);
       updatePortSetting(ABS_URL, putPortArr);
       setIsChanged(false);
       // setDownPorts(downPorts);

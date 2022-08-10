@@ -49,9 +49,18 @@ export default function RestoreFrom({ ABS_URL }: any) {
       })
       .catch((error) => {
         // setRestoreFail(true);
-        toast.error("파일 업로드 오류 !!", {
-          position: toast.POSITION.TOP_CENTER,
-        });
+        if (error.response.data.code === "C004")
+          toast.error("파일 업로드 오류 !!", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        else if (error.response.data.code === "F003")
+          toast.error("이 시스템과 호환되지 않는 백업파일입니다.", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        else
+          toast.error("파일 업로드 오류 !!", {
+            position: toast.POSITION.TOP_CENTER,
+          });
       });
   };
 
@@ -69,6 +78,7 @@ export default function RestoreFrom({ ABS_URL }: any) {
       <input
         {...register("files", { required: true })}
         id="backUpFileUp"
+        accept=".bak"
         type="file"
         onChange={uploadFile}
         className="min-w-[350px] cursor-pointer border-[1px] border-gray-200 text-sm text-slate-500
