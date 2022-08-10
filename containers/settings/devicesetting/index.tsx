@@ -17,7 +17,7 @@ const DeviceSetting = () => {
   const clientId = `${WS_CLIID}`;
   const { client } = MqttWSReactService(clientId);
   return (
-    <Layout title="장비 기본설정">
+    <Layout title="장비 기본 설정">
       <ToastContainer
         autoClose={3000}
         hideProgressBar={false}

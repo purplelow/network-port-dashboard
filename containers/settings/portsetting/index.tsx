@@ -2,6 +2,7 @@ import { constSelector, useRecoilState, useRecoilValue } from "recoil";
 import {
   downPortsCheckList,
   mqttUrl,
+  portSettingValueChanged,
   routerUrl,
   upPortRecoilData,
   upPortsCheckList,
@@ -23,6 +24,7 @@ import MqttWSReactService from "mqtt_ws";
 import MqttPublish from "mqtt_ws/MqttPublish";
 import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 import { useEffect, useState } from "react";
+import useUpPortList from "@api/setting/upPortList";
 
 const PortSetting = () => {
   const WS_CLIID = process.env.NEXT_PUBLIC_WS_CLIID;
@@ -92,7 +94,10 @@ const PortSetting = () => {
   const [downPorts, setDownPorts]: any = useRecoilState(downPortsState);
   const [upCheckList, setUpCheckItems] = useRecoilState(upPortsCheckList);
   const [downCheckList, setDownCheckItems] = useRecoilState(downPortsCheckList);
-  const { downPortListData, isLoading, isError }: any =
+  const [isChanged, setIsChanged] = useRecoilState(portSettingValueChanged);
+  const { upPortListData, isUpLoading, isUpError }: any =
+    useUpPortList(ABS_URL);
+  const { downPortListData, isDownLoading, isDownError }: any =
     useDownPortList(ABS_URL);
 
   let upPortJson = [
@@ -118,13 +123,14 @@ const PortSetting = () => {
   let isDownSuccess = true;
   let isUp = true;
   let isDown = true;
+  let validPort = false;
+  let validDeviceId = false;
 
   function refreshPage() {
     window.location.reload();
   }
 
   const [upPortList, setUpPortList]: any = useRecoilState(upPortRecoilData);
-  let validPort = false;
   // const [validPort, setValidPort] = useState(false);
   const upPortPut = () => {
     let i = 1;
@@ -138,7 +144,32 @@ const PortSetting = () => {
         isUpSuccess = true;
         i++;
       }
+      // if (upPortJson[0].id === "") isUp = false;
+      // if (
+      //   upPortJson.some((el: any) => el.port === u.port && el.id === u.id) ===
+      //   true
+      // ) {
+      //   isUp = false;
+      // }
     });
+    let portList: any = [];
+    upPortListData?.map((list: any) => {
+      let portData = list.port;
+      upPorts?.map((u: any) => {
+        list.id === u.id ? (portData = u.port) : null;
+      });
+      portList = [...portList, portData];
+    });
+    const portListSet = new Set(portList);
+    portList.length !== portListSet.size
+      ? (validPort = true)
+      : (validPort = false);
+    console.log(
+      "portList, portListSet, result",
+      portList,
+      portListSet,
+      validPort
+    );
 
     if (upPortJson[0].id === "") isUp = false;
   };
@@ -180,9 +211,19 @@ const PortSetting = () => {
     upPortPut();
     downPortPut();
     if (isUp === false && isDown === false) {
-      toast.warning("변경 사항이 없습니다.", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      if (isDownSuccess === false) {
+        toast.warning("DEVICE ID는 0~32767 사이 숫자를 입력하세요.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      } else if (isUpSuccess === false) {
+        toast.warning("LISTEN PORT는 1~65535 사이 숫자를 입력하세요.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      } else {
+        toast.warning("변경 사항이 없습니다.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
     } else if (validPort === true) {
       toast.warning("LISTEN PORT는 중복될 수 없습니다.", {
         position: toast.POSITION.TOP_CENTER,
@@ -193,6 +234,7 @@ const PortSetting = () => {
         upPortList: upPortJson,
       };
       updatePortSetting(ABS_URL, putPortArr);
+      setIsChanged(false);
       // setDownPorts(downPorts);
     } else if (isUpSuccess === false && isDownSuccess === true) {
       toast.warning("LISTEN PORT는 1~65535 사이 숫자를 입력하세요.", {

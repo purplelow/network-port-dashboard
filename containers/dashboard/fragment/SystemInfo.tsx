@@ -59,7 +59,7 @@ export default function SystemInfo({ ABS_URL }: any) {
                 모델명
               </th>
               <th scope="col" className="w-1/5 px-3 py-3">
-                시리얼넘버
+                시리얼 넘버
               </th>
               <th scope="col" className="w-1/5 px-3 py-3">
                 로컬 시간
