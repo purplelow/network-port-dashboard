@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { AiOutlineUpload } from "react-icons/ai";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import AlertAdminReq from "./AlertAdminReq";
 
-const UPLOAD_FIRMWARE_API_URL = process.env.NEXT_PUBLIC_UPLOAD_FIRMWARE;
 interface firmFile {
   file: object;
 }
@@ -44,28 +44,7 @@ export default function FirmwareForm({ ABS_URL }: any) {
   const onSubmit = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
-
-    axios({
-      method: "POST",
-      url: `${ABS_URL}${UPLOAD_FIRMWARE_API_URL}`,
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        // "Access-Control-Allow-Origin": "*",
-      },
-    })
-      .then((res) => {
-        // setAlert(true);
-        toast.success("펌웨어 파일 업로드 완료.", {
-          position: toast.POSITION.TOP_CENTER,
-        });
-      })
-      .catch((error) => {
-        // setErrorAlert(true);
-        toast.error("펌웨어 파일 업로드 오류 !!", {
-          position: toast.POSITION.TOP_CENTER,
-        });
-      });
+    AlertAdminReq(ABS_URL, "firmware", formData);
   };
 
   return (

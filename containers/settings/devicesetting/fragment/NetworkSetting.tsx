@@ -11,6 +11,7 @@ import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 import MqttMessage from "mqtt_ws/MqttMessage";
 import { AiOutlineConsoleSql } from "react-icons/ai";
 import getNetworkInfo from "@api/setting/getNetworkInfo";
+import AlertAdminReq from "containers/management/systemmanage/fragment/AlertAdminReq";
 
 interface NeworkForm {
   gateway: string;
@@ -183,7 +184,8 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
   // };
 
   const onValid = () => {
-    updateNetwork({ ABS_URL }, data);
+    AlertAdminReq(ABS_URL, "network", data);
+    // updateNetwork({ ABS_URL }, data);
   };
 
   const onInvalid = () => {
@@ -603,9 +605,9 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
         <div className="absolute left-0 bottom-0 flex w-full justify-center py-2">
           <button
             onClick={() => {
-              setValue("ipaddressA", ipaddress ?? defaultAddress);
-              setValue("netmaskA", netmask ?? defaultMask);
-              setValue("gatewayA", gateway ?? defaultGateway);
+              // setValue("ipaddressA", ipaddress ?? defaultAddress);
+              // setValue("netmaskA", netmask ?? defaultMask);
+              // setValue("gatewayA", gateway);
             }}
             type="submit"
             className="rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-10 text-sm font-medium text-white hover:bg-blue-800 "
