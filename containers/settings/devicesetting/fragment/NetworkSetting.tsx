@@ -11,6 +11,7 @@ import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 import MqttMessage from "mqtt_ws/MqttMessage";
 import { AiOutlineConsoleSql } from "react-icons/ai";
 import getNetworkInfo from "@api/setting/getNetworkInfo";
+import AlertAdminReq from "containers/management/systemmanage/fragment/AlertAdminReq";
 
 interface NeworkForm {
   gateway: string;
@@ -20,6 +21,24 @@ interface NeworkForm {
 }
 
 export default function NetworkSetting({ ABS_URL, client }: any) {
+  const [ipaddress, setIpaddress] = useState("");
+  const [netmask, setNetmask] = useState("");
+  const [gateway, setGateway] = useState("");
+  const topic = process.env.MQTT_TOPIC_NETWORK;
+  MqttSubScribe(client, topic);
+  const { mqttData, currentTopic } = MqttMessage(client);
+  const { networkInfoData } = getNetworkInfo(ABS_URL);
+  const [networkInfo, setNetworkInfo]: any = useState(null);
+
+  const defaultName = networkInfoData?.interfaces[0].name;
+  const defaultAddress = networkInfoData?.interfaces[0].addresses[0]?.address;
+  const defaultMask = networkInfoData?.interfaces[0].addresses[0]?.mask;
+  const defaultGateway = networkInfoData?.interfaces[0].addresses[0]?.gateway;
+
+  const defaultAddress_B = networkInfoData?.interfaces[1].addresses[0]?.address;
+  const defaultMask_B = networkInfoData?.interfaces[1].addresses[0]?.mask;
+  const defaultGateway_B = networkInfoData?.interfaces[1].addresses[0]?.gateway;
+
   const {
     register,
     handleSubmit,
@@ -28,15 +47,13 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
     setValue,
     formState: { errors },
   } = useForm();
-  const topic = process.env.MQTT_TOPIC_NETWORK;
-  MqttSubScribe(client, topic);
-  const { mqttData, currentTopic } = MqttMessage(client);
-  const { networkInfoData } = getNetworkInfo(ABS_URL);
-  const [networkInfo, setNetworkInfo]: any = useState(null);
 
   useEffect(() => {
     if (networkInfoData) {
       setNetworkInfo(networkInfoData);
+      setIpaddress(networkInfoData?.interfaces[0].addresses[0]?.address);
+      setNetmask(networkInfoData?.interfaces[0].addresses[0]?.mask);
+      setGateway(networkInfoData?.interfaces[0].addresses[0]?.gateway);
     }
   }, [networkInfoData]);
 
@@ -80,27 +97,16 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
     }
     return result;
   };
-  const defaultName = networkInfoData?.interfaces[0].name;
-  const defaultAddress = networkInfoData?.interfaces[0].addresses[0]?.address;
-  const defaultMask = networkInfoData?.interfaces[0].addresses[0]?.mask;
-  const defaultGateway = networkInfoData?.interfaces[0].addresses[0]?.gateway;
-
-  const defaultAddress_B = networkInfoData?.interfaces[1].addresses[0]?.address;
-  const defaultMask_B = networkInfoData?.interfaces[1].addresses[0]?.mask;
-  const defaultGateway_B = networkInfoData?.interfaces[1].addresses[0]?.gateway;
 
   // const [data, setData]: any = useState();
-  const [ipaddress, setIpaddress] = useState(defaultAddress);
-  const [netmask, setNetmask] = useState(defaultMask);
-  const [gateway, setGateway] = useState(defaultGateway);
 
-  const data = {
+  const putNetworkData = {
     networkInfos: [
       {
         name: defaultName,
-        ipaddress: ipaddress ?? defaultAddress,
-        netmask: netmask ?? defaultMask,
-        gateway: gateway ?? defaultGateway,
+        ipaddress: ipaddress,
+        netmask: netmask,
+        gateway: gateway,
       },
     ],
   };
@@ -182,11 +188,13 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
   //   ],
   // };
 
-  const onValid = () => {
-    updateNetwork({ ABS_URL }, data);
+  const onValid = (data: any) => {
+    if (data.ipaddressA?.ref?.value === "") throw new Error();
+    AlertAdminReq(ABS_URL, "network", putNetworkData);
+    // updateNetwork({ ABS_URL }, data);
   };
 
-  const onInvalid = () => {
+  const onInvalid = (data: any) => {
     toast.warning("올바른 ip 주소를 입력해 주세요.", {
       position: toast.POSITION.BOTTOM_CENTER,
     });
@@ -257,9 +265,9 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                     message: "ipv4 형식이 아닙니다.",
                   },
                   onChange: (e) => setIpaddress(e.target.value),
-                  // required: "ip 주소를 입력해 주세요.",
+                  required: "ip 주소를 입력해 주세요.",
                 })}
-                defaultValue={defaultAddress}
+                defaultValue={ipaddress}
                 id="ipaddressA"
                 placeholder="IP 주소를 입력해 주세요."
                 type="text"
@@ -300,9 +308,9 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                     message: "ipv4 형식이 아닙니다.",
                   },
                   onChange: (e) => setNetmask(e.target.value),
-                  // required: "netmask를 입력해 주세요.",
+                  required: "netmask를 입력해 주세요.",
                 })}
-                defaultValue={defaultMask}
+                defaultValue={netmask}
                 id="netmaskA"
                 placeholder="NETMASK를를 입력해 주세요."
                 type="text"
@@ -345,7 +353,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                   onChange: (e) => setGateway(e.target.value),
                   // required: "gateway를 입력해 주세요.",
                 })}
-                defaultValue={defaultGateway}
+                defaultValue={gateway}
                 id="gatewayA"
                 placeholder="GATEWAY를 입력해 주세요."
                 type="text"
@@ -603,9 +611,9 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
         <div className="absolute left-0 bottom-0 flex w-full justify-center py-2">
           <button
             onClick={() => {
-              setValue("ipaddressA", ipaddress ?? defaultAddress);
-              setValue("netmaskA", netmask ?? defaultMask);
-              setValue("gatewayA", gateway ?? defaultGateway);
+              setValue("ipaddressA", ipaddress);
+              setValue("netmaskA", netmask);
+              setValue("gatewayA", gateway);
             }}
             type="submit"
             className="rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-10 text-sm font-medium text-white hover:bg-blue-800 "

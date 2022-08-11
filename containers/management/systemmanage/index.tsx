@@ -24,7 +24,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const SystemManage = () => {
   const ABS_URL = useRecoilValue(routerUrl);
-  const { systemInfo } = useSystemInfo(ABS_URL);
+  const { systemInfoData } = useSystemInfo(ABS_URL);
 
   // const [backUpSuccess, setBackUpSuccess] = useRecoilState(backUpState);
   // const [backUpFail, setBackUpFail] = useRecoilState(backUpFailState);
@@ -85,7 +85,7 @@ const SystemManage = () => {
           </button>
 
           <button
-            onClick={() => AlertAdminReq(ABS_URL)}
+            onClick={() => AlertAdminReq(ABS_URL, "reboot", "")}
             className="flex items-center space-x-2 rounded-sm bg-gray-900 px-4 py-3 text-sm text-white"
           >
             <VscDebugRestart className="text-lg" />
@@ -99,7 +99,7 @@ const SystemManage = () => {
           </span>
           <div className="flex w-[80%] items-center justify-end space-x-4">
             <span className="relative text-sm text-gray-500">
-              현재 버전 : {systemInfo?.system_info.version}
+              현재 버전 : {systemInfoData?.system_info.version}
             </span>
             <FirmwareForm ABS_URL={ABS_URL} />
           </div>
