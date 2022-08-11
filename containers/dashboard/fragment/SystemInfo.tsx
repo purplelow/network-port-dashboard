@@ -27,14 +27,15 @@ export default function SystemInfo({ ABS_URL }: any) {
     "\n"
   );
   const [userNote, setUserNote] = useState(userNoteValue);
+
   useEffect(() => {
     setUserNote(userNoteValue);
   }, [userNoteValue]);
 
   useEffect(() => {
-    axios(`${ABS_URL}${SYSTEMINFO_API_URL}`, {
-      method: "GET",
-    });
+    // axios(`${ABS_URL}${SYSTEMINFO_API_URL}`, {
+    //   method: "GET",
+    // });
     if (systemInfoData) setSystemInfo(systemInfoData);
   }, [systemInfoData]);
 

@@ -9,6 +9,7 @@ const nextConfig = {
     MQTT_TOPIC: process.env.MQTT_TOPIC,
     MQTT_TOPIC_CPU: process.env.MQTT_TOPIC_CPU,
     MQTT_TOPIC_MEMORY: process.env.MQTT_TOPIC_MEMORY,
+    MQTT_TOPIC_STORAGE: process.env.MQTT_TOPIC_STORAGE,
     MQTT_TOPIC_NETWORK: process.env.MQTT_TOPIC_NETWORK,
     MQTT_TOPIC_UPPORT: process.env.MQTT_TOPIC_UPPORT,
     MQTT_TOPIC_DOWNPORT: process.env.MQTT_TOPIC_DOWNPORT,

@@ -1,6 +1,11 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { upPortRecoilData, upPortsCheckList, upPortsState, portSettingValueChanged } from "recoil/atom";
+import {
+  upPortRecoilData,
+  upPortsCheckList,
+  upPortsState,
+  portSettingValueChanged,
+} from "recoil/atom";
 import { useForm } from "react-hook-form";
 
 import useUpPortList from "@api/setting/upPortList";
@@ -299,7 +304,7 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
     setIsChanged(true);
     const updateUpPort = {
       id: e.target.id,
-      port: (e.target.value).trim(),
+      port: e.target.value.trim(),
     };
     let i = 1;
     upPorts?.map((el: any) => (el.id !== e.target.id ? null : (i = 0)));
@@ -417,12 +422,10 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
                       required: "포트를 입력하세요.",
                       onChange: (e: any) => {
                         onChangePort(e);
-                        // setAsisPort(...asisPort, getValues(`port${com.id}`)]);
                       },
                       // validate: {
                       //   duplicatePort: (value: any) => {
                       //     const [asis] = getValues(`port${com.id}`);
-                      //     console.log("???", asis);
                       //     const valPort = asis.some(
                       //       (el: any) => el.port === value
                       //     );
@@ -437,12 +440,13 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
                     max="65535"
                     className={
                       isChanged === true
-                      ? upPorts.some(
-                        (el: any) => el.id === com.id && el.port !== com.port
-                      )
-                        ? "rounded-sm border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
+                        ? upPorts.some(
+                            (el: any) =>
+                              el.id === com.id && el.port !== com.port
+                          )
+                          ? "rounded-sm border-[1px] border-[#AA2222] py-1 text-center text-[#AA2222] outline-red-900"
+                          : "rounded-sm border-[1px] border-gray-300 py-1 text-center"
                         : "rounded-sm border-[1px] border-gray-300 py-1 text-center"
-                      : "rounded-sm border-[1px] border-gray-300 py-1 text-center"
                     }
                     defaultValue={com.port}
                     // onChange={onChangePort}

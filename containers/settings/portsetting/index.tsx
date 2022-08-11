@@ -149,16 +149,14 @@ const PortSetting = () => {
     upPortListData?.map((list: any) => {
       let portData = list.port;
       upPorts?.map((u: any) => {
-        list.id === u.id
-          ? portData = u.port
-          : null;
+        list.id === u.id ? (portData = u.port) : null;
       });
       portList = [...portList, portData];
     });
     const portListSet = new Set(portList);
-    portList.length !== portListSet.size ? validPort = true : validPort = false;
-    console.log("portList, portListSet, result", portList, portListSet, validPort);
-
+    portList.length !== portListSet.size
+      ? (validPort = true)
+      : (validPort = false);
 
     if (upPortJson[0].id === "") isUp = false;
   };
