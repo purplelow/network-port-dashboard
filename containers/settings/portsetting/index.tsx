@@ -131,7 +131,7 @@ const PortSetting = () => {
   }
 
   const [upPortList, setUpPortList]: any = useRecoilState(upPortRecoilData);
-  // const [validPort, setValidPort] = useState(false);
+  const [mountPort, setMountPort] = useState(false);
   const upPortPut = () => {
     let i = 1;
     upPorts?.map((u: any) => {
@@ -194,7 +194,7 @@ const PortSetting = () => {
     else isDown = true;
   };
 
-  const onClickSetting = () => {
+  const onClickSetting = async () => {
     upPortPut();
     downPortPut();
     if (isUp === false && isDown === false) {
@@ -222,7 +222,8 @@ const PortSetting = () => {
       };
       setUpPorts([]);
       setDownPorts([]);
-      updatePortSetting(ABS_URL, putPortArr);
+      await updatePortSetting(ABS_URL, putPortArr);
+      setMountPort(true);
       setIsChanged(false);
       // setDownPorts(downPorts);
     } else if (isUpSuccess === false && isDownSuccess === true) {
@@ -300,7 +301,11 @@ const PortSetting = () => {
           >
             포트 리셋
           </button>
-          <LowPortSetting ABS_URL={ABS_URL} client={client} />
+          <LowPortSetting
+            ABS_URL={ABS_URL}
+            client={client}
+            mountPort={mountPort}
+          />
         </div>
       </div>
     </Layout>

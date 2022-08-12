@@ -251,6 +251,9 @@ export default function LowCom({ ABS_URL, client }: any) {
                   delayHide={500}
                 >
                   <ul>
+                    <li className="text-center text-lg font-medium">{`${
+                      com?.sub_device?.protocol ?? "-"
+                    }`}</li>
                     <li>{`NAME : ${com?.sub_device?.toolTipName ?? "-"}`}</li>
                     <li>{`MODEL : ${com?.sub_device?.model ?? "-"}`}</li>
                     <li>{`TYPE : ${com?.sub_device?.type ?? "-"}`}</li>
@@ -258,7 +261,6 @@ export default function LowCom({ ABS_URL, client }: any) {
                       com?.sub_device?.secs1DeviceId ?? "-"
                     }`}</li>
                     <li>{`BAUD RATE : ${com?.sub_device?.baudrate ?? "-"}`}</li>
-                    <li>{`PROTOCOL : ${com?.sub_device?.protocol ?? "-"}`}</li>
                   </ul>
                 </ReactTooltip>
               )}

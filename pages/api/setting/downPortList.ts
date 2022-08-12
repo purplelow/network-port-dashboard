@@ -21,19 +21,25 @@ interface DownPortListProps {
   type: string;
 }
 
-const fetcher = (url: string) =>
-  axios
-    .get<DownPortListProps>(url)
-    .then((res) => res.data)
-    .catch((err) => console.error("DownPortList Error", err.config));
-
 export default function useLowPortList(ABS_URL: string) {
+  const fetcher = (url: string) =>
+    axios
+      .get<DownPortListProps>(url)
+      .then((res) => res.data)
+      .catch((err) => console.error("DownPortList Error", err.config));
   const { data, error } = useSWR(`${ABS_URL}${DOWNPORTLIST_API_URL}`, fetcher, {
     revalidateOnFocus: true,
-    revalidateIfStale: false,
+    revalidateIfStale: true,
     revalidateOnReconnect: false,
     revalidateOnMount: true,
+    // onSuccess: () => {
+    //   axios(`${ABS_URL}${DOWNPORTLIST_API_URL}`, {
+    //     method: "GET",
+    //   });
+    //   console.log("@@@@@@@@@@");
+    // },
   });
+
   return {
     downPortListData: data,
     isLoading: !error && !data,

@@ -1,12 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useMemoryUtilization from "@api/dashBoard/memoryUtilization";
 import useStorageUtilization from "@api/dashBoard/storageUtilization";
 import { cls } from "@libs/utils";
+import MqttSubScribe from "mqtt_ws/MqttSubscribe";
+import MqttMessage from "mqtt_ws/MqttMessage";
 
-export default function SystemTabCont({ ABS_URL }: any) {
+export default function SystemTabCont({ ABS_URL, client }: any) {
   const { memoryUtilization } = useMemoryUtilization(ABS_URL);
   const { storageUtilization }: any = useStorageUtilization(ABS_URL);
   const [sysTabIndex, setSysTabIndex] = useState(0);
+
+  const { mqttData, currentTopic } = MqttMessage(client);
+  const [memoryData, setMemoryData]: any = useState();
+  const [storageData, setStrorageData]: any = useState();
+
+  useEffect(() => {
+    if (memoryUtilization) {
+      setMemoryData(memoryUtilization);
+    }
+    if (storageUtilization) {
+      setStrorageData(storageUtilization);
+    }
+  }, [memoryUtilization, storageUtilization]);
+
+  useEffect(() => {
+    if (currentTopic.includes("/memory")) {
+      setMemoryData(mqttData);
+    }
+    if (currentTopic.includes("/storage")) {
+      setStrorageData(mqttData);
+    }
+  }, [mqttData]);
 
   return (
     <div className="row-span-2 overflow-hidden">
@@ -58,20 +82,12 @@ export default function SystemTabCont({ ABS_URL }: any) {
             </thead>
             <tbody>
               <tr className="border-b bg-white">
-                <td className="py-4 pr-2">
-                  {memoryUtilization?.details.total}
-                </td>
-                <td className="py-4 pr-2">{memoryUtilization?.details.used}</td>
-                <td className="py-4 pr-2">{memoryUtilization?.details.free}</td>
-                <td className="py-4 pr-2">
-                  {memoryUtilization?.details.shared}
-                </td>
-                <td className="py-4 pr-2">
-                  {memoryUtilization?.details.buffer}
-                </td>
-                <td className="py-4 pr-4">
-                  {memoryUtilization?.details.cached}
-                </td>
+                <td className="py-4 pr-2">{memoryData?.details.total}</td>
+                <td className="py-4 pr-2">{memoryData?.details.used}</td>
+                <td className="py-4 pr-2">{memoryData?.details.free}</td>
+                <td className="py-4 pr-2">{memoryData?.details.shared}</td>
+                <td className="py-4 pr-2">{memoryData?.details.buffer}</td>
+                <td className="py-4 pr-4">{memoryData?.details.cached}</td>
               </tr>
             </tbody>
           </table>
@@ -87,7 +103,7 @@ export default function SystemTabCont({ ABS_URL }: any) {
               </tr>
             </thead>
             <tbody>
-              {storageUtilization?.details.map((data: any, i: string) => (
+              {storageData?.details.map((data: any, i: string) => (
                 <tr className="border-b bg-white" key={i}>
                   <td className="py-2 pr-2 text-center">{data.device}</td>
                   <td className="h-2 py-2 pr-2">{data.total}</td>
