@@ -13,10 +13,11 @@ import updatePortSetting from "@api/setting/modifyPort";
 import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 import MqttMessage from "mqtt_ws/MqttMessage";
 import { toast } from "react-toastify";
+import axios from "axios";
 // import { yupResolver } from '@hookform/resolvers/yup';
 // import * as yup from 'yup';
 
-export default function UpPortSetting({ ABS_URL, client }: any) {
+export default function UpPortSetting({ ABS_URL, client, mountPort }: any) {
   const {
     register,
     watch,
@@ -46,20 +47,20 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
     portResD_g,
     portResD_h,
   }: any = MqttMessage(client);
-  // const [wsPortData, setWsPortData] = useRecoilState(mqttPortDataRender);
 
   const [checkItems, setCheckItems] = useRecoilState(upPortsCheckList);
   const [upPorts, setUpPorts]: any = useRecoilState(upPortsState);
   const { upPortListData, isLoading, isError }: any = useUpPortList(ABS_URL);
-  // const [upPortList, setUpPortList]: any = useState([]);
-  const [upPortList, setUpPortList]: any = useRecoilState(upPortRecoilData);
+  const UPPORTLIST_API_URL = process.env.NEXT_PUBLIC_GET_UPPORT_LIST;
+  const [upPortList, setUpPortList]: any = useState([]);
   const [isChanged, setIsChanged] = useRecoilState(portSettingValueChanged);
 
   useEffect(() => {
-    if (upPortListData) {
-      setUpPortList(upPortListData);
-    }
-  }, [upPortListData]);
+    axios
+      .get(`${ABS_URL}${UPPORTLIST_API_URL}`)
+      .then((res) => setUpPortList(res.data))
+      .catch((e) => console.error(e));
+  }, [upPortListData, mountPort]);
 
   useEffect(() => {
     if (portRD_a.app_service) {
@@ -166,17 +167,6 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
         )
       );
     }
-
-    // if (mqttData.message === "Success" && mqttData.orig_request?.svc_id === 2) {
-    //   toast.success(`2번 포트 리셋 성공`, {
-    //     position: toast.POSITION.TOP_CENTER,
-    //   });
-    // }
-    // if (mqttData.message === "Success" && mqttData.orig_request?.svc_id === 3) {
-    //   toast.success(`3번 포트 리셋 성공`, {
-    //     position: toast.POSITION.TOP_CENTER,
-    //   });
-    // }
   }, [
     portRD_a,
     portRD_b,
@@ -449,7 +439,6 @@ export default function UpPortSetting({ ABS_URL, client }: any) {
                         : "rounded-sm border-[1px] border-gray-300 py-1 text-center"
                     }
                     defaultValue={com.port}
-                    // onChange={onChangePort}
                   />
                   {/* {errors.port[com.id] && (
                     <p className="absolute -bottom-4 min-w-[220px] text-xs italic text-red-500">

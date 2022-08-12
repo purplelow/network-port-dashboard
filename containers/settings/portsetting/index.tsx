@@ -1,10 +1,8 @@
-import { constSelector, useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   downPortsCheckList,
-  mqttUrl,
   portSettingValueChanged,
   routerUrl,
-  upPortRecoilData,
   upPortsCheckList,
   upPortsState,
 } from "recoil/atom";
@@ -130,7 +128,6 @@ const PortSetting = () => {
     window.location.reload();
   }
 
-  const [upPortList, setUpPortList]: any = useRecoilState(upPortRecoilData);
   const [mountPort, setMountPort] = useState(false);
   const upPortPut = () => {
     let i = 1;
@@ -220,12 +217,11 @@ const PortSetting = () => {
         downPortList: downPortJson,
         upPortList: upPortJson,
       };
-      setUpPorts([]);
-      setDownPorts([]);
       await updatePortSetting(ABS_URL, putPortArr);
       setMountPort(true);
       setIsChanged(false);
-      // setDownPorts(downPorts);
+      setUpPorts([]);
+      setDownPorts([]);
     } else if (isUpSuccess === false && isDownSuccess === true) {
       toast.warning("LISTEN PORT는 1~65535 사이 숫자를 입력하세요.", {
         position: toast.POSITION.TOP_CENTER,
@@ -287,7 +283,11 @@ const PortSetting = () => {
           >
             포트 리셋
           </button>
-          <UpPortSetting ABS_URL={ABS_URL} client={client} />
+          <UpPortSetting 
+            ABS_URL={ABS_URL} 
+            client={client} 
+            mountPort={mountPort}
+          />
         </div>
 
         <div className="relative w-full rounded-md bg-white p-2 shadow-md">

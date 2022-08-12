@@ -11,7 +11,6 @@ import {
 } from "recoil/atom";
 
 export default function DownPortSetting({ ABS_URL, client, mountPort }: any) {
-  console.log("mountPort", mountPort);
   const topic = process.env.MQTT_TOPIC_DOWNPORT;
   MqttSubScribe(client, topic);
   const {
@@ -35,27 +34,11 @@ export default function DownPortSetting({ ABS_URL, client, mountPort }: any) {
   const DOWNPORTLIST_API_URL = process.env.NEXT_PUBLIC_GET_DOWNPORT_LIST;
   const [downPortList, setDownPortList]: any = useState([]);
   useEffect(() => {
-    // if (downPortListData) {
-    //   setDownPortList(downPortListData);
-    // }
-    // if (mountPort === true) {
     axios
       .get(`${ABS_URL}${DOWNPORTLIST_API_URL}`)
       .then((res) => setDownPortList(res.data))
       .catch((e) => console.error(e));
-    // console.log(" !!!!!!!");
-    // }
   }, [downPortListData, mountPort]);
-
-  // useEffect(() => {
-  //   if (mountPort === true) {
-  //     axios
-  //       .get(`${ABS_URL}${DOWNPORTLIST_API_URL}`)
-  //       .then((res) => setDownPortList(res.data))
-  //       .catch((e) => console.error(e));
-  //     // console.log(" !!!!!!!");
-  //   }
-  // }, [mountPort]);
 
   useEffect(() => {
     if (portRD_a.sub_device) {
@@ -175,7 +158,6 @@ export default function DownPortSetting({ ABS_URL, client, mountPort }: any) {
 
   const downPortLength = () => {
     let i = 0;
-    // const length = upPortList.length;
     downPortList?.map(() => (i += 1));
     return i;
   };
@@ -345,7 +327,6 @@ export default function DownPortSetting({ ABS_URL, client, mountPort }: any) {
   console.log("downPortList", downPortList[1]?.name);
   return (
     <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-sm border-[1px] border-gray-300 shadow-md">
-      {/* <button onClick={downPortPut}>test</button> */}
       <table className="w-full text-left text-sm  text-gray-500">
         <thead className="bg-blue-100 text-xs uppercase text-gray-700">
           <tr>
