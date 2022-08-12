@@ -1,4 +1,5 @@
 import useDownPortList from "@api/setting/downPortList";
+import axios from "axios";
 import MqttMessage from "mqtt_ws/MqttMessage";
 import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 import React, { useEffect, useLayoutEffect, useState } from "react";
@@ -9,7 +10,8 @@ import {
   portSettingValueChanged,
 } from "recoil/atom";
 
-export default function DownPortSetting({ ABS_URL, client }: any) {
+export default function DownPortSetting({ ABS_URL, client, mountPort }: any) {
+  console.log("mountPort", mountPort);
   const topic = process.env.MQTT_TOPIC_DOWNPORT;
   MqttSubScribe(client, topic);
   const {
@@ -30,14 +32,31 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
   const [isChanged, setIsChanged] = useRecoilState(portSettingValueChanged);
   const { downPortListData, isLoading, isError }: any =
     useDownPortList(ABS_URL);
-
+  const DOWNPORTLIST_API_URL = process.env.NEXT_PUBLIC_GET_DOWNPORT_LIST;
   const [downPortList, setDownPortList]: any = useState([]);
-
   useEffect(() => {
-    if (downPortListData) {
-      setDownPortList(downPortListData);
-    }
-  }, [downPortListData]);
+    // if (downPortListData) {
+    //   setDownPortList(downPortListData);
+    // }
+    // if (mountPort === true) {
+    axios
+      .get(`${ABS_URL}${DOWNPORTLIST_API_URL}`)
+      .then((res) => setDownPortList(res.data))
+      .catch((e) => console.error(e));
+    // console.log(" !!!!!!!");
+    // }
+  }, [downPortListData, mountPort]);
+
+  // useEffect(() => {
+  //   if (mountPort === true) {
+  //     axios
+  //       .get(`${ABS_URL}${DOWNPORTLIST_API_URL}`)
+  //       .then((res) => setDownPortList(res.data))
+  //       .catch((e) => console.error(e));
+  //     // console.log(" !!!!!!!");
+  //   }
+  // }, [mountPort]);
+
   useEffect(() => {
     if (portRD_a.sub_device) {
       const changePortId = portRD_a?.sub_device?.id;
@@ -323,7 +342,7 @@ export default function DownPortSetting({ ABS_URL, client }: any) {
       setCheckItems(["-1"]);
     }
   };
-
+  console.log("downPortList", downPortList[1]?.name);
   return (
     <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-sm border-[1px] border-gray-300 shadow-md">
       {/* <button onClick={downPortPut}>test</button> */}

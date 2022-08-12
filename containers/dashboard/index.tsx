@@ -86,7 +86,7 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <SystemTabCont ABS_URL={ABS_URL} />
+              <SystemTabCont ABS_URL={ABS_URL} client={client} />
             </div>
           </div>
 

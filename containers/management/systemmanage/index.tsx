@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ToastContainer } from "react-toastify";
 import Layout from "@components/layout";
@@ -21,6 +21,7 @@ import AlertAdminReq from "containers/management/systemmanage/fragment/AlertAdmi
 
 import AlertModifyPw from "./fragment/AlertModifyPw";
 import "react-toastify/dist/ReactToastify.css";
+import useKeyEscClose from "@components/common/KeyEscClose";
 
 const SystemManage = () => {
   const ABS_URL = useRecoilValue(routerUrl);
@@ -53,7 +54,7 @@ const SystemManage = () => {
   //     clearTimeout(timer);
   //   };
   // }, [backUpSuccess, backUpFail, restoreSuccess, restoreFail]);
-
+  useKeyEscClose(closePwModal);
   return (
     <Layout title="시스템 관리">
       <ToastContainer
@@ -77,7 +78,7 @@ const SystemManage = () => {
       <div className="space-y-4">
         <div className="flex justify-end space-x-4">
           <button
-            onClick={() => setModalOpen(true)}
+            onClick={openPwModal}
             className="flex items-center space-x-2 rounded-sm bg-gray-600 px-4 py-3 text-sm text-white"
           >
             <RiLockPasswordLine className="text-lg" />
