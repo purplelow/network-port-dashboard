@@ -25,9 +25,10 @@ const fetcher = async (url: string) =>
 
 export default function useLowPortData(ABS_URL: string) {
   const { data, error } = useSWR(`${ABS_URL}${DOWNPORT_API_URL}`, fetcher, {
-    revalidateOnFocus: false,
+    revalidateOnFocus: true,
     revalidateIfStale: false,
     revalidateOnReconnect: false,
+    revalidateOnMount: true,
   });
   return {
     lowPortInfoData: data,

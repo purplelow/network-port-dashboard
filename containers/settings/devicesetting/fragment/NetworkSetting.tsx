@@ -10,20 +10,35 @@ import { cls } from "@libs/utils";
 import MqttSubScribe from "mqtt_ws/MqttSubscribe";
 import MqttMessage from "mqtt_ws/MqttMessage";
 import { AiOutlineConsoleSql } from "react-icons/ai";
+import getNetworkInfo from "@api/setting/getNetworkInfo";
+import AlertAdminReq from "containers/management/systemmanage/fragment/AlertAdminReq";
 
-// interface NeworkForm {
-//   gateway: string;
-//   ipaddress: string;
-//   name: string;
-//   netmask: string;
-// }
+interface NeworkForm {
+  gateway: string;
+  ipaddress: string;
+  name: string;
+  netmask: string;
+}
 
 export default function NetworkSetting({ ABS_URL, client }: any) {
+  const [ipaddress, setIpaddress] = useState("");
+  const [netmask, setNetmask] = useState("");
+  const [gateway, setGateway] = useState("");
   const topic = process.env.MQTT_TOPIC_NETWORK;
   MqttSubScribe(client, topic);
   const { mqttData, currentTopic } = MqttMessage(client);
+  const { networkInfoData } = getNetworkInfo(ABS_URL);
+  const [networkInfo, setNetworkInfo]: any = useState(null);
 
-  const { networkInfoData } = useNetworkInfo(ABS_URL);
+  const defaultName = networkInfoData?.interfaces[0].name;
+  const defaultAddress = networkInfoData?.interfaces[0].addresses[0]?.address;
+  const defaultMask = networkInfoData?.interfaces[0].addresses[0]?.mask;
+  const defaultGateway = networkInfoData?.interfaces[0].addresses[0]?.gateway;
+
+  const defaultAddress_B = networkInfoData?.interfaces[1].addresses[0]?.address;
+  const defaultMask_B = networkInfoData?.interfaces[1].addresses[0]?.mask;
+  const defaultGateway_B = networkInfoData?.interfaces[1].addresses[0]?.gateway;
+
   const {
     register,
     handleSubmit,
@@ -32,13 +47,13 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
     setValue,
     formState: { errors },
   } = useForm();
-  const networkData = networkInfoData?.interfaces;
-
-  const [networkInfo, setNetworkInfo]: any = useState(null);
 
   useEffect(() => {
     if (networkInfoData) {
       setNetworkInfo(networkInfoData);
+      setIpaddress(networkInfoData?.interfaces[0].addresses[0]?.address);
+      setNetmask(networkInfoData?.interfaces[0].addresses[0]?.mask);
+      setGateway(networkInfoData?.interfaces[0].addresses[0]?.gateway);
     }
   }, [networkInfoData]);
 
@@ -83,37 +98,18 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
     return result;
   };
 
-  const defaultName = networkInfo?.interfaces[0].name;
-  const defaultAddress = networkInfo?.interfaces[0].addresses[0].address;
-  const defaultMask = networkInfo?.interfaces[0].addresses[0].mask;
-  const defaultGateway = networkInfo?.interfaces[0].addresses[0].gateway;
+  // const [data, setData]: any = useState();
 
-  const [data, setData]: any = useState({
+  const putNetworkData = {
     networkInfos: [
       {
         name: defaultName,
-        ipaddress: defaultAddress,
-        netmask: defaultMask,
-        gateway: defaultGateway,
+        ipaddress: ipaddress,
+        netmask: netmask,
+        gateway: gateway,
       },
     ],
-  });
-  const [ipaddress, setIpaddress] = useState(defaultAddress);
-  const [netmask, setNetmask] = useState(defaultMask);
-  const [gateway, setGateway] = useState(defaultGateway);
-  useEffect(() => {
-    setData({
-      networkInfos: [
-        {
-          name: defaultName,
-          ipaddress: ipaddress ?? defaultAddress,
-          netmask: netmask ?? defaultMask,
-          gateway: gateway ?? defaultGateway,
-        },
-      ],
-    });
-  }, [networkInfo]);
-  // console.log("data : ", data);
+  };
 
   // const setJSONData = (e: any) => {
   //   // let i = e.target.id;
@@ -182,7 +178,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
   // };
 
   // const neworkInfoJson = {
-  //   networkInfos: [
+  //   interfaces: [
   //     {
   //       name: defaultName,
   //       ipaddress: ipaddress ?? defaultAddress,
@@ -192,14 +188,13 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
   //   ],
   // };
 
-  const onValid = () => {
-    // const neworkInfoJson = {
-    //   networkInfos: data,
-    // };
-    updateNetwork({ ABS_URL }, data);
+  const onValid = (data: any) => {
+    if (data.ipaddressA?.ref?.value === "") throw new Error();
+    AlertAdminReq(ABS_URL, "network", putNetworkData);
+    // updateNetwork({ ABS_URL }, data);
   };
 
-  const onInvalid = () => {
+  const onInvalid = (data: any) => {
     toast.warning("올바른 ip 주소를 입력해 주세요.", {
       position: toast.POSITION.BOTTOM_CENTER,
     });
@@ -234,7 +229,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
           <li className="flex items-center justify-between space-x-4 bg-blue-50 px-10 py-4">
             <div className="flex w-[20%] items-center space-x-8">
               <span className="font-bold">
-                {networkInfo?.interfaces[0].name ?? "-"}
+                {networkInfoData?.interfaces[0].name ?? "-"}
               </span>
               <span
                 className={cls(
@@ -270,13 +265,9 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                     message: "ipv4 형식이 아닙니다.",
                   },
                   onChange: (e) => setIpaddress(e.target.value),
-                  // required: "ip 주소를 입력해 주세요.",
+                  required: "ip 주소를 입력해 주세요.",
                 })}
-                defaultValue={
-                  (networkInfo?.interfaces[0].addresses[0] &&
-                    networkInfo?.interfaces[0].addresses[0].address) ??
-                  "-"
-                }
+                defaultValue={ipaddress}
                 id="ipaddressA"
                 placeholder="IP 주소를 입력해 주세요."
                 type="text"
@@ -317,13 +308,9 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                     message: "ipv4 형식이 아닙니다.",
                   },
                   onChange: (e) => setNetmask(e.target.value),
-                  // required: "netmask를 입력해 주세요.",
+                  required: "netmask를 입력해 주세요.",
                 })}
-                defaultValue={
-                  (networkInfo?.interfaces[0].addresses[0] &&
-                    networkInfo?.interfaces[0].addresses[0].mask) ??
-                  "-"
-                }
+                defaultValue={netmask}
                 id="netmaskA"
                 placeholder="NETMASK를를 입력해 주세요."
                 type="text"
@@ -366,11 +353,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                   onChange: (e) => setGateway(e.target.value),
                   // required: "gateway를 입력해 주세요.",
                 })}
-                defaultValue={
-                  (networkInfo?.interfaces[0].addresses[0] &&
-                    networkInfo?.interfaces[0].addresses[0].gateway) ??
-                  "-"
-                }
+                defaultValue={gateway}
                 id="gatewayA"
                 placeholder="GATEWAY를 입력해 주세요."
                 type="text"
@@ -401,7 +384,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
           <li className="flex items-center justify-between space-x-4 bg-blue-50 px-10 py-4">
             <div className="flex w-[20%] items-center space-x-8">
               <span className="font-bold">
-                {networkInfo?.interfaces[1].name ?? "-"}
+                {networkInfoData?.interfaces[1].name ?? "-"}
               </span>
               <span
                 className={cls(
@@ -433,11 +416,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                 {...register(`ipaddressB`, {
                   disabled: true,
                 })}
-                defaultValue={
-                  (networkInfo?.interfaces[1].addresses[0] &&
-                    networkInfo?.interfaces[1].addresses[0].address) ??
-                  "-"
-                }
+                defaultValue={defaultAddress_B}
                 id="ipaddressB"
                 placeholder="IP 주소를 입력해 주세요."
                 type="text"
@@ -455,11 +434,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                 {...register(`netmaskB`, {
                   disabled: true,
                 })}
-                defaultValue={
-                  (networkInfo?.interfaces[1].addresses[0] &&
-                    networkInfo?.interfaces[1].addresses[0].mask) ??
-                  "-"
-                }
+                defaultValue={defaultMask_B}
                 id="netmaskB"
                 placeholder="NETMASK를를 입력해 주세요."
                 type="text"
@@ -477,11 +452,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                 {...register(`gatewayB`, {
                   disabled: true,
                 })}
-                defaultValue={
-                  (networkInfo?.interfaces[1].addresses[0] &&
-                    networkInfo?.interfaces[1].addresses[0].gateway) ??
-                  "-"
-                }
+                defaultValue={defaultGateway_B}
                 id="gatewayB"
                 placeholder="GATEWAY를 입력해 주세요."
                 type="text"
@@ -551,7 +522,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                       onChange: setJSONData,
                       required: "ip 주소를 입력해 주세요.",
                     })}
-                    defaultValue={networkData.addresses[0].address ?? ""}
+                    defaultValue={networkData.address ?? ""}
                     id={`${i}`}
                     placeholder="IP 주소를 입력해 주세요."
                     type="text"
@@ -585,7 +556,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                       onChange: setJSONData,
                       required: "netmask를 입력해 주세요.",
                     })}
-                    defaultValue={networkData.addresses[0].mask ?? ""}
+                    defaultValue={networkData.mask ?? ""}
                     id={`${i}`}
                     placeholder="NETMASK를를 입력해 주세요."
                     type="text"
@@ -617,7 +588,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                       onChange: setJSONData,
                       required: "gateway를 입력해 주세요.",
                     })}
-                    defaultValue={networkData.addresses[0].gateway ?? ""}
+                    defaultValue={networkData.gateway ?? ""}
                     id={`${i}`}
                     placeholder="GATEWAY를 입력해 주세요."
                     type="text"
@@ -640,9 +611,9 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
         <div className="absolute left-0 bottom-0 flex w-full justify-center py-2">
           <button
             onClick={() => {
-              setValue("ipaddressA", defaultAddress);
-              setValue("netmaskA", defaultMask);
-              setValue("gatewayA", defaultGateway);
+              setValue("ipaddressA", ipaddress);
+              setValue("netmaskA", netmask);
+              setValue("gatewayA", gateway);
             }}
             type="submit"
             className="rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-10 text-sm font-medium text-white hover:bg-blue-800 "

@@ -1,10 +1,8 @@
-import { constSelector, useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   downPortsCheckList,
-  mqttUrl,
   portSettingValueChanged,
   routerUrl,
-  upPortRecoilData,
   upPortsCheckList,
   upPortsState,
 } from "recoil/atom";
@@ -130,8 +128,7 @@ const PortSetting = () => {
     window.location.reload();
   }
 
-  const [upPortList, setUpPortList]: any = useRecoilState(upPortRecoilData);
-  // const [validPort, setValidPort] = useState(false);
+  const [mountPort, setMountPort] = useState(false);
   const upPortPut = () => {
     let i = 1;
     upPorts?.map((u: any) => {
@@ -157,12 +154,6 @@ const PortSetting = () => {
     portList.length !== portListSet.size
       ? (validPort = true)
       : (validPort = false);
-    console.log(
-      "portList, portListSet, result",
-      portList,
-      portListSet,
-      validPort
-    );
 
     if (upPortJson[0].id === "") isUp = false;
   };
@@ -200,7 +191,7 @@ const PortSetting = () => {
     else isDown = true;
   };
 
-  const onClickSetting = () => {
+  const onClickSetting = async () => {
     upPortPut();
     downPortPut();
     if (isUp === false && isDown === false) {
@@ -226,9 +217,11 @@ const PortSetting = () => {
         downPortList: downPortJson,
         upPortList: upPortJson,
       };
-      updatePortSetting(ABS_URL, putPortArr);
+      await updatePortSetting(ABS_URL, putPortArr);
+      setMountPort(true);
       setIsChanged(false);
-      // setDownPorts(downPorts);
+      setUpPorts([]);
+      setDownPorts([]);
     } else if (isUpSuccess === false && isDownSuccess === true) {
       toast.warning("LISTEN PORT는 1~65535 사이 숫자를 입력하세요.", {
         position: toast.POSITION.TOP_CENTER,
@@ -290,7 +283,11 @@ const PortSetting = () => {
           >
             포트 리셋
           </button>
-          <UpPortSetting ABS_URL={ABS_URL} client={client} />
+          <UpPortSetting 
+            ABS_URL={ABS_URL} 
+            client={client} 
+            mountPort={mountPort}
+          />
         </div>
 
         <div className="relative w-full rounded-md bg-white p-2 shadow-md">
@@ -304,7 +301,11 @@ const PortSetting = () => {
           >
             포트 리셋
           </button>
-          <LowPortSetting ABS_URL={ABS_URL} client={client} />
+          <LowPortSetting
+            ABS_URL={ABS_URL}
+            client={client}
+            mountPort={mountPort}
+          />
         </div>
       </div>
     </Layout>

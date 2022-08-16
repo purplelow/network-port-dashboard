@@ -2,15 +2,35 @@ import dynamic from "next/dynamic";
 import useStorageUtilization from "@api/dashBoard/storageUtilization";
 import { useRecoilValue } from "recoil";
 import { routerUrl } from "recoil/atom";
+import MqttSubScribe from "mqtt_ws/MqttSubscribe";
+import MqttMessage from "mqtt_ws/MqttMessage";
+import { useEffect, useState } from "react";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export default function StorageChart({ ABS_URL }: any) {
+export default function StorageChart({ ABS_URL, client }: any) {
+  const topic = process.env.MQTT_TOPIC_STORAGE;
+  MqttSubScribe(client, topic);
   const { storageUtilization, isLoading, isError } =
     useStorageUtilization(ABS_URL);
-  const storageSeries = storageUtilization?.summary.percent ?? 0;
+  const { mqttData, currentTopic } = MqttMessage(client);
+  const [data, setData]: any = useState();
+  const storageSeries = data?.summary.percent ?? 0;
+
+  useEffect(() => {
+    if (storageUtilization) {
+      setData(storageUtilization);
+    }
+  }, [storageUtilization]);
+
+  useEffect(() => {
+    if (currentTopic.includes("/storage")) {
+      setData(mqttData);
+    }
+  }, [mqttData]);
+
   const chartState: any = {
     series: [storageSeries],
     options: {

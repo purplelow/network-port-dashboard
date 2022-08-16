@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ToastContainer } from "react-toastify";
 import Layout from "@components/layout";
@@ -21,10 +21,11 @@ import AlertAdminReq from "containers/management/systemmanage/fragment/AlertAdmi
 
 import AlertModifyPw from "./fragment/AlertModifyPw";
 import "react-toastify/dist/ReactToastify.css";
+import useKeyEscClose from "@components/common/KeyEscClose";
 
 const SystemManage = () => {
   const ABS_URL = useRecoilValue(routerUrl);
-  const { systemInfo } = useSystemInfo(ABS_URL);
+  const { systemInfoData } = useSystemInfo(ABS_URL);
 
   // const [backUpSuccess, setBackUpSuccess] = useRecoilState(backUpState);
   // const [backUpFail, setBackUpFail] = useRecoilState(backUpFailState);
@@ -53,7 +54,7 @@ const SystemManage = () => {
   //     clearTimeout(timer);
   //   };
   // }, [backUpSuccess, backUpFail, restoreSuccess, restoreFail]);
-
+  useKeyEscClose(closePwModal);
   return (
     <Layout title="시스템 관리">
       <ToastContainer
@@ -77,7 +78,7 @@ const SystemManage = () => {
       <div className="space-y-4">
         <div className="flex justify-end space-x-4">
           <button
-            onClick={() => setModalOpen(true)}
+            onClick={openPwModal}
             className="flex items-center space-x-2 rounded-sm bg-gray-600 px-4 py-3 text-sm text-white"
           >
             <RiLockPasswordLine className="text-lg" />
@@ -85,7 +86,7 @@ const SystemManage = () => {
           </button>
 
           <button
-            onClick={() => AlertAdminReq(ABS_URL)}
+            onClick={() => AlertAdminReq(ABS_URL, "reboot", "")}
             className="flex items-center space-x-2 rounded-sm bg-gray-900 px-4 py-3 text-sm text-white"
           >
             <VscDebugRestart className="text-lg" />
@@ -99,7 +100,7 @@ const SystemManage = () => {
           </span>
           <div className="flex w-[80%] items-center justify-end space-x-4">
             <span className="relative text-sm text-gray-500">
-              현재 버전 : {systemInfo?.system_info.version}
+              현재 버전 : {systemInfoData?.system_info.version}
             </span>
             <FirmwareForm ABS_URL={ABS_URL} />
           </div>

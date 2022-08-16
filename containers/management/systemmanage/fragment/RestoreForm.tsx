@@ -5,8 +5,7 @@ import { AiOutlineUpload } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { useRecoilState } from "recoil";
 import { restoreFailState, restoreState } from "recoil/atom";
-
-const RESTORE_API_URL = process.env.NEXT_PUBLIC_RESTORE;
+import AlertAdminReq from "./AlertAdminReq";
 
 export default function RestoreFrom({ ABS_URL }: any) {
   // const [restoreSuccess, setRestoreSuccess] = useRecoilState(restoreState);
@@ -33,35 +32,7 @@ export default function RestoreFrom({ ABS_URL }: any) {
   const onSubmit = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
-    axios({
-      method: "POST",
-      url: `${ABS_URL}${RESTORE_API_URL}`,
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-      .then((res) => {
-        // setRestoreSuccess(true);
-        toast.success("복원 파일 업로드 완료.", {
-          position: toast.POSITION.TOP_CENTER,
-        });
-      })
-      .catch((error) => {
-        // setRestoreFail(true);
-        if (error.response.data.code === "C004")
-          toast.error("파일 업로드 오류 !!", {
-            position: toast.POSITION.TOP_CENTER,
-          });
-        else if (error.response.data.code === "F003")
-          toast.error("이 시스템과 호환되지 않는 백업파일입니다.", {
-            position: toast.POSITION.TOP_CENTER,
-          });
-        else
-          toast.error("파일 업로드 오류 !!", {
-            position: toast.POSITION.TOP_CENTER,
-          });
-      });
+    AlertAdminReq(ABS_URL, "restore", formData);
   };
 
   return (

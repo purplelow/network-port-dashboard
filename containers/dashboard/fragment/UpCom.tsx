@@ -249,11 +249,13 @@ export default function UpCom({ ABS_URL, client }: any) {
                   delayHide={500}
                 >
                   <ul>
+                    <li className="text-center text-lg font-medium">{`${
+                      com?.app_service?.protocol ?? "-"
+                    }`}</li>
                     <li>{`NAME : ${com?.app_service?.toolTipName ?? "-"}`}</li>
                     <li>{`MODEL : ${com?.app_service?.model ?? "-"}`}</li>
                     <li>{`TYPE : ${com?.app_service?.type ?? "-"}`}</li>
                     <li>{`LOCAL PORT : ${com?.app_service?.port ?? "-"}`}</li>
-                    <li>{`PROTOCOL : ${com?.app_service?.protocol ?? "-"}`}</li>
                   </ul>
                 </ReactTooltip>
               )}
