@@ -23,9 +23,10 @@ const fetcher = async (url: string) =>
 
 export default function useUpPortData(ABS_URL: string) {
   const { data, error } = useSWR(`${ABS_URL}${UPPORT_API_URL}`, fetcher, {
-    revalidateOnFocus: false,
+    revalidateOnFocus: true,
     revalidateIfStale: false,
     revalidateOnReconnect: false,
+    revalidateOnMount: true,
   });
   return {
     upPortInfoData: data,

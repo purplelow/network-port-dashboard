@@ -190,7 +190,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
 
   const onValid = (data: any) => {
     if (data.ipaddressA?.ref?.value === "") throw new Error();
-    AlertAdminReq(ABS_URL, "network", putNetworkData);
+    AlertAdminReq(ABS_URL, "network", putNetworkData, defaultAddress_B);
     // updateNetwork({ ABS_URL }, data);
   };
 

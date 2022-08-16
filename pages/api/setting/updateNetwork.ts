@@ -13,7 +13,7 @@ export default function updateNetwork({ ABS_URL }: any, neworkInfoJson: any) {
       });
     })
     .catch((err) => {
-      toast.error(`설정 오류. (${err.message})`, {
+      toast.error(`설정 오류. (${err.response.data.message})`, {
         position: toast.POSITION.BOTTOM_CENTER,
       });
       console.error("네트워크 설정 오류 : ", err);

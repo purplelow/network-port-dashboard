@@ -44,7 +44,7 @@ export default function FirmwareForm({ ABS_URL }: any) {
   const onSubmit = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
-    AlertAdminReq(ABS_URL, "firmware", formData);
+    AlertAdminReq(ABS_URL, "firmware", formData, "");
   };
 
   return (

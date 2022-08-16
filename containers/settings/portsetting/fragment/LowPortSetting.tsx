@@ -324,7 +324,7 @@ export default function DownPortSetting({ ABS_URL, client, mountPort }: any) {
       setCheckItems(["-1"]);
     }
   };
-  console.log("downPortList", downPortList[1]?.name);
+
   return (
     <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-sm border-[1px] border-gray-300 shadow-md">
       <table className="w-full text-left text-sm  text-gray-500">

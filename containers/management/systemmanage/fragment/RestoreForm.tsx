@@ -32,7 +32,7 @@ export default function RestoreFrom({ ABS_URL }: any) {
   const onSubmit = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
-    AlertAdminReq(ABS_URL, "restore", formData);
+    AlertAdminReq(ABS_URL, "restore", formData, "");
   };
 
   return (

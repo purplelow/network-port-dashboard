@@ -86,7 +86,7 @@ const SystemManage = () => {
           </button>
 
           <button
-            onClick={() => AlertAdminReq(ABS_URL, "reboot", "")}
+            onClick={() => AlertAdminReq(ABS_URL, "reboot", "", "")}
             className="flex items-center space-x-2 rounded-sm bg-gray-900 px-4 py-3 text-sm text-white"
           >
             <VscDebugRestart className="text-lg" />
