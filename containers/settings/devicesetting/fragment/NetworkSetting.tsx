@@ -267,7 +267,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                   onChange: (e) => setIpaddress(e.target.value),
                   required: "ip 주소를 입력해 주세요.",
                 })}
-                defaultValue={ipaddress}
+                value={ipaddress}
                 id="ipaddressA"
                 placeholder="IP 주소를 입력해 주세요."
                 type="text"
@@ -310,7 +310,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                   onChange: (e) => setNetmask(e.target.value),
                   required: "netmask를 입력해 주세요.",
                 })}
-                defaultValue={netmask}
+                value={netmask}
                 id="netmaskA"
                 placeholder="NETMASK를를 입력해 주세요."
                 type="text"
@@ -353,7 +353,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
                   onChange: (e) => setGateway(e.target.value),
                   // required: "gateway를 입력해 주세요.",
                 })}
-                defaultValue={gateway}
+                value={gateway}
                 id="gatewayA"
                 placeholder="GATEWAY를 입력해 주세요."
                 type="text"

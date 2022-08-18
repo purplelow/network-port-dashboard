@@ -78,3 +78,8 @@ export const upPortRecoilData = atom({
   key: "upPortRecoilData",
   default: [],
 });
+
+export const loadingSysState = atom({
+  key: "sysState",
+  default: false,
+});

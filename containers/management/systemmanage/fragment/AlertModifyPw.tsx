@@ -42,7 +42,7 @@ export default function AlertModifyPw({ ABS_URL, open, close, header }: any) {
         // });
       })
       .catch((err) => {
-        toast.error("비밀번호 수정 오류 !!", {
+        toast.error(`${err.response.data.message}`, {
           position: toast.POSITION.TOP_CENTER,
         });
       });

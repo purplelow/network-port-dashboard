@@ -21,8 +21,8 @@ export default function SystemInfo({ ABS_URL }: any) {
   const { register, handleSubmit } = useForm();
   const { systemInfoData, isLoading, isError } = useSystemInfo(ABS_URL);
   const [systemInfo, setSystemInfo]: any = useState();
-  const { getNoteData } = useGetNote(ABS_URL);
-  const userNoteValue = getNoteData?.deviceNote.replaceAll(
+  const { getNoteData }: any = useGetNote(ABS_URL);
+  const userNoteValue = getNoteData?.deviceNote?.replaceAll(
     /(\r\n|\n|\\r\\n|\\n)/g,
     "\n"
   );

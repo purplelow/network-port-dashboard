@@ -1,14 +1,22 @@
 import dynamic from "next/dynamic";
 import useStorageUtilization from "@api/dashBoard/storageUtilization";
+import { useEffect, useState } from "react";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export default function HDDChart({ ABS_URL, ABS_WS_URL, WS_CLIID }: any) {
+export default function HDDChart({ ABS_URL }: any) {
   const { storageUtilization, isLoading, isError } =
     useStorageUtilization(ABS_URL);
-  const hddSeries = storageUtilization?.summary.life ?? 0;
+  const [data, setData]: any = useState();
+  const hddSeries = data?.summary?.life ?? 0;
+
+  useEffect(() => {
+    if (storageUtilization) {
+      setData(storageUtilization);
+    }
+  }, [storageUtilization]);
 
   const chartState: any = {
     series: [hddSeries],

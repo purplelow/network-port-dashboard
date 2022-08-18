@@ -3,19 +3,23 @@ import { encryptModule } from "@libs/encryptModule";
 import { toast } from "react-toastify";
 import updateNetwork from "@api/setting/updateNetwork";
 import axios from "axios";
+import { useRouter } from "next/router";
+import useCpuUtilization from "@api/dashBoard/cpuUtilization";
+import { useEffect } from "react";
 
 const PASSWORD_API_URL = process.env.NEXT_PUBLIC_PASSWORD_CHECK;
 const RESTART_API_URL = process.env.NEXT_PUBLIC_RESTART;
 const UPLOAD_FIRMWARE_API_URL = process.env.NEXT_PUBLIC_UPLOAD_FIRMWARE;
 const RESTORE_API_URL = process.env.NEXT_PUBLIC_RESTORE;
 const UPDATE_NETWORK_API_URL = process.env.NEXT_PUBLIC_UPDATE_NETWORK;
-
+const CPU_API_URL = process.env.NEXT_PUBLIC_CPU_USAGE;
 export default function AlertAdminReq(
   ABS_URL: string,
   reqSwitch: string,
   data: any | null | undefined,
   Address: string | null | undefined
 ) {
+  let timerInterval: any;
   Swal.fire({
     title:
       '<strong style="font-size: 20px;">관리자 암호를 입력하세요.</strong>\n <u style="font-size: 18px;">서비스가 재시작 됩니다.</u>',
@@ -26,6 +30,7 @@ export default function AlertAdminReq(
       checkCapsLock: "on",
     },
     inputPlaceholder: "관리자 암호를 입력하세요",
+    inputAutoTrim: true,
     showCancelButton: true,
     confirmButtonText: "확인",
     showLoaderOnConfirm: true,
@@ -66,9 +71,91 @@ export default function AlertAdminReq(
             //   position: toast.POSITION.TOP_CENTER,
             // });
             Swal.fire({
-              title: `<strong style="font-size: 20px;">시스템을 재부팅 합니다.</strong>`,
+              title: `<strong style="font-size: 20px;">시스템을 재부팅 합니다.</strong> \n <span style="font-size: 18px;">재부팅에 최대 2분이 소요될 수 있습니다.</span>`,
+              html: "<b></b>",
               icon: "success",
+              iconHtml: "",
+              showConfirmButton: false,
+              // confirmButtonText: "새로고침",
+              // confirmButtonColor: "#3e47c9",
+              timer: 120000,
+              timerProgressBar: true,
+              allowOutsideClick: false,
+              backdrop: true,
+              allowEscapeKey: false,
+              // preConfirm: () => {
+              //   // window.open(`${ABS_URL}/settings/deviceSetting`, "_self");
+              //   // document.location.href = `${ABS_URL}/settings/deviceSetting`;
+              //   location.reload();
+              // },
+              didOpen: () => {
+                Swal.showLoading();
+                const b: any = Swal.getHtmlContainer()?.querySelector("b");
+                timerInterval = setInterval(() => {
+                  b.textContent = (Swal.getTimerLeft() / 1000).toFixed(0);
+                }, 100);
+                setTimeout(() => {
+                  setInterval(() => {
+                    axios
+                      .get(`${ABS_URL}${CPU_API_URL}`)
+                      // .get(`UIUX test`)
+                      .then((res) => {
+                        if (res.status === 200) {
+                          // clearInterval(timerInterval);
+                          location.reload();
+                        } else throw new Error();
+                      })
+                      .catch((e) => {
+                        console.log("Waiting for system reboot...");
+                      });
+                  }, 1000);
+                }, 60000);
+
+                setTimeout(() => {
+                  axios
+                    .get(`${ABS_URL}${CPU_API_URL}`)
+                    // .get(`UIUX test`)
+                    .then((res) => {
+                      if (res.status === 200) {
+                        // clearInterval(timerInterval);
+                        location.reload();
+                      } else throw new Error();
+                    })
+                    .catch((err) => {
+                      Swal.stopTimer();
+                      console.log("System reboot fail !");
+
+                      // toast.error(`시스템 재부팅에 실패하였습니다.`, {
+                      //   position: toast.POSITION.BOTTOM_CENTER,
+                      // });
+                      Swal.fire({
+                        title: `<strong style="font-size: 20px;">시스템 재부팅에 실패하였습니다.</strong>`,
+                        icon: "error",
+                        confirmButtonText: "확인",
+                        confirmButtonColor: "#3e47c9",
+                        allowOutsideClick: false,
+                        backdrop: true,
+                        allowEscapeKey: false,
+                        willClose: () => {
+                          location.reload();
+                        },
+                      });
+                    });
+                }, 119500);
+              },
+
+              willClose: () => {
+                clearInterval(timerInterval);
+                location.reload();
+              },
+              // showConfirmButton: false,
+            }).then((result) => {
+              /* Read more about handling dismissals below */
+              if (result.dismiss === Swal.DismissReason.timer) {
+                // console.log("");
+              }
             });
+            // setSysState(res.ok);
           })
           .catch((err) => {
             // toast.error("재부팅 오류 !!", {
@@ -82,20 +169,56 @@ export default function AlertAdminReq(
       } else if (reqSwitch === "network") {
         axios
           .put(`${ABS_URL}${UPDATE_NETWORK_API_URL}`, data)
-          // .put(`update network test`, neworkInfoJson)
+          // .put(`update network test`, data)
           .then((res) => {
             // toast.success("네트워크 설정이 적용 되었습니다.", {
             //   position: toast.POSITION.BOTTOM_CENTER,
             // });
             if (ABS_URL === Address)
               Swal.fire({
-                title: `<strong style="font-size: 20px;">네트워크 설정 적용 후, 시스템을 재시작 합니다.</strong>`,
+                title: `<strong style="font-size: 20px;">시스템을 재부팅 합니다.</strong> \n <span style="font-size: 18px;">재부팅에 최대 2분이 소요될 수 있습니다.</span>`,
+                html: "<b></b>",
                 icon: "success",
+                confirmButtonText: "새로고침",
+                confirmButtonColor: "#3e47c9",
+                timer: 120000,
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                backdrop: true,
+                allowEscapeKey: false,
+                preConfirm: () => {
+                  location.reload();
+                },
+                didOpen: () => {
+                  // Swal.showLoading();
+                  const b: any = Swal.getHtmlContainer()?.querySelector("b");
+                  timerInterval = setInterval(() => {
+                    b.textContent = (Swal.getTimerLeft() / 1000).toFixed(0);
+                  }, 100);
+                },
+                willClose: () => {
+                  clearInterval(timerInterval);
+                  // location.reload();
+                },
               });
             else
               Swal.fire({
                 title: `<strong style="font-size: 20px;">네트워크 설정 적용 후, 시스템을 재시작 합니다.</strong>\n <u style="font-size: 18px;">변경된 IP로 접속해주세요.</u>`,
+                html: "<b></b> 재부팅에 최대 2분이 소요됩니다.",
                 icon: "success",
+                confirmButtonText: "새로고침",
+                confirmButtonColor: "#3e47c9",
+                timer: 120000,
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                backdrop: true,
+                allowEscapeKey: false,
+                preConfirm: () => {
+                  location.reload();
+                },
+                willClose: () => {
+                  location.reload();
+                },
               });
           })
           .catch((err) => {
@@ -109,17 +232,6 @@ export default function AlertAdminReq(
             });
           });
         // updateNetwork({ ABS_URL }, data);
-
-        if (ABS_URL === Address)
-          Swal.fire({
-            title: `<strong style="font-size: 20px;">네트워크 설정 적용 후, 시스템을 재시작 합니다.</strong>`,
-            icon: "success",
-          });
-        else
-          Swal.fire({
-            title: `<strong style="font-size: 20px;">네트워크 설정 적용 후, 시스템을 재시작 합니다.</strong>\n <u style="font-size: 20;">변경된 IP로 접속해주세요.</u>`,
-            icon: "success",
-          });
       } else if (reqSwitch === "firmware") {
         axios({
           method: "POST",
@@ -199,4 +311,7 @@ export default function AlertAdminReq(
       }
     }
   });
+  return {
+    data: data,
+  };
 }

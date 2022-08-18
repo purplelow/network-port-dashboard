@@ -12,6 +12,7 @@ import BackUp from "./fragment/Backup";
 import {
   backUpFailState,
   backUpState,
+  loadingSysState,
   restoreFailState,
   restoreState,
   routerUrl,
@@ -22,10 +23,11 @@ import AlertAdminReq from "containers/management/systemmanage/fragment/AlertAdmi
 import AlertModifyPw from "./fragment/AlertModifyPw";
 import "react-toastify/dist/ReactToastify.css";
 import useKeyEscClose from "@components/common/KeyEscClose";
+import LoadingSys from "@components/common/LoadingSys";
 
 const SystemManage = () => {
   const ABS_URL = useRecoilValue(routerUrl);
-  const { systemInfoData } = useSystemInfo(ABS_URL);
+  const { systemInfoData }: any = useSystemInfo(ABS_URL);
 
   // const [backUpSuccess, setBackUpSuccess] = useRecoilState(backUpState);
   // const [backUpFail, setBackUpFail] = useRecoilState(backUpFailState);
@@ -55,6 +57,8 @@ const SystemManage = () => {
   //   };
   // }, [backUpSuccess, backUpFail, restoreSuccess, restoreFail]);
   useKeyEscClose(closePwModal);
+  // const [sysState, setSysState] = useRecoilState(loadingSysState);
+
   return (
     <Layout title="시스템 관리">
       <ToastContainer
@@ -93,14 +97,14 @@ const SystemManage = () => {
             <span>재부팅 시작</span>
           </button>
         </div>
-
+        {/* <LoadingSys /> */}
         <div className="flex items-center justify-between rounded-md bg-white p-8 shadow-md">
           <span className="text-xl font-bold text-gray-700">
             펌웨어 업데이트
           </span>
           <div className="flex w-[80%] items-center justify-end space-x-4">
             <span className="relative text-sm text-gray-500">
-              현재 버전 : {systemInfoData?.system_info.version}
+              현재 버전 : {systemInfoData?.system_info?.version}
             </span>
             <FirmwareForm ABS_URL={ABS_URL} />
           </div>

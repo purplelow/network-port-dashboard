@@ -38,8 +38,8 @@ const Dashboard = () => {
         pauseOnHover
       />
 
-      <div className="h-full gap-x-2 xl:grid xl:grid-cols-7">
-        <div className="col-span-3 grid w-full grid-flow-row grid-rows-4 gap-2">
+      <div className="h-auto gap-x-2 pb-5 xl:grid xl:grid-cols-7">
+        <div className="col-span-3 mb-2 grid w-full grid-flow-row grid-rows-4 gap-2 xl:mb-0">
           <div className="row-span-2 h-full rounded-md bg-white p-2 shadow-md">
             <BoardTitle subTitle="네트워크 정보" />
             <NetworkTabCont ABS_URL={ABS_URL} client={client} />
