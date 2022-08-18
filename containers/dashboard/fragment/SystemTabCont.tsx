@@ -33,7 +33,12 @@ export default function SystemTabCont({ ABS_URL, client }: any) {
   }, [mqttData]);
 
   return (
-    <div className="row-span-2 overflow-hidden">
+    <div className="relative row-span-2 overflow-hidden">
+      {sysTabIndex === 0 ? (
+        <span className="absolute top-2 right-4 z-50 block text-xs font-bold text-slate-700">
+          {`(KB)`}
+        </span>
+      ) : null}
       <ul className="flex divide-x divide-gray-200 text-center text-sm font-medium text-gray-500">
         <li className="">
           <button
