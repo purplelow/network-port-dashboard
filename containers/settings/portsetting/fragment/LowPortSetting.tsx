@@ -326,7 +326,7 @@ export default function DownPortSetting({ ABS_URL, client, mountPort }: any) {
   };
 
   return (
-    <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-sm border-[1px] border-gray-300 shadow-md">
+    <div className="relative top-5 h-[calc(100%-45px)] overflow-auto rounded-sm border-[1px] border-gray-300 shadow-md">
       <table className="w-full text-left text-sm  text-gray-500">
         <thead className="bg-blue-100 text-xs uppercase text-gray-700">
           <tr>
@@ -416,11 +416,11 @@ export default function DownPortSetting({ ABS_URL, client, mountPort }: any) {
                   </label>
                 </div>
               </td>
-              <td className="px-2 py-1.5 text-center">
+              <td className="px-2 py-1 text-center">
                 <span className={statusColor(com.status)}></span>
               </td>
-              <td className="px-2 py-1.5 text-right">{com.deviceName}</td>
-              <td className="px-2 py-1.5 text-center">
+              <td className="px-2 py-1 text-right">{com.deviceName}</td>
+              <td className="px-2 py-1 text-center">
                 <input
                   type="text"
                   className={
@@ -443,7 +443,7 @@ export default function DownPortSetting({ ABS_URL, client, mountPort }: any) {
                   onChange={onChangeDownPort}
                 />
               </td>
-              <td className="px-2 py-1.5 text-center">
+              <td className="px-2 py-1 text-center">
                 <input
                   type="text"
                   className={
@@ -466,7 +466,7 @@ export default function DownPortSetting({ ABS_URL, client, mountPort }: any) {
                   onChange={onChangeDownPort}
                 />
               </td>
-              <td className="px-2 py-1.5 text-center">
+              <td className="px-2 py-1 text-center">
                 <input
                   type="text"
                   className={
@@ -489,7 +489,7 @@ export default function DownPortSetting({ ABS_URL, client, mountPort }: any) {
                   onChange={onChangeDownPort}
                 />
               </td>
-              <td className="px-2 py-1.5 text-center">
+              <td className="px-2 py-1 text-center">
                 <select
                   className={
                     isChanged === true
@@ -520,7 +520,7 @@ export default function DownPortSetting({ ABS_URL, client, mountPort }: any) {
                   <option value="115200">115200</option>
                 </select>
               </td>
-              <td className="px-2 py-1.5 text-center">
+              <td className="px-2 py-1 text-center">
                 <select
                   className={
                     isChanged === true
@@ -548,7 +548,7 @@ export default function DownPortSetting({ ABS_URL, client, mountPort }: any) {
                   <option value="SPACE">SPACE</option>
                 </select>
               </td>
-              <td className="px-2 py-1.5 text-center">
+              <td className="px-2 py-1 text-center">
                 <select
                   className={
                     isChanged === true
@@ -575,7 +575,7 @@ export default function DownPortSetting({ ABS_URL, client, mountPort }: any) {
                   <option value="8">8</option>
                 </select>
               </td>
-              <td className="px-2 py-1.5 text-center">
+              <td className="px-2 py-1 text-center">
                 <select
                   className={
                     isChanged === true
@@ -601,7 +601,7 @@ export default function DownPortSetting({ ABS_URL, client, mountPort }: any) {
                   <option value="2">2</option>
                 </select>
               </td>
-              <td className="px-2 py-1.5 text-center">
+              <td className="px-2 py-1 text-center">
                 <input
                   type="number"
                   min="0"
@@ -626,10 +626,10 @@ export default function DownPortSetting({ ABS_URL, client, mountPort }: any) {
                   onChange={onChangeDownPort}
                 />
               </td>
-              <td className="px-2 py-1.5 text-right">{com.t1}</td>
-              <td className="px-2 py-1.5 text-right">{com.t2}</td>
-              <td className="px-2 py-1.5 text-right">{com.t3}</td>
-              <td className="px-2 py-1.5 text-right">{com.t4}</td>
+              <td className="px-2 py-1 text-right">{com.t1}</td>
+              <td className="px-2 py-1 text-right">{com.t2}</td>
+              <td className="px-2 py-1 text-right">{com.t3}</td>
+              <td className="px-2 py-1 text-right">{com.t4}</td>
             </tr>
           ))}
         </tbody>

@@ -31,6 +31,11 @@ export default function StorageChart({ ABS_URL, client }: any) {
     }
   }, [mqttData]);
 
+  const percentTextColor: any = () => {
+    if (storageSeries > 79) return "red";
+    else return "#454545";
+  };
+
   const chartState: any = {
     series: [storageSeries],
     options: {
@@ -47,13 +52,13 @@ export default function StorageChart({ ABS_URL, client }: any) {
             name: {
               fontWeight: "normal",
               fontSize: "16px",
-              color: "#454545",
+              color: percentTextColor(),
               offsetY: 70,
             },
             value: {
               offsetY: -10,
               fontSize: "20px",
-              color: "#464646",
+              color: percentTextColor(),
               formatter: function (val: number) {
                 return val + "%";
               },
@@ -81,27 +86,16 @@ export default function StorageChart({ ABS_URL, client }: any) {
         },
       },
       fill: {
-        type: "gradient",
-        gradient: {
-          type: ["vertical"],
-          colorStops: [
-            {
-              offset: 0,
-              color: "#2377fd",
-              opacity: 1,
-            },
-            {
-              offset: 80,
-              color: "#2377fd",
-              opacity: 1,
-            },
-            {
-              offset: 100,
-              color: "#ff4447",
-              opacity: 1,
-            },
-          ],
-        },
+        colors: [
+          function ({ value }: any) {
+            if (value > 79) {
+              return "#ff4447";
+            } else {
+              return "#2377fd";
+            }
+          },
+        ],
+        type: "solid",
       },
       stroke: {
         dashArray: 2,

@@ -1,7 +1,12 @@
 import type { NextPage } from "next";
-import SystemManageContainer from "../../containers/management/systemmanage";
+// import SystemManageContainer from "../../containers/management/systemmanage";
 import urlBranch from "@libs/absoluteUrl";
 import Head from "next/head";
+import dynamic from "next/dynamic";
+
+const SystemManageContainer = dynamic(
+  () => import("../../containers/management/systemmanage")
+);
 
 const SystemManage: NextPage = () => {
   urlBranch();

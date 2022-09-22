@@ -73,7 +73,7 @@ export default function FirmwareForm({ ABS_URL }: any) {
       />
       <button
         type="submit"
-        className="min-w-[280px] rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-10 text-sm font-medium text-white hover:bg-blue-800 "
+        className="w-[200px] rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-6 text-sm font-medium text-white hover:bg-blue-800 xl:w-[280px] xl:px-10 "
       >
         펌웨어 버전 업데이트
       </button>

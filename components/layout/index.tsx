@@ -78,13 +78,13 @@ export default function Layout({
   };
 
   return (
-    <div className="flex h-screen w-screen">
-      <nav className="fixed top-0 left-0 z-10 h-screen w-[200px] bg-white shadow-md">
-        <div className="mx-auto my-5 h-11 w-[140px] bg-logo bg-contain bg-center bg-no-repeat"></div>
+    <div className="flex h-[calc(100vh-25px)] w-screen">
+      <nav className="fixed top-0 left-0 z-10 h-screen w-[150px] bg-white shadow-md xl:w-[200px]">
+        <div className="mx-auto my-5 h-11 w-[70%] bg-logo bg-contain bg-center bg-no-repeat"></div>
         <Link href="/">
           <a
             className={cls(
-              "flex w-full items-center py-3 px-6 text-sm",
+              "flex w-full items-center py-3 px-2 text-sm xl:px-6",
               router.pathname === "/"
                 ? "bg-blue-800 text-white"
                 : "transition-colors hover:text-blue-600"
@@ -98,7 +98,7 @@ export default function Layout({
         <div>
           <div
             className={cls(
-              "flex w-full items-center py-3 px-6 text-sm",
+              "flex w-full items-center py-3 px-2 text-sm xl:px-6",
               setHightlight()
             )}
           >
@@ -115,7 +115,7 @@ export default function Layout({
                   : "transition-colors hover:text-blue-600"
               )}
             >
-              <span className="flex items-center justify-center pl-10 text-sm">
+              <span className="flex items-center justify-center pl-6 text-sm xl:pl-10">
                 <span
                   className={cls(
                     "mr-2 flex h-4 w-1.5 bg-blue-800 opacity-0 transition",
@@ -137,7 +137,7 @@ export default function Layout({
                   : "transition-colors hover:text-blue-600"
               )}
             >
-              <span className="flex items-center justify-center pl-10 text-sm">
+              <span className="flex items-center justify-center pl-6 text-sm xl:pl-10">
                 <span
                   className={cls(
                     "mr-2 flex h-4 w-1.5 bg-blue-800 opacity-0 transition",
@@ -154,7 +154,7 @@ export default function Layout({
         <div>
           <div
             className={cls(
-              "flex w-full items-center py-3 px-6 text-sm",
+              "flex w-full items-center px-2 py-3 text-sm xl:px-6",
               manageHightlight()
             )}
           >
@@ -171,7 +171,7 @@ export default function Layout({
                   : "transition-colors hover:text-blue-600"
               )}
             >
-              <span className="flex items-center justify-center pl-10 text-sm">
+              <span className="flex items-center justify-center pl-6 text-sm xl:pl-10">
                 <span
                   className={cls(
                     "mr-2 flex h-4 w-1.5 bg-blue-800 opacity-0 transition",
@@ -193,7 +193,7 @@ export default function Layout({
                   : "transition-colors hover:text-blue-600"
               )}
             >
-              <span className="flex items-center justify-center pl-10 text-sm">
+              <span className="flex items-center justify-center pl-6 text-sm xl:pl-10">
                 <span
                   className={cls(
                     "mr-2 flex h-4 w-1.5 bg-blue-800 opacity-0 transition",
@@ -208,8 +208,8 @@ export default function Layout({
           </Link>
         </div>
       </nav>
-      <div className="h-full w-screen pl-[200px]">
-        <div className="flex max-h-[56px] items-center justify-between px-4">
+      <div className="h-full w-screen pl-[150px] xl:pl-[200px]">
+        <div className="flex max-h-[56px] min-h-[48px] items-center justify-between px-4">
           <div className="">
             {title ? (
               <div className="flex items-center justify-center space-x-1">
@@ -218,12 +218,12 @@ export default function Layout({
               </div>
             ) : null}
           </div>
-          <button className="h-full">
+          {/* <button className="h-full">
             <FaLanguage className="text-5xl" />
-          </button>
+          </button> */}
         </div>
 
-        <div className="h-[calc(100%-50px)] w-full px-4 pb-4 ">{children}</div>
+        <div className="h-[calc(100%-56px)] w-full px-4">{children}</div>
       </div>
     </div>
   );

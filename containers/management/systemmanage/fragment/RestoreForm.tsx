@@ -61,7 +61,7 @@ export default function RestoreFrom({ ABS_URL }: any) {
       />
       <button
         type="submit"
-        className="min-w-[280px] rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-10 text-sm font-medium text-white hover:bg-blue-800 "
+        className="w-[200px] rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-10 text-sm font-medium text-white hover:bg-blue-800 xl:w-[280px] "
       >
         복원
       </button>

@@ -62,8 +62,8 @@ export default function TimeDateInfo({ ABS_URL }: any) {
   }, [sysTimeInfo]);
 
   return (
-    <div className="row-span-2 rounded-md bg-white shadow-md">
-      <div className="flex items-center justify-start p-8">
+    <div className="rounded-md bg-white shadow-md">
+      <div className="flex items-center justify-start p-10">
         <div className="w-full">
           <ul className="flex divide-x divide-gray-200 text-center text-sm font-medium text-gray-500">
             <li className="">
@@ -99,7 +99,7 @@ export default function TimeDateInfo({ ABS_URL }: any) {
                   </button>
                 </li> */}
           </ul>
-          <div className="border border-gray-300 px-6 py-10">
+          <div className="border-b border-t border-gray-300 py-10">
             {timeTabIndex === 0 ? (
               <form onSubmit={handleSubmit(onValid)} className="h-full">
                 <div className="flex h-full items-center justify-between">
@@ -122,7 +122,7 @@ export default function TimeDateInfo({ ABS_URL }: any) {
                     </div>
                   </div>
                   <div className="flex w-2/5 items-center">
-                    <label className="pr-2 text-sm font-medium text-gray-900">
+                    <label className="min-w-[85px] pr-2 text-right text-sm font-medium text-gray-900">
                       표준 시간대
                     </label>
                     <div className="w-4/5 text-sm">

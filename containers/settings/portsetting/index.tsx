@@ -256,47 +256,47 @@ const PortSetting = () => {
         draggable
         pauseOnHover
       />
-      <div className="absolute top-10 right-4 flex justify-end space-x-4 py-2">
+      <div className="absolute top-0 right-4 flex justify-end space-x-4 py-2">
         <button
           className="flex items-center space-x-2 rounded-sm border border-[#707070] bg-[#707070] p-2 px-8 text-sm font-medium text-white hover:bg-neutral-600 "
           onClick={refreshPage}
         >
-          <span>이전 설정 적용</span>
+          <span>변경 사항 취소</span>
         </button>
         <button
           type="submit"
           className="flex items-center space-x-2 rounded-sm border border-blue-700 bg-blue-700 p-2 px-11 text-sm font-medium text-white hover:bg-blue-800 "
           onClick={onClickSetting}
         >
-          <span>설정 적용</span>
+          <span>변경 사항 적용</span>
         </button>
       </div>
-      <div className="grid h-full grid-rows-2 gap-y-2 pt-12">
+      <div className="grid h-full grid-rows-2 gap-y-2 pt-2">
         <div className="relative w-full rounded-md bg-white p-2 shadow-md">
           <BoardTitle subTitle="상위 포트 설정 (HSMS)" />
-          <div className="relative -top-6 mr-24">
+          <div className="relative -top-10 mr-24">
             <StatusInfo />
           </div>
           <button
-            className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none"
+            className="absolute right-4 top-2 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none"
             onClick={upPortReset}
           >
             포트 리셋
           </button>
-          <UpPortSetting 
-            ABS_URL={ABS_URL} 
-            client={client} 
+          <UpPortSetting
+            ABS_URL={ABS_URL}
+            client={client}
             mountPort={mountPort}
           />
         </div>
 
         <div className="relative w-full rounded-md bg-white p-2 shadow-md">
           <BoardTitle subTitle="하위 시리얼 포트 설정 (SECS)" />
-          <div className="relative -top-6 mr-24">
+          <div className="relative -top-10 mr-24">
             <StatusInfo />
           </div>
           <button
-            className="absolute right-4 top-5 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none"
+            className="absolute right-4 top-2 rounded-sm border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none"
             onClick={downPortReset}
           >
             포트 리셋

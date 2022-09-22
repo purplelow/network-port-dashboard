@@ -49,9 +49,9 @@ export default function ModelSerial({ ABS_URL }: any) {
     });
   };
   return (
-    <div className="w-full rounded-md bg-white shadow-md">
+    <div className="w-full rounded-md bg-white p-10 shadow-md">
       <form onSubmit={handleSubmit(onValid, onInvalid)} className="h-full">
-        <div className="flex h-full items-center justify-between px-10">
+        <div className="flex h-full items-center justify-between">
           <div className="flex w-2/5 items-center">
             <span className="pr-2 text-sm font-medium text-gray-900">
               모델명
@@ -69,7 +69,7 @@ export default function ModelSerial({ ABS_URL }: any) {
           <div className="relative flex w-2/5 items-center">
             <label
               htmlFor="serialnumber"
-              className="pr-2 text-sm font-medium text-gray-900"
+              className="min-w-[85px] pr-2 text-right text-sm font-medium text-gray-900"
             >
               시리얼 넘버
             </label>
@@ -83,6 +83,7 @@ export default function ModelSerial({ ABS_URL }: any) {
               type="text"
               className="w-4/5 rounded-sm border border-gray-300 p-2.5 text-sm text-gray-900  outline-none focus:border-[1px] focus:border-gray-700"
               placeholder="시리얼 넘버"
+              maxLength={16}
             />
             {errors.serialnumber && (
               <ErrorMessage

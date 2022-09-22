@@ -17,6 +17,7 @@ import SystemInfo from "./fragment/SystemInfo";
 import MqttWSReactService from "mqtt_ws/index";
 
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
 
 const WS_CLIID = process.env.NEXT_PUBLIC_WS_CLIID;
 
@@ -38,7 +39,7 @@ const Dashboard = () => {
         pauseOnHover
       />
 
-      <div className="h-auto gap-x-2 pb-5 xl:grid xl:grid-cols-7">
+      <div className="h-auto gap-x-2 xl:grid xl:grid-cols-7">
         <div className="col-span-3 mb-2 grid w-full grid-flow-row grid-rows-4 gap-2 xl:mb-0">
           <div className="row-span-2 h-full rounded-md bg-white p-2 shadow-md">
             <BoardTitle subTitle="네트워크 정보" />
@@ -63,13 +64,13 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="col-span-4 grid w-full grid-flow-row grid-rows-3 gap-2">
+        <div className="col-span-4 grid w-full grid-flow-row grid-rows-3 gap-2 pb-4 xl:p-0">
           <div className="row-span-2 h-full w-full rounded-md bg-white p-2 shadow-md">
             <div className="relative grid h-full grid-flow-row grid-rows-3">
               <div className="absolute top-0 left-0">
                 <BoardTitle subTitle="시스템" />
               </div>
-              <div className=" row-span-1">
+              <div className="relative row-span-1">
                 <div className="flex h-full ">
                   <div className="flex h-full w-1/4 items-end">
                     <CpuChart ABS_URL={ABS_URL} client={client} />
@@ -81,7 +82,7 @@ const Dashboard = () => {
                     <StorageChart ABS_URL={ABS_URL} client={client} />
                   </div>
                   <div className="flex h-full w-1/4 items-end">
-                    <HDDChart ABS_URL={ABS_URL} />
+                    <HDDChart ABS_URL={ABS_URL} client={client} />
                   </div>
                 </div>
               </div>

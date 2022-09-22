@@ -28,7 +28,7 @@ const DeviceSetting = () => {
         draggable
         pauseOnHover
       />
-      <div className="grid h-full grid-rows-6 gap-y-2">
+      <div className="flex flex-col space-y-2 overflow-hidden">
         <ModelSerial ABS_URL={ABS_URL} />
 
         <TimeDateInfo ABS_URL={ABS_URL} />

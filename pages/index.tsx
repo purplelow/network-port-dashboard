@@ -1,7 +1,13 @@
 import type { NextPage } from "next";
-import DashboardContainer from "../containers/dashboard";
+// import DashboardContainer from "../containers/dashboard";
 import urlBranch from "@libs/absoluteUrl";
 import Head from "next/head";
+import { Suspense } from "react";
+import dynamic from "next/dynamic";
+
+const DashboardContainer = dynamic(() => import("../containers/dashboard"), {
+  ssr: false,
+});
 
 const Dashboard: NextPage = () => {
   urlBranch();

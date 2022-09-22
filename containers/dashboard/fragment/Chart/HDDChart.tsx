@@ -1,14 +1,19 @@
 import dynamic from "next/dynamic";
 import useStorageUtilization from "@api/dashBoard/storageUtilization";
 import { useEffect, useState } from "react";
+import MqttSubScribe from "mqtt_ws/MqttSubscribe";
+import MqttMessage from "mqtt_ws/MqttMessage";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export default function HDDChart({ ABS_URL }: any) {
+export default function HDDChart({ ABS_URL, client }: any) {
+  const topic = process.env.MQTT_TOPIC_STORAGE;
+  MqttSubScribe(client, topic);
   const { storageUtilization, isLoading, isError } =
     useStorageUtilization(ABS_URL);
+  const { mqttData, currentTopic } = MqttMessage(client);
   const [data, setData]: any = useState();
   const hddSeries = data?.summary?.life ?? 0;
 
@@ -17,6 +22,17 @@ export default function HDDChart({ ABS_URL }: any) {
       setData(storageUtilization);
     }
   }, [storageUtilization]);
+
+  useEffect(() => {
+    if (currentTopic.includes("/storage")) {
+      setData(mqttData);
+    }
+  }, [mqttData]);
+
+  const percentTextColor: any = () => {
+    if (hddSeries < 21) return "red";
+    else return "#454545";
+  };
 
   const chartState: any = {
     series: [hddSeries],
@@ -34,13 +50,13 @@ export default function HDDChart({ ABS_URL }: any) {
             name: {
               fontWeight: "normal",
               fontSize: "16px",
-              color: "#454545",
+              color: percentTextColor(),
               offsetY: 70,
             },
             value: {
               offsetY: -10,
               fontSize: "20px",
-              color: "#464646",
+              color: percentTextColor(),
               formatter: function (val: number) {
                 return val + "%";
               },
@@ -68,22 +84,21 @@ export default function HDDChart({ ABS_URL }: any) {
         },
       },
       fill: {
-        colors: ["#2377fd"],
-        type: "gradient",
-        gradient: {
-          gradientToColors: ["#ff4447"],
-          shade: "dark",
-          shadeIntensity: 0.15,
-          inverseColors: false,
-          opacityFrom: 1,
-          opacityTo: 1,
-          stops: [30],
-        },
+        colors: [
+          function ({ value }: any) {
+            if (value < 21) {
+              return "#ff4447";
+            } else {
+              return "#2377fd";
+            }
+          },
+        ],
+        type: "solid",
       },
       stroke: {
         dashArray: 2,
       },
-      labels: ["HDD 수명"],
+      labels: ["Disk Life"],
     },
   };
 

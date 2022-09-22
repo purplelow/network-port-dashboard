@@ -329,7 +329,7 @@ export default function UpPortSetting({ ABS_URL, client, mountPort }: any) {
   };
 
   return (
-    <div className="relative top-10 h-[calc(100%-70px)] overflow-auto rounded-sm border-[1px] border-gray-300 shadow-md">
+    <div className="relative top-5 h-[calc(100%-45px)] overflow-auto rounded-sm border-[1px] border-gray-300 shadow-md">
       <form>
         <table className="w-full text-left text-sm text-gray-500">
           <thead className="bg-blue-100 text-xs uppercase text-gray-700">
@@ -402,11 +402,11 @@ export default function UpPortSetting({ ABS_URL, client, mountPort }: any) {
                     </label>
                   </div>
                 </td>
-                <td className="px-6 py-1.5 text-center">
+                <td className="px-6 py-1 text-center">
                   <span className={statusColor(com.status)}></span>
                 </td>
-                <td className="px-6 py-1.5 text-right">{com.deviceName}</td>
-                <td className="px-6 py-1.5 text-center">
+                <td className="px-6 py-1 text-right">{com.deviceName}</td>
+                <td className="px-6 py-1 text-center">
                   <input
                     {...register(`port${com.id}`, {
                       required: "포트를 입력하세요.",
@@ -446,11 +446,11 @@ export default function UpPortSetting({ ABS_URL, client, mountPort }: any) {
                     </p>
                   )} */}
                 </td>
-                <td className="px-6 py-1.5 text-right">{com.t3}</td>
-                <td className="px-6 py-1.5 text-right">{com.t5}</td>
-                <td className="px-6 py-1.5 text-right">{com.t6}</td>
-                <td className="px-6 py-1.5 text-right">{com.t7}</td>
-                <td className="px-6 py-1.5 text-right">{com.t8}</td>
+                <td className="px-6 py-1 text-right">{com.t3}</td>
+                <td className="px-6 py-1 text-right">{com.t5}</td>
+                <td className="px-6 py-1 text-right">{com.t6}</td>
+                <td className="px-6 py-1 text-right">{com.t7}</td>
+                <td className="px-6 py-1 text-right">{com.t8}</td>
               </tr>
             ))}
           </tbody>

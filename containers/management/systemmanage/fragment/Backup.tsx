@@ -14,7 +14,7 @@ export default function BackUp({ ABS_URL }: any) {
     <button
       onClick={handleDownload}
       type="submit"
-      className="flex min-w-[280px] items-center justify-center space-x-2 rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-10 text-sm font-medium text-white hover:bg-blue-800 "
+      className="flex w-[200px] items-center justify-center space-x-2 rounded-sm border border-blue-700 bg-blue-700 p-2.5 px-4 text-sm font-medium text-white hover:bg-blue-800 xl:w-[280px] xl:px-10 "
     >
       <AiOutlineDownload className="text-2xl" />
       <span>백업 파일 다운로드</span>

@@ -50,7 +50,7 @@ export default function SystemInfo({ ABS_URL }: any) {
   return (
     <>
       <div className="relative h-1/2 overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-left text-sm text-gray-500">
+        <table className="w-full overflow-hidden text-left text-sm text-gray-500">
           <thead className="bg-gray-50 text-xs uppercase text-gray-700">
             <tr>
               <th scope="col" className="w-1/5 px-3 py-3">

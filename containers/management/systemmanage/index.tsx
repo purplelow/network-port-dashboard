@@ -98,19 +98,19 @@ const SystemManage = () => {
           </button>
         </div>
         {/* <LoadingSys /> */}
-        <div className="flex items-center justify-between rounded-md bg-white p-8 shadow-md">
+        <div className="flex min-w-[940px] items-center justify-between rounded-md bg-white p-8 shadow-md">
           <span className="text-xl font-bold text-gray-700">
             펌웨어 업데이트
           </span>
           <div className="flex w-[80%] items-center justify-end space-x-4">
-            <span className="relative text-sm text-gray-500">
+            <span className="relative min-w-[125px] text-right text-sm text-gray-500">
               현재 버전 : {systemInfoData?.system_info?.version}
             </span>
             <FirmwareForm ABS_URL={ABS_URL} />
           </div>
         </div>
 
-        <div className="flex items-center justify-between rounded-md bg-white p-8 shadow-md">
+        <div className="flex min-w-[940px] items-center justify-between rounded-md bg-white p-8 shadow-md">
           <span className="text-xl font-bold text-gray-700">백업</span>
           <div className="flex w-[80%] items-center justify-end space-x-4">
             <BackUp ABS_URL={ABS_URL} />
@@ -153,7 +153,7 @@ const SystemManage = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between rounded-md bg-white p-8 shadow-md">
+        <div className="flex min-w-[940px] items-center justify-between rounded-md bg-white p-8 shadow-md">
           <span className="text-xl font-bold text-gray-700">복원</span>
           <RestoreFrom ABS_URL={ABS_URL} />
 

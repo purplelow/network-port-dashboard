@@ -201,7 +201,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
   };
 
   return (
-    <div className="relative row-span-3 w-full overflow-hidden bg-white p-2 shadow-md">
+    <div className="relative w-full overflow-hidden bg-white pt-2 pl-2 pb-4 shadow-md">
       <BoardTitle subTitle="네트워크 설정" />
       <ul className="absolute top-4 right-5 flex space-x-10">
         <li className="flex items-center space-x-1 text-sm text-[#319500]">
@@ -223,17 +223,17 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
 
       <form
         onSubmit={handleSubmit(onValid, onInvalid)}
-        className="mt-8 h-[calc(100%-110px)] overflow-auto"
+        className="h-auto overflow-auto pl-8 pr-10 pt-8 pb-[70px]"
       >
         <ul className="space-y-2">
-          <li className="flex items-center justify-between space-x-4 bg-blue-50 px-10 py-4">
+          <li className="flex min-w-[880px] items-center justify-between space-x-4 bg-blue-50 px-10 py-4">
             <div className="flex w-[20%] items-center space-x-8">
               <span className="font-bold">
                 {networkInfoData?.interfaces[0].name ?? "-"}
               </span>
               <span
                 className={cls(
-                  "h-3 w-3 rounded-full",
+                  "h-3 w-3 min-w-[12px] rounded-full",
                   statusImgA() === "bg-lanConnected"
                     ? "bg-[#319500]"
                     : statusImgA() === "bg-lanDisconnected"
@@ -245,7 +245,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
               ></span>
               <div
                 className={cls(
-                  "h-[41px] w-[49px] bg-lanConnected bg-no-repeat",
+                  "h-[41px] w-[49px] min-w-[49px] bg-lanConnected bg-no-repeat",
                   statusImgA()
                 )}
               />
@@ -253,7 +253,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
             <div className="relative flex w-[30%] items-center">
               <label
                 htmlFor="ipaddressA"
-                className="pr-2 text-sm font-medium text-gray-900"
+                className="min-w-[55px] pr-2 text-sm font-medium text-gray-900"
               >
                 IP 주소
               </label>
@@ -381,14 +381,14 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
             </div>
           </li>
 
-          <li className="flex items-center justify-between space-x-4 bg-blue-50 px-10 py-4">
+          <li className="flex min-w-[880px] items-center justify-between space-x-4 bg-blue-50 px-10 py-4">
             <div className="flex w-[20%] items-center space-x-8">
               <span className="font-bold">
                 {networkInfoData?.interfaces[1].name ?? "-"}
               </span>
               <span
                 className={cls(
-                  "h-3 w-3 rounded-full",
+                  "h-3 w-3 min-w-[12px] rounded-full",
                   statusImgB() === "bg-lanConnected"
                     ? "bg-[#319500]"
                     : statusImgB() === "bg-lanDisconnected"
@@ -400,7 +400,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
               ></span>
               <div
                 className={cls(
-                  "h-[41px] w-[49px] bg-lanConnected bg-no-repeat",
+                  "h-[41px] w-[49px] min-w-[49px] bg-lanConnected bg-no-repeat",
                   statusImgB()
                 )}
               />
@@ -408,7 +408,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
             <div className="relative flex w-[30%] items-center">
               <label
                 htmlFor="ipaddressB"
-                className="pr-2 text-sm font-medium text-gray-900"
+                className="min-w-[55px] pr-2 text-sm font-medium text-gray-900"
               >
                 IP 주소
               </label>
@@ -608,7 +608,7 @@ export default function NetworkSetting({ ABS_URL, client }: any) {
           })} */}
         </ul>
 
-        <div className="absolute left-0 bottom-0 flex w-full justify-center py-2">
+        <div className="absolute left-0 bottom-0 flex w-full justify-center pb-6">
           <button
             onClick={() => {
               setValue("ipaddressA", ipaddress);
