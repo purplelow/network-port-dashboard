@@ -13,7 +13,7 @@ const SystemManage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>DIVA 888 - 시스템 관리</title>
+        <title>DIVA888 - 시스템 관리</title>
       </Head>
       <SystemManageContainer />
     </>

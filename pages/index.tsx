@@ -15,7 +15,7 @@ const Dashboard: NextPage = () => {
   return (
     <>
       <Head>
-        <title>DIVA 888 - 대시보드</title>
+        <title>DIVA888 - 대시보드</title>
       </Head>
       <DashboardContainer />
     </>

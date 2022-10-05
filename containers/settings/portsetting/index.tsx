@@ -258,14 +258,14 @@ const PortSetting = () => {
       />
       <div className="absolute top-0 right-4 flex justify-end space-x-4 py-2">
         <button
-          className="flex items-center space-x-2 rounded-sm border border-[#707070] bg-[#707070] p-2 px-8 text-sm font-medium text-white hover:bg-neutral-600 "
+          className="flex items-center space-x-2 rounded-sm border border-[#707070] bg-[#707070] p-2 px-7 text-sm font-medium text-white hover:bg-neutral-600 "
           onClick={refreshPage}
         >
           <span>변경 사항 취소</span>
         </button>
         <button
           type="submit"
-          className="flex items-center space-x-2 rounded-sm border border-blue-700 bg-blue-700 p-2 px-11 text-sm font-medium text-white hover:bg-blue-800 "
+          className="flex items-center space-x-2 rounded-sm border border-blue-700 bg-blue-700 p-2 px-7 text-sm font-medium text-white hover:bg-blue-800 "
           onClick={onClickSetting}
         >
           <span>변경 사항 적용</span>

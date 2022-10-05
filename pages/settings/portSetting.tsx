@@ -16,7 +16,7 @@ const PortSetting: NextPage = () => {
   return (
     <>
       <Head>
-        <title>DIVA 888 - 포트설정</title>
+        <title>DIVA888 - 포트설정</title>
       </Head>
       <PortSettingContainer />
     </>

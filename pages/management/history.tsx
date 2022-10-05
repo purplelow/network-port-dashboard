@@ -13,7 +13,7 @@ const History: NextPage = ({ data }: any) => {
   return (
     <>
       <Head>
-        <title>DIVA 888 - 히스토리</title>
+        <title>DIVA888 - 히스토리</title>
       </Head>
       <HistoryContainer />
     </>

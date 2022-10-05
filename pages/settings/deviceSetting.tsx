@@ -16,7 +16,7 @@ const DeviceSetting: NextPage = () => {
   return (
     <>
       <Head>
-        <title>DIVA 888 - 장비설정</title>
+        <title>DIVA888 - 장비설정</title>
       </Head>
       <DeviceSettingContainer />;
     </>
